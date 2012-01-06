@@ -1,0 +1,31 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>ورود به سامانه</title>
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/main.css" rel="stylesheet" type="text/css" />
+
+    </h:head>
+    <h:body dir="rtl">
+        <div id="loginContainer">
+            <img class="loginTop" src="./resources/images/sanjeshHeader.png"/>
+            <div class="loginCenter">
+                <h:form styleClass="myform">
+                    <h:panelGrid columns="1">
+                        <h:outputText value="نام کاربری:"/>
+                        <p:inputText value="#{loginController.userName}"/>
+                        <h:outputText value="رمز ورود:"/>
+                        <p:password value="#{loginController.password}" minLength="0" feedback="false"/>
+                    </h:panelGrid>
+                    <p:commandButton value="ورود" action="#{loginController.doLogin()}" ajax="false" />
+                </h:form>
+                    <p:messages />
+            </div>
+        </div>
+    </h:body>
+</html>
+

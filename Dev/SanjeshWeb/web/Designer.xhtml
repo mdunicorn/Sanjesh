@@ -1,0 +1,142 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="title">
+        طراحان سوال
+    </ui:define>
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable rendered="#{empty designerController.toEdit}"
+				value="#{designerController.list}" var="current"
+				emptyMessage="هیچ طراحی تعریف نشده است."
+				style="font-family: Tahoma; font-size:10pt">
+				<f:facet name="header">
+                    لیست طراحان
+                </f:facet>
+				<p:column headerText="نام" sortBy="#{current.name}"
+					filterBy="#{current.name}" filterMatchMode="contains">
+					<h:outputText value="#{current.name}" />
+				</p:column>
+				<p:column headerText="نام خانوادگی" sortBy="#{current.family}"
+					filterBy="#{current.family}" filterMatchMode="contains">
+					<h:outputText value="#{current.family}" />
+				</p:column>
+				<p:column headerText="کد پرسنلی"
+					sortBy="#{current.organizationCode}"
+					filterBy="#{current.organizationCode}" filterMatchMode="contains">
+					<h:outputText value="#{current.organizationCode}" />
+				</p:column>
+				<p:column headerText="آدرس ایمل" sortBy="current.emailAddress"
+					filterBy="current.emailAddress" filterMatchMode="contains">
+					<h:outputText value="#{current.emailAddress}" />
+				</p:column>
+				<ui:remove>
+					<p:column headerText="تاریخ تولد" sortBy="#{current.birthDate}"
+						filterBy="#{current.birthDate}" filterMatchMode="contains">
+						<h:outputText value="#{current.birthDate}" />
+					</p:column>
+					<p:column headerText="محل تولد" sortBy="#{current.birthLocation}"
+						filterBy="#{current.birthLocation}" filterMatchMode="contains">
+						<h:outputText value="#{current.birthLocation}" />
+					</p:column>
+				</ui:remove>
+				<p:column headerText="عملیات">
+					<h:panelGroup>
+						<p:commandButton value="ویرایش" ajax="false"
+							action="#{designerController.edit(current)}" image="editButton" />
+						<p:commandButton value="حذف" ajax="true"
+							action="#{designerController.setToDelete(current)}"
+							oncomplete="dlgRemove.show()" image="deleteButton" />
+						<p:commandButton value="تأیید" ajax="false" image="" />
+						<p:commandButton value="عدم تأیید" ajax="false" image="" />
+					</h:panelGroup>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton ajax="false" value="تعریف طراح سوال" style=""
+						action="#{designerController.createNew()}" image="addButton" />
+				</f:facet>
+			</p:dataTable>
+
+			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+				header="حذف نماینده" message="آیا از حذف طراح اطمینان دارید؟"
+				position="center" modal="true">
+				<p:commandButton value="بله" ajax="false"
+					action="#{designerController.remove()}" image="okButton" />
+				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+					style="font-family:Tahoma" image="cancelButton" />
+			</p:confirmDialog>
+
+			<p:fieldset legend="اطلاعات طراح"
+				rendered="#{not empty designerController.toEdit}">
+				<p:focus for="txtName" />
+				<h:panelGrid columns="4"
+					columnClasses="editorCol1, editorCol2, editorCol3, editorCol4">
+					<h:outputText value="#{msgs.name}:" />
+					<p:inputText id="txtName" value="#{designerController.toEdit.name}" />
+					<h:outputText value="#{msgs.family}:" />
+					<p:inputText value="#{designerController.toEdit.family}" />
+					<h:outputText value="#{msgs.organizationCode}:" />
+					<p:inputText value="#{designerController.toEdit.organizationCode}" />
+					<ui:remove>
+						<!--
+					<h:outputText value="#{msgs.university}:" />
+						<h:selectOneMenu>
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{msgs.pleaseSelectUniversity}" />
+						</h:selectOneMenu>
+					 -->
+					</ui:remove>
+					<h:outputText value="#{msgs.birthDate}:" />
+					<p:calendar value="#{designerController.toEdit.birthDate}" />
+					<h:outputText value="#{msgs.birthLocation}:" />
+					<p:inputText value="#{designerController.toEdit.birthLocation}" />
+					<h:outputText value="#{msgs.emailAddress}:" />
+					<p:inputText value="#{designerController.toEdit.emailAddress}" />
+					<ui:remvove>
+						<h:outputText value="#{msgs.employmentDate}:" />
+						<p:calendar />
+						<h:outputText value="#{msgs.faculty}:" />
+						<p:inputText />
+						<h:outputText value="#{msgs.educationGroup}:" />
+						<h:selectOneMenu>
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{msgs.pleaseSelectFaculty}" />
+						</h:selectOneMenu>
+						<h:outputText value="#{msgs.educationField}:" />
+						<h:selectOneMenu>
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{msgs.pleaseSelectEducationField}" />
+						</h:selectOneMenu>
+					</ui:remvove>
+					<h:outputText value="#{msgs.expertInCourses}:" />
+					<h:selectManyListbox />
+					<h:outputText value="#{msgs.grade}:" />
+					<h:selectOneMenu value="#{designerController.selectedGradeId}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="#{msgs.pleaseSelectGrade}" />
+                        <f:selectItems
+                            value="#{designerController.gradeList}"
+                            var="group" itemLabel="#{group.name}" itemValue="#{group.id}"/>
+					</h:selectOneMenu>
+					<h:outputText value="#{msgs.expertInCoursesQuestions}:"
+						escape="false" />
+					<h:selectManyListbox />
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton id="btnSave" value="ذخیره" ajax="false"
+					action="#{designerController.save}" image="okButton" />
+				<p:commandButton value="لغو" ajax="false" immediate="true"
+					action="#{designerController.showList()}" image="cancelButton" />
+			</p:fieldset>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

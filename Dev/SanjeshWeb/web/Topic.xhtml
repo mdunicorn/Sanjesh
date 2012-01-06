@@ -1,0 +1,90 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="title">
+        سرفصل ها
+    </ui:define>
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable rendered="#{empty topicController.toEdit}"
+				value="#{topicController.list}" var="current"
+				emptyMessage="هیچ سرفصلی تعریف نشده است."
+				style="font-family: Tahoma; font-size:10pt">
+				<f:facet name="header">
+                    لیست سرفصل ها
+                </f:facet>
+				<p:column headerText="نام" sortBy="#{current.name}"
+					filterBy="#{current.name}" filterMatchMode="contains">
+					<h:outputText value="#{current.name}" />
+				</p:column>
+				<p:column headerText="درس" sortBy="#{current.course.name}"
+					filterBy="#{current.course.name}" filterMatchMode="contains">
+					<h:outputText value="#{current.course.name}" />
+				</p:column>
+				<ui:remove>
+					<!-- 
+					<p:column headerText="تعدا سؤالات"
+						sortBy="#{current.numberOfQuestions}"
+						filterBy="#{current.numberOfQuestions}" filterMatchMode="contains">
+						<h:outputText value="#{current.numberOfQuestions}" />
+					</p:column>  -->
+				</ui:remove>
+				<p:column headerText="علمیات">
+					<h:panelGroup>
+						<p:commandButton value="ویرایش" ajax="false"
+							action="#{topicController.edit(current)}" image="editButton" />
+						<p:commandButton value="حذف" ajax="true"
+							action="#{topicController.setToDelete(current)}"
+							oncomplete="dlgRemove.show()" image="deleteButton" />
+					</h:panelGroup>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton ajax="false" value="تعریف سرفصل" style=""
+						action="#{topicController.createNew()}" image="addButton" />
+				</f:facet>
+			</p:dataTable>
+
+			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+				header="حذف سرفصل" message="آیا از حذف سرفصل اطمینان دارید؟"
+				position="center" modal="true">
+				<p:commandButton value="بله" ajax="false"
+					action="#{topicController.remove()}" image="okButton" />
+				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+					style="font-family:Tahoma" image="cancelButton" />
+			</p:confirmDialog>
+
+			<p:fieldset legend="اطلاعات سرفصل"
+				rendered="#{not empty topicController.toEdit}">
+				<p:focus />
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:outputText value="نام : *" />
+					<p:inputText value="#{topicController.toEdit.name}" />
+					<h:outputText value="درس : *" />
+					<h:selectOneMenu value="#{topicController.selectedCourseId}">
+					<f:selectItem noSelectionOption="true" itemLabel="لطفاً درس را انتخاب نمایید." />
+						<f:selectItems value="#{topicController.courses}" var="course"
+							itemLabel="#{course.name}" itemValue="#{course.id}" />
+					</h:selectOneMenu>
+					<ui:remove><!-- 
+						<h:outputText value="تعداد سؤالات:" />
+						<p:inputText value="#{topicController.toEdit.numberOfQuestions}"
+							converterMessage="لطفا یک عدد معتبر وارد کنید." />
+							 -->
+					</ui:remove>
+				</h:panelGrid>
+				<p:commandButton value="ذخیره" ajax="false"
+					action="#{topicController.save}" image="okButton" />
+				<p:commandButton value="لغو" ajax="false" immediate="true"
+					action="#{topicController.showList()}" image="cancelButton" />
+			</p:fieldset>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

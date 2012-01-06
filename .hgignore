@@ -1,0 +1,3 @@
+syntax: glob
+Dev/SanjeshWeb/build
+Dev/SanjeshDatabaseUpdater/build

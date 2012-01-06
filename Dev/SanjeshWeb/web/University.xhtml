@@ -1,0 +1,77 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/menuTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >
+
+    <ui:define name="title">
+        دانشگاه ها
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:dataTable rendered="#{empty universityController.toEdit}"
+                         value="#{universityController.list}" var="current"
+                         emptyMessage="هیچ دانشگاهی تعریف نشده است."
+                         style="font-family: Tahoma; font-size:10pt">
+                <f:facet name="header">
+                    لیست دانشگاه ها
+                </f:facet>
+                <p:column headerText="کد" sortBy="#{current.code}" filterBy="#{current.code}" filterMatchMode="startsWith">
+                	<h:outputText value="#{current.code}"/>
+                </p:column>
+                <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
+                    <h:outputText value="#{current.name}"/>
+                </p:column>
+                <p:column headerText="آدرس" sortBy="#{current.address}" filterBy="#{current.address}" filterMatchMode="contains">
+                    <h:outputText value="#{current.address}"/>
+                </p:column>
+                <p:column headerText="تلفن" sortBy="#{current.phone}" filterBy="#{current.phone}" filterMatchMode="contains">
+                    <h:outputText value="#{current.phone}"/>
+                </p:column>
+                <p:column headerText="عملیات">
+                    <h:panelGroup>
+                        <p:commandButton value="ویرایش" ajax="false"
+                                         action="#{universityController.edit(current)}" image="editButton"/>
+                        <p:commandButton value="حذف" ajax="true"
+                                         action="#{universityController.setToDelete(current)}"
+                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                    </h:panelGroup>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton ajax="false" value="تعریف دانشگاه" style=""
+                                     action="#{universityController.createNew()}" image="addButton" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:confirmDialog widgetVar="dlgRemove" severity="alert"
+                             header="حذف دانشگاه" message="آیا از حذف دانشگاه اطمینان دارید؟"
+                             position="center" modal="true">
+                <p:commandButton value="بله" ajax="false"  action="#{universityController.remove()}" image="okButton"/>
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
+            </p:confirmDialog>
+
+            <p:fieldset legend="اطلاعات دانشگاه"
+                        rendered="#{not empty universityController.toEdit}">
+                <p:focus for="txtCode"/>
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="کد : *"/>
+                    <p:inputText id="txtCode" value="#{universityController.toEdit.code}"/>
+                    <h:outputText value="نام : *"/>
+                    <p:inputText id="txtName" value="#{universityController.toEdit.name}"/>
+                    <h:outputText value="آدرس : "/>
+                    <p:inputText value="#{universityController.toEdit.address}"/>
+                </h:panelGrid>
+                <p:commandButton value="ذخیره" ajax="false"
+                                 action="#{universityController.save}" image="okButton"/>
+                <p:commandButton value="لغو" ajax ="false" immediate="true"
+                                 action="#{universityController.showList()}" image="cancelButton"/>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

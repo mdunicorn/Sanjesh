@@ -1,0 +1,171 @@
+/* 
+    Document   : main
+    Created on : Nov 28, 2011, 7:57:33 PM
+    Author     : Muhammad
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.ui-button span.ui-button-text 
+{
+    margin-left: 5px;
+}
+.addButton {
+    background-image: url('./../images/add.png') !important;
+}
+.deleteButton {
+    background-image: url('./../images/delete.png') !important;
+}
+
+.editButton {
+    background-image: url('./../images/edit.png') !important;
+}
+.okButton {
+    background-image: url('./../images/ok.png') !important;
+}
+.cancelButton {
+    background-image: url('./../images/cancel.png') !important;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 90% !important;
+    font-family: Tahoma;
+    direction: rtl;
+}
+
+.wijmo-wijmenu .ui-widget-header h1,
+.wijmo-wijmenu .ui-widget-header h2,
+.wijmo-wijmenu .ui-widget-header h3,
+.wijmo-wijmenu .ui-widget-header h4,
+.wijmo-wijmenu .ui-widget-header h5,
+.wijmo-wijmenu .ui-widget-header h6
+{
+    float:right;
+}
+
+.wijmo-wijmenu .wijmo-wijmenu-item .wijmo-wijmenu-text,
+.wijmo-wijmenu-horizontal .wijmo-wijmenu-parent .ui-icon,
+.wij-menu-breadcrumb a,
+.wij-menu-breadcrumb span,
+.wij-menu-breadcrumb .wij-menu-prev-list a .ui-icon
+{
+    float: right;
+}
+
+.wijmo-wijmenu {
+    width: 170px
+}
+
+root { 
+    display: block;
+}
+
+loginContainer{
+    position: absolute;
+    width: 100%;
+    min-width: 750px;
+    min-height: 700px;
+    background: url('../images/loginBg.png');
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: block;
+    direction: rtl;
+    font-family: Tahoma;
+    font-size: 11px;
+}
+
+.loginTop
+{
+    
+    width:486;
+    height: 141px;
+    margin: auto;
+    border: none;
+    display: block;
+    clear: both;
+}
+
+.loginCenter{
+    margin: 0 auto;
+    width: 515px;
+    padding: 0;
+    clear: both;
+    position: relative;
+    background: url('../images/loginFormBg.jpg');
+    display: block;
+    
+}
+
+.myform
+{
+    width: 360px;
+    background: none;
+    position: relative;
+    margin: 0;
+    padding: 60px 190px 100px 0px;    
+}
+
+.editorCol1, .editorCol3
+{
+}
+.editorCol2
+{
+    padding-left: 100px;
+}
+.editorCol4
+{    
+}
+
+.editorCol2 input, .editorCol2 select,
+.editorCol4 input, .editorCol4 select
+{
+    width:100%;
+}
+
+.menuItemIcon
+{
+    width: 16px;
+    height: 16px;
+    float: right !important;
+    margin-left: 5px;
+    background-repeat: no-repeat;
+}
+
+.menuItemUniversityIcon
+{
+    background: url('../images/university.png');
+}
+
+.menuItemGradeIcon
+{
+    background: url('../images/knowledge_base.png');
+}
+.menuItemEducationGroupIcon
+{
+    background: url('../images/emblem_library.png');
+}
+.menuItemEducationFieldIcon
+{
+    background: url('../images/book2_green.png');
+}
+.menuItemCourseIcon
+{
+    background: url('../images/book_open.png');
+}
+.menuItemTopicIcon
+{
+    background: url('../images/stock_insert_section.png');
+}
+.menuItemSanjeshAgentIcon
+{
+    background: url('../images/user_expert.png');
+}
+.menuItemUniversityAgentIcon
+{
+    background: url('../images/user_expert.png');
+}
+.menuItemDesignerIcon
+{
+    background: url('../images/designer.png');
+}
+

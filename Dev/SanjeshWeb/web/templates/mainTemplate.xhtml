@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/main.css" rel="stylesheet" type="text/css" />
+        <title><ui:insert name="title">Facelets Template</ui:insert></title>
+    </h:head>
+    <h:body dir="rtl">
+        <ui:debug hotkey="q" rendered="true"/>
+
+        <div id="top" class="top">
+            <img src="./resources/images/icon.png"/>
+            <img src="./resources/images/title.png"/>
+            <div style="float:left">
+                <h:form rendered="#{loginController.loggedIn}" style="font-size:8pt">
+                    <h:outputText value="خوش آمدید #{loginController.currentUser.fullName}  "/>
+                    #{' '}
+                    <p:commandLink value="تنظیمات" ajax="false" style="color:mediumblue"/>
+                    #{' '}
+                    <p:commandLink value="خروج" ajax="false" style="color:mediumblue" action="#{loginController.doLogout()}" />
+                </h:form>
+            </div>
+        </div>
+        <ui:insert name="content1">Content</ui:insert>
+
+        <ui:remove>
+            <div id="bottom" style="display: none;">
+                <img src="./resources/images/TabrizULogoSmall.png"/>
+                <h:outputText style="font-size:7pt" value="مرکز محاسبات دانشگاه تبریز"/>
+            </div>
+        </ui:remove>
+        
+    </h:body>
+
+</html>

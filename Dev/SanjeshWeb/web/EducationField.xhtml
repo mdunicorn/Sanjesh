@@ -1,0 +1,77 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/menuTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >
+
+    <ui:define name="title">
+        رشته های تحصیلی
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:dataTable rendered="#{empty educationFieldController.toEdit}"
+                         value="#{educationFieldController.list}" var="current"
+                         emptyMessage="هیچ رشته تحصیلی تعریف نشده است."
+                         style="font-family: Tahoma; font-size:10pt">
+                <f:facet name="header">
+                    لیست رشته های تحصیلی
+                </f:facet>
+                <p:column headerText="کد" sortBy="#{current.code}" filterBy="#{current.code}" filterMatchMode="contains">
+                    <h:outputText value="#{current.code}"/>
+                </p:column>
+                <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
+                    <h:outputText value="#{current.name}"/>
+                </p:column>
+                <p:column headerText="گروه تحصیلی" sortBy="#{current.group.name}" filterBy="#{current.group.name}" filterMatchMode="contains">
+                    <h:outputText value="#{current.group.name}"/>
+                </p:column>
+                <p:column headerText="علمیات">
+                    <h:panelGroup>
+                        <p:commandButton value="ویرایش" ajax="false"
+                                         action="#{educationFieldController.edit(current)}" image="editButton"/>
+                        <p:commandButton value="حذف" ajax="true"
+                                         action="#{educationFieldController.setToDelete(current)}"
+                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                    </h:panelGroup>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton ajax="false" value="تعریف رشته تحصیلی" style=""
+                                     action="#{educationFieldController.createNew()}" image="addButton" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:confirmDialog widgetVar="dlgRemove" severity="alert"
+                             header="حذف رشته تحصیلی" message="آیا از حذف رشته تحصیلی اطمینان دارید؟"
+                             position="center" modal="true">
+                <p:commandButton value="بله" ajax="false"  action="#{educationFieldController.remove()}" image="okButton"/>
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton"/>
+            </p:confirmDialog>
+
+            <p:fieldset legend="اطلاعات رشته تحصیلی"
+                        rendered="#{not empty educationFieldController.toEdit}">
+                <p:focus/>
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="نام : *"/>
+                    <p:inputText value="#{educationFieldController.toEdit.name}"/>
+                    <h:outputText value="گروه تحصیلی : *"/>
+                    <h:selectOneMenu value="#{educationFieldController.selectedGroupId}">
+                    	<f:selectItem noSelectionOption="true" itemLabel="لطفاً گروه تحصیلی را انتخاب نمایید." />
+                        <f:selectItems
+                            value="#{educationFieldController.educationGroups}"
+                            var="group" itemLabel="#{group.name}" itemValue="#{group.id}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton value="ذخیره" ajax="false"
+                                 action="#{educationFieldController.save}" image="okButton"/>
+                <p:commandButton value="لغو" ajax ="false" immediate="true"
+                                 action="#{educationFieldController.showList()}" image="cancelButton"/>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="/templates/menuTemplate.xhtml">
+
+            <ui:define name="title">
+                سامانه آزمون سازی سازمان سنجش آموزش کشور
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                <p:dataTable
+                    value="#{adminDashboardController.unacceptedDesigners}" var="current"
+                             emptyMessage="هیچ طراح تأیید نشده ای وجود ندارد."
+                             style="font-family: Tahoma; font-size:10pt">
+                    <f:facet name="header">
+                        لیست طراحان تأیید نشده
+                    </f:facet>
+                    <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
+                        <h:outputText value="#{current.name}"/>
+                    </p:column>
+                    <p:column headerText="نام خانوادگی" sortBy="#{current.family}" filterBy="#{current.family}" filterMatchMode="contains">
+                        <h:outputText value="#{current.family}"/>
+                    </p:column>
+                    <p:column headerText="کد ملی" sortBy="#{current.nationalCode}" filterBy="#{current.nationalCode}" filterMatchMode="contains">
+                        <h:outputText value="#{current.nationalCode}"/>
+                    </p:column>
+                    <p:column headerText="کد پرسنلی" sortBy="#{current.organizationCode}" filterBy="#{current.organizationCode}" filterMatchMode="contains">
+                        <h:outputText value="#{current.organizationCode}"/>
+                    </p:column>
+                    <ui:remove>
+                        <p:column headerText="تاریخ تولد" sortBy="#{current.birthDate}" filterBy="#{current.birthDate}" filterMatchMode="contains">
+                            <h:outputText value="#{current.birthDate}"/>
+                        </p:column>
+                        <p:column headerText="محل تولد" sortBy="#{current.birthLocation}" filterBy="#{current.birthLocation}" filterMatchMode="contains">
+                            <h:outputText value="#{current.birthLocation}"/>
+                        </p:column>
+                        <p:column headerText="آدرس ایمل" sortBy="current.emailAddress" filterBy="current.emailAddress" filterMatchMode="contains">
+                            <h:outputText value="#{current.emailAddress}"/>
+                        </p:column>
+                    </ui:remove>
+                    <p:column headerText="عملیات">
+                        <h:panelGroup>
+                            <p:commandButton value="ویرایش" ajax="false"
+                                             action="#{designerController.edit(current)}" image="editButton"/>
+                            <p:commandButton value="حذف" ajax="true"
+                                             action="#{designerController.setToDelete(current)}"
+                                             oncomplete="dlgRemove.show()" image="deleteButton"/>
+                            <p:commandButton value="تأیید" ajax="false"
+                                             image="okButton"/>
+                            <p:commandButton value="عدم تأیید" ajax="false"
+                                             image="cancelButton"/>
+                        </h:panelGroup>
+                    </p:column>
+                </p:dataTable>
+                <br />
+                <br />
+                
+                <p:dataTable
+                             emptyMessage="هیچ سؤال تأیید نشده ای وجود ندارد."
+                             style="font-family: Tahoma; font-size:10pt">
+                    <f:facet name="header">
+لیست سؤالات تأیید نشده
+                    </f:facet>
+                    <p:column headerText="متن سؤال">
+                    </p:column>
+                    <p:column headerText="طراح">
+                    </p:column>
+                    <p:column headerText="پاسخ"/>
+                    <p:column headerText="سطح سؤال"/>
+                    <p:column headerText="تاریخ طرح سؤال"/>
+                    
+                </p:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

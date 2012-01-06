@@ -1,0 +1,76 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/menuTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >
+
+    <ui:define name="title">
+        دروس
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:dataTable rendered="#{empty courseController.toEdit}"
+                         value="#{courseController.list}" var="current"
+                         emptyMessage="هیچ درسی تعریف نشده است."
+                         style="font-family: Tahoma; font-size:10pt">
+                <f:facet name="header">
+                    لیست دروس
+                </f:facet>
+                <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
+                    <h:outputText value="#{current.name}"/>
+                </p:column>
+                <p:column headerText="رشته" sortBy="#{current.field.name}" filterBy="#{current.field.name}"  filterMatchMode="contains">
+                    <h:outputText value="#{current.field.name}"/>
+                </p:column>
+                <p:column headerText="علمیات">
+                    <h:panelGroup>
+                        <p:commandButton value="ویرایش" ajax="false"
+                                         action="#{courseController.edit(current)}" image="editButton"/>
+                        <p:commandButton value="حذف" ajax="true"
+                                         action="#{courseController.setToDelete(current)}"
+                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                    </h:panelGroup>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton ajax="false" value="تعریف درس" style=""
+                                     action="#{courseController.createNew()}" image="addButton" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:confirmDialog widgetVar="dlgRemove" severity="alert"
+                             header="حذف درس" message="آیا از حذف درس اطمینان دارید؟"
+                             position="center" modal="true">
+                <p:commandButton value="بله" ajax="false"  action="#{courseController.remove()}" image="okButton"/>
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
+            </p:confirmDialog>
+
+<!--            <p:tabView-->
+            <p:fieldset legend="اطلاعات درس"
+                        rendered="#{not empty courseController.toEdit}">
+                <p:focus for="btnSave"/>
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="نام : *"/>
+                    <p:inputText value="#{courseController.toEdit.name}"/>
+                    <h:outputText value="رشته : *"/>
+                    <h:selectOneMenu value="#{courseController.selectedFieldId}">
+                    	<f:selectItem noSelectionOption="true" itemLabel="لطفاً رشته را انتخاب نمایید." />
+                        <f:selectItems
+                            value="#{courseController.educationFields}"
+                            var="field" itemLabel="#{field.name}" itemValue="#{field.id}"/>
+                    </h:selectOneMenu>
+
+                </h:panelGrid>
+                <p:commandButton id="btnSave" value="ذخیره" ajax="false"
+                                 action="#{courseController.save}" image="okButton"/>
+                <p:commandButton value="لغو" ajax ="false" immediate="true"
+                                 action="#{courseController.showList()}" image="cancelButton" />
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

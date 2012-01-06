@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <h:outputStylesheet library="css" name="main.css"/>
+            <h:panelGrid columns="4" columnClasses="editorOddColumns,editorEvenColumns,editorOddColumns,editorEvenColumns">
+                <h:outputText value="#{msgs.name}:"/><p:inputText />
+                <h:outputText value="#{msgs.family}:"/><p:inputText/>
+                <h:outputText value="#{msgs.nationalCode}:"/><p:inputText/>
+                <h:outputText value="#{msgs.organizationCode}:"/> <p:inputText/>
+                <h:outputText value="#{msgs.university}:"/>
+                <h:selectOneMenu>
+                    <f:selectItem noSelectionOption="true" itemLabel="#{msgs.pleaseSelectUniversity}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{msgs.birthDate}:" /><p:calendar />
+                <h:outputText value="#{msgs.birthLocation}:" /><p:inputText/>
+                <h:outputText value="#{msgs.emailAddress}:" /><p:inputText/>
+                <h:outputText value="#{msgs.employmentDate}:" /><p:calendar />
+                <h:outputText value="#{msgs.faculty}:" /><p:inputText />
+                <h:outputText value="#{msgs.educationGroup}:" />
+                <h:selectOneMenu>
+                    <f:selectItem noSelectionOption="true" itemLabel="#{msgs.pleaseSelectFaculty}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{msgs.educationField}:" />
+                <h:selectOneMenu>
+                    <f:selectItem noSelectionOption="true" itemLabel="#{msgs.pleaseSelectEducationField}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{msgs.expertInCourses}:"/>
+                <h:selectManyListbox />
+                <h:outputText value="#{msgs.grade}:"/>
+                <h:selectOneMenu>
+                    <f:selectItem noSelectionOption="true" itemLabel="#{msgs.pleaseSelectGrade}" />
+                </h:selectOneMenu>
+                <h:outputText value="#{msgs.expertInCoursesQuestions}:" escape="false"/>
+                <h:selectManyListbox />
+
+            </h:panelGrid>
+        </ui:composition>
+    </h:body>
+</html>
+
