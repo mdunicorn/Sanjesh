@@ -1,6 +1,6 @@
 CREATE TABLE question
 (
-  question_id integer NOT NULL,
+  question_id SERIAL NOT NULL,
   designer_ref integer NOT NULL,
   course_ref integer NOT NULL,
   question_text text,

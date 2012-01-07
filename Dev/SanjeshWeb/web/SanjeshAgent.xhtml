@@ -1,103 +1,134 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/templates/menuTemplate.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                >
+	template="/templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:define name="title">
+	<ui:define name="title">
         کارشناسان سازمان سنجش
     </ui:define>
-    <ui:define name="content">
-        <h:form>
-            <p:dataTable rendered="#{empty sanjeshAgentController.toEdit}"
-                         value="#{sanjeshAgentController.list}" var="current"
-                         emptyMessage="هیچ کارشناسی تعریف نشده است."
-                         style="font-family: Tahoma; font-size:10pt">
-                <f:facet name="header">
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable rendered="#{empty sanjeshAgentController.toEdit}"
+				value="#{sanjeshAgentController.list}" var="current"
+				emptyMessage="هیچ کارشناسی تعریف نشده است."
+				style="font-family: Tahoma; font-size:10pt">
+				<f:facet name="header">
                     لیست کارشناسان سازمان سنجش
                 </f:facet>
-                <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
-                    <h:outputText value="#{current.name}"/>
-                </p:column>
-                <p:column headerText="نام خانوادگی" sortBy="#{current.family}" filterBy="#{current.family}" filterMatchMode="contains">
-                    <h:outputText value="#{current.family}"/>
-                </p:column>
-                <p:column headerText="کد ملی" sortBy="#{current.nationalCode}" filterBy="#{current.nationalCode}" filterMatchMode="contains">
-                    <h:outputText value="#{current.nationalCode}"/>
-                </p:column>
-                <ui:remove>
-                    <p:column headerText="کد پرسنلی">
-                        <h:outputText value="#{current.organizationCode}"/>
-                    </p:column>
-                    <p:column headerText="تاریخ تولد">
-                        <h:outputText value="#{current.birthDate}"/>
-                    </p:column>
-                    <p:column headerText="محل تولد">
-                        <h:outputText value="#{current.birthLocation}"/>
-                    </p:column>
-                    <p:column headerText="آدرس ایمل">
-                        <h:outputText value="#{current.emailAddress}"/>
-                    </p:column>
-                </ui:remove>
-                <p:column headerText="عملیات">
-                    <h:panelGroup>
-                        <p:commandButton value="ویرایش" ajax="false"
-                                         action="#{sanjeshAgentController.edit(current)}" image="editButton"/>
-                        <p:commandButton value="حذف" ajax="true"
-                                         action="#{sanjeshAgentController.setToDelete(current)}"
-                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
-                    </h:panelGroup>
-                </p:column>
-                <f:facet name="footer">
-                    <p:commandButton ajax="false" value="تعریف کارشناس سازمان سنجش" style=""
-                                     action="#{sanjeshAgentController.createNew()}" image="addButton" />
-                </f:facet>
-            </p:dataTable>
+				<p:column headerText="نام" sortBy="#{current.name}"
+					filterBy="#{current.name}" filterMatchMode="contains">
+					<h:outputText value="#{current.name}" />
+				</p:column>
+				<p:column headerText="نام خانوادگی" sortBy="#{current.family}"
+					filterBy="#{current.family}" filterMatchMode="contains">
+					<h:outputText value="#{current.family}" />
+				</p:column>
+				<ui:remove><!-- 
+					<p:column headerText="کد ملی" sortBy="#{current.nationalCode}"
+						filterBy="#{current.nationalCode}" filterMatchMode="contains">
+						<h:outputText value="#{current.nationalCode}" />
+					</p:column>
+					 -->
+				</ui:remove>
+				<p:column headerText="کد پرسنلی">
+					<h:outputText value="#{current.organizationCode}" />
+				</p:column>
+				<ui:remove>
+					<p:column headerText="تاریخ تولد">
+						<h:outputText value="#{current.birthDate}" />
+					</p:column>
+					<p:column headerText="محل تولد">
+						<h:outputText value="#{current.birthLocation}" />
+					</p:column>
+					<p:column headerText="آدرس ایمل">
+						<h:outputText value="#{current.emailAddress}" />
+					</p:column>
+				</ui:remove>
+				<p:column headerText="عملیات">
+					<h:panelGroup>
+						<p:commandButton value="ویرایش" ajax="false"
+							action="#{sanjeshAgentController.edit(current)}"
+							image="editButton" />
+						<p:commandButton value="حذف" ajax="true"
+							action="#{sanjeshAgentController.setToDelete(current)}"
+							oncomplete="dlgRemove.show()" image="deleteButton" />
+					</h:panelGroup>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton ajax="false" value="تعریف کارشناس سازمان سنجش"
+						style="" action="#{sanjeshAgentController.createNew()}"
+						image="addButton" />
+				</f:facet>
+			</p:dataTable>
 
-            <p:confirmDialog widgetVar="dlgRemove" severity="alert"
-                             header="حذف کارشناس" message="آیا از حذف کارشناس اطمینان دارید؟"
-                             position="center" modal="true">
-                <p:commandButton value="بله" ajax="false"  action="#{sanjeshAgentController.remove()}" image="okButton"/>
-                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
-            </p:confirmDialog>
+			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+				header="حذف کارشناس" message="آیا از حذف کارشناس اطمینان دارید؟"
+				position="center" modal="true">
+				<p:commandButton value="بله" ajax="false"
+					action="#{sanjeshAgentController.remove()}" image="okButton" />
+				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+					style="font-family:Tahoma" image="cancelButton" />
+			</p:confirmDialog>
 
-            <p:fieldset legend="اطلاعات کارشناس"
-                        rendered="#{not empty sanjeshAgentController.toEdit}">
-                <p:focus/>
-                <h:panelGrid columns="2" cellpadding="3" columnClasses="editorCol1, editorCol2">
-                    <h:outputText value="#{msgs.name}:"/>
-                    <p:inputText value="#{sanjeshAgentController.toEdit.name}"/>
-                    <h:outputText value="#{msgs.family}:"/>
-                    <p:inputText value="#{sanjeshAgentController.toEdit.family}"/>
-                    <h:outputText value="#{msgs.nationalCode}:"/>
-                    <p:inputText value="#{sanjeshAgentController.toEdit.nationalCode}"/>
-                    <h:outputText value="#{msgs.organizationCode}:"/>
-                    <p:inputText value="#{sanjeshAgentController.toEdit.organizationCode}"/>
-                    <h:outputText value="#{msgs.university}:"/>
-                    <h:selectOneMenu>
-                        <f:selectItem noSelectionOption="true" itemLabel="#{msgs.pleaseSelectUniversity}" />
-                        <f:selectItems value="#{sanjeshAgentController.universityList}"
-                                       var="university" itemLabel="#{university.name}" itemValue="#{university.id}"/>
-                    </h:selectOneMenu>
-                    <h:outputText value="#{msgs.birthDate}:" />
-                    <p:calendar value="#{sanjeshAgentController.toEdit.birthDate}"/>
-                    <h:outputText value="#{msgs.birthLocation}:" />
-                    <p:inputText value="#{sanjeshAgentController.toEdit.birthLocation}"/>
-                    <h:outputText value="#{msgs.emailAddress}:" />
-                    <p:inputText value="#{sanjeshAgentController.toEdit.emailAddress}"/>
-                </h:panelGrid>
-                <br />
-                <p:commandButton value="ذخیره" ajax="false"
-                                 action="#{sanjeshAgentController.save}" image="okButton"/>
-                <p:commandButton value="لغو" ajax ="false" immediate="true"
-                                 action="#{sanjeshAgentController.showList()}" image="cancelButton"/>
-            </p:fieldset>
+			<p:fieldset legend="اطلاعات کارشناس"
+				rendered="#{not empty sanjeshAgentController.toEdit}">
+				<p:focus />
+				<h:panelGrid columns="2" cellpadding="3"
+					columnClasses="editorCol1, editorCol2">
 
-        </h:form>
-    </ui:define>
+					<h:outputText value="#{msgs.name}:" />
+					<p:inputText value="#{sanjeshAgentController.toEdit.name}" />
+
+					<h:outputText value="#{msgs.family}:" />
+					<p:inputText value="#{sanjeshAgentController.toEdit.family}" />
+
+					<h:outputText value="#{msgs.emailAddress}:" />
+					<p:inputText value="#{sanjeshAgentController.toEdit.emailAddress}" />
+
+					<h:outputText value="#{msgs.organizationCode}:" />
+					<p:inputText
+						value="#{sanjeshAgentController.toEdit.organizationCode}" />
+
+					<ui:remove>
+						<!-- 
+						<h:outputText value="#{msgs.university}:" />
+						<h:selectOneMenu>
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{msgs.pleaseSelectUniversity}" />
+							<f:selectItems value="#{sanjeshAgentController.universityList}"
+								var="university" itemLabel="#{university.name}"
+								itemValue="#{university.id}" />
+						</h:selectOneMenu>
+						 -->
+					</ui:remove>
+
+					<h:outputText value="#{msgs.birthDate}:" />
+					<p:calendar value="#{sanjeshAgentController.toEdit.birthDate}" />
+
+					<h:outputText value="#{msgs.birthLocation}:" />
+					<p:inputText value="#{sanjeshAgentController.toEdit.birthLocation}" />
+
+					<h:outputText value="#{msgs.isQuestionExpert}" />
+					<h:selectBooleanCheckbox
+						value="#{sanjeshAgentController.toEdit.questionExpert}" />
+
+					<h:outputText value="#{msgs.isArbiterExpert}" />
+					<h:selectBooleanCheckbox
+						value="#{sanjeshAgentController.toEdit.arbiterExpert}" />
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="ذخیره" ajax="false"
+					action="#{sanjeshAgentController.save}" image="okButton" />
+				<p:commandButton value="لغو" ajax="false" immediate="true"
+					action="#{sanjeshAgentController.showList()}" image="cancelButton" />
+			</p:fieldset>
+
+		</h:form>
+	</ui:define>
 
 </ui:composition>

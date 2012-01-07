@@ -3,6 +3,7 @@
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
@@ -25,19 +26,22 @@ public class Course implements EntityBase, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "course_id")
     private int id;
-//    @NotNull
-//    @Column(nullable = false)
-//    private int code;
+	
+    @NotNull
+    private String code;
+    
     @NotBlank(message="لطفاً نام درس را وارد نمایید.")
     @Column(nullable = false)
     private String name;
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "educationfield_ref", nullable = false)
     @NotNull(message="یک رشته انتخاب نمایید.")
     private EducationField field;
+    
     @OneToMany(mappedBy="course")
     private List<Topic> topics;
 
@@ -49,15 +53,15 @@ public class Course implements EntityBase, Serializable {
         this.id = id;
     }
 
-//    public int getCode() {
-//        return code;
-//    }
-//
-//    public void setCode(int code) {
-//        this.code = code;
-//    }
+    public String getCode() {
+		return code;
+	}
 
-    public String getName() {
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
         return name;
     }
 

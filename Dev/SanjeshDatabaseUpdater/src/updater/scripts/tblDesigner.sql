@@ -1,10 +1,10 @@
 CREATE TABLE designer
 (
-  designer_id integer NOT NULL,
+  designer_id SERIAL NOT NULL,
   "name" character varying(255),
   "family" character varying(255) NOT NULL,
-  nationalcode character varying(255),
-  --organizationcode character varying(255),
+  --nationalcode character varying(255),
+  organizationcode character varying(255),
   emailaddress character varying(255),
   birthdate date,
   birthlocation character varying(255),

@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
@@ -26,12 +27,13 @@ public class Question implements EntityBase, Serializable {
 
    	private static final long serialVersionUID = 1L;
    	
-	@Id @GeneratedValue
+	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="question_id")
     private int id;
 	
     @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "question_id", nullable = false)
+    @JoinColumn(name = "designer_ref", nullable = false)
     @NotNull
 	private Designer designer;
     

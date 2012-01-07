@@ -5,6 +5,11 @@ import model.EntityBase;
 import java.util.List;
 //import javax.annotation.PostConstruct;
 
+import javax.ejb.EJBException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.validation.ValidationException;
+
 public abstract class EntityControllerBase<T extends EntityBase> {
 
 	private DaoBase<T> dao;
@@ -30,7 +35,12 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	}
 
 	public void remove() {
-		dao.remove(toDelete);
+		try {
+			dao.remove(toDelete);
+		} catch (ValidationException ve) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(ve.getMessage()));
+		}
 	}
 
 	public void edit(T u) {
@@ -42,7 +52,17 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	}
 
 	public void save() {
-		dao.save(toEdit);
+		try {
+			dao.save(toEdit);
+		} catch (EJBException e) {
+			if (e.getCause() instanceof ValidationException) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(e.getCause().getMessage()));
+				return;
+			}
+			throw e;
+		}
+		
 		toEdit = null;
 		list = dao.findAll();
 	}

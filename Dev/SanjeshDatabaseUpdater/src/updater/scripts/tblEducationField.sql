@@ -1,6 +1,6 @@
 CREATE TABLE educationfield
 (
-  educationfield_id integer NOT NULL,
+  educationfield_id SERIAL NOT NULL,
   code character varying(50) NOT NULL,
   "name" character varying(255) NOT NULL,
   educationgroup_ref integer NOT NULL,

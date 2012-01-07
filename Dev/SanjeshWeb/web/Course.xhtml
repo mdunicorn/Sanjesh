@@ -20,6 +20,9 @@
                 <f:facet name="header">
                     لیست دروس
                 </f:facet>
+                <p:column headerText="کد" sortBy="#{current.code}" filterBy="#{current.code}" filterMatchMode="contains">
+                    <h:outputText value="#{current.code}"/>
+                </p:column>
                 <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
                     <h:outputText value="#{current.name}"/>
                 </p:column>
@@ -51,10 +54,15 @@
 <!--            <p:tabView-->
             <p:fieldset legend="اطلاعات درس"
                         rendered="#{not empty courseController.toEdit}">
-                <p:focus for="btnSave"/>
+                <p:focus for="txtCode"/>
                 <h:panelGrid columns="2" cellpadding="10">
+                
+                    <h:outputText value="کد : *"/>
+                    <p:inputText id="txtCode" value="#{courseController.toEdit.code}"/>
+                    
                     <h:outputText value="نام : *"/>
                     <p:inputText value="#{courseController.toEdit.name}"/>
+                    
                     <h:outputText value="رشته : *"/>
                     <h:selectOneMenu value="#{courseController.selectedFieldId}">
                     	<f:selectItem noSelectionOption="true" itemLabel="لطفاً رشته را انتخاب نمایید." />

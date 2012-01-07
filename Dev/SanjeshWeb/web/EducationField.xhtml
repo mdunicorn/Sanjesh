@@ -53,8 +53,10 @@
 
             <p:fieldset legend="اطلاعات رشته تحصیلی"
                         rendered="#{not empty educationFieldController.toEdit}">
-                <p:focus/>
+                <p:focus for="txtCode"/>
                 <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="کد : *"/>
+                    <p:inputText id="txtCode" value="#{educationFieldController.toEdit.code}"/>                
                     <h:outputText value="نام : *"/>
                     <p:inputText value="#{educationFieldController.toEdit.name}"/>
                     <h:outputText value="گروه تحصیلی : *"/>

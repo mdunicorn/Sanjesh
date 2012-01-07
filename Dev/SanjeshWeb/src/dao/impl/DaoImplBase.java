@@ -6,12 +6,15 @@ package dao.impl;
 
 import dao.DaoBase;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.ValidationException;
 import model.EntityBase;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -49,14 +52,32 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
 
     @Override
     public void save(T u) {
+    	List<String> errorMessages = new ArrayList<String>();
+    	if(!validateSave(u, errorMessages)){
+    		throw new ValidationException(StringUtils.join(errorMessages, "\n"));
+    	}
         em.merge(u);
     }
 
     @Override
     public void remove(T u) {
+    	List<String> errorMessages = new ArrayList<String>();
+    	if(!validateRemove(u, errorMessages)){
+    		throw new ValidationException(StringUtils.join(errorMessages, "\n"));
+    	}
         em.remove(em.merge(u));
     }
+    
+    @Override
+    public boolean validateSave(T entity, List<String> messages) {    	
+    	return true;
+    }
 
+    @Override
+    public boolean validateRemove(T entity, List<String> messages) {
+    	return true;
+    }
+    
     @SuppressWarnings("unchecked")
 	@Override
     public List<T> findAll() {

@@ -1,6 +1,6 @@
 CREATE TABLE topic
 (
-  topic_id integer NOT NULL,
+  topic_id SERIAL NOT NULL,
   "name" character varying(255) NOT NULL,
   course_ref integer NOT NULL,
   CONSTRAINT topic_pkey PRIMARY KEY (topic_id),

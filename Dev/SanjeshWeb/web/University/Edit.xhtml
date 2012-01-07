@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../menuTemplate.xhtml"
+                template="/templates/menuTemplate.xhtml"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -17,9 +17,9 @@
             <p:fieldset legend="اطلاعات دانشگاه">
                 <h:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="نام : *"/>
-                    <p:inputText value="#{universityController.university.name}"/>
+                    <p:inputText value="#{universityController.toEdit.name}"/>
                     <h:outputText value="آدرس : *"/>
-                    <p:inputText value="#{universityController.university.address}"/>
+                    <p:inputText value="#{universityController.toEdit.address}"/>
                 </h:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
                                  action="#{universityController.save}"/>

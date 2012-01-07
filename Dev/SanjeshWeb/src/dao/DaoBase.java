@@ -19,7 +19,9 @@ public interface DaoBase<T extends EntityBase> {
 
 //    void update(T u);
     
-    boolean validateSave(List<String> messages);
+    boolean validateSave(T entity, List<String> messages);
+    
+    boolean validateRemove(T entity, List<String> messages);
 
     void remove(T u);
 

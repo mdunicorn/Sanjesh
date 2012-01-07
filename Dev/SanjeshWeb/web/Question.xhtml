@@ -55,21 +55,21 @@
                     <p:fileUpload fileUploadListener="#{questionController.uploadQuestionPic}"
                     	allowTypes="*.jpg;*.png;*.bmp;*.gif" description="Images (*.jpg;*.png;*.bmp;*.gif)"/>
                     <h:outputText value="متن جواب صحیح  : "/>
-                    <p:editor value="#{questionController.toEdit.currectAnswerText}" width="600"/>
+                    <p:editor value="#{questionController.toEdit.answerText}" width="600"/>
                     <h:outputText value="تصویر جواب صحیح  : "/>
-                    <p:fileUpload fileUploadListener="#{questionController.uploadCurrectAnswerPic}"/>
+                    <p:fileUpload fileUploadListener="#{questionController.uploadAnswerPic}"/>
                     <h:outputText value="متن جواب نادرست اول : "/>
-                    <p:editor value="#{questionController.toEdit.wrongAnswer1Text}" width="600"/>
+                    <p:editor value="#{questionController.toEdit.incorrectOption1Text}" width="600"/>
                     <h:outputText value="تصویر جواب نادرست اول : "/>
-                    <p:fileUpload fileUploadListener="#{questionController.uploadWrongAnswer1Pic}"/>
+                    <p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption1Pic}"/>
                     <h:outputText value="متن جواب نادرست دوم  : "/>
-                    <p:editor value="#{questionController.toEdit.wrongAnswer2Text}" width="600"/>
+                    <p:editor value="#{questionController.toEdit.incorrectOption2Text}" width="600"/>
                     <h:outputText value="تصویر جواب نادرست دوم  : "/>
-                    <p:fileUpload fileUploadListener="#{questionController.uploadWrongAnswer2Pic}"/>
+                    <p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption2Pic}"/>
                     <h:outputText value="متن جواب نادرست سوم : "/>
-                    <p:editor value="#{questionController.toEdit.wrongAnswer3Text}" width="600"/>
+                    <p:editor value="#{questionController.toEdit.incorrectOption3Text}" width="600"/>
                     <h:outputText value="تصویر جواب نادرست سوم : "/>
-                    <p:fileUpload fileUploadListener="#{questionController.uploadWrongAnswer3Pic}"/>
+                    <p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption3Pic}"/>
                     <h:outputText value="زمان لازم برای پاسخ به سوال : "/>
                     <p:inputText value="#{questionController.toEdit.answerTime}"/>
                 </h:panelGrid>

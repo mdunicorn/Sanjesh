@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,7 @@ public class Topic implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "topic_id")
     private int id;
 	

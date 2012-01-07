@@ -1,6 +1,6 @@
 CREATE TABLE SUser
 (
-  suser_id integer NOT NULL,
+  suser_id SERIAL NOT NULL,
   username character varying(255) NOT NULL,
   password character varying(255) NOT NULL,
   fullname character varying(255) NOT NULL,

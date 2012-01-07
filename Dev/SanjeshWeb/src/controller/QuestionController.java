@@ -68,21 +68,21 @@ public class QuestionController extends EntityControllerBase<Question> {
 		getToEdit().setQuestionImage(ev.getFile().getContents());
 	}
 
-//	public void uploadCurrectAnswerPic(FileUploadEvent ev) {
-//		getToEdit().setCurrectAnswerImage(ev.getFile().getContents());
-//	}
-//
-//	public void uploadWrongAnswer1Pic(FileUploadEvent ev) {
-//		getToEdit().setWrongAnswer1Image(ev.getFile().getContents());
-//	}
-//
-//	public void uploadWrongAnswer2Pic(FileUploadEvent ev) {
-//		getToEdit().setWrongAnswer2Image(ev.getFile().getContents());
-//	}
-//
-//	public void uploadWrongAnswer3Pic(FileUploadEvent ev) {
-//		getToEdit().setWrongAnswer3Image(ev.getFile().getContents());
-//	}
+	public void uploadAnswerPic(FileUploadEvent ev) {
+		getToEdit().setAnswerImage(ev.getFile().getContents());
+	}
+
+	public void uploadIncorrectOption1Pic(FileUploadEvent ev) {
+		getToEdit().setIncorrectOption1Image(ev.getFile().getContents());
+	}
+
+	public void uploadIncorrectOption2Pic(FileUploadEvent ev) {
+		getToEdit().setIncorrectOption2Image(ev.getFile().getContents());
+	}
+
+	public void uploadIncorrectOption3Pic(FileUploadEvent ev) {
+		getToEdit().setIncorrectOption3Image(ev.getFile().getContents());
+	}
 
 	/*
 	 * private byte[] image;

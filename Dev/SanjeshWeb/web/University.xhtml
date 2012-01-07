@@ -65,6 +65,7 @@
                     <h:outputText value="آدرس : "/>
                     <p:inputText value="#{universityController.toEdit.address}"/>
                 </h:panelGrid>
+                <p:messages />
                 <p:commandButton value="ذخیره" ajax="false"
                                  action="#{universityController.save}" image="okButton"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"

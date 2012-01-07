@@ -1,6 +1,6 @@
 CREATE TABLE universityagent
 (
-  universityagent_id integer NOT NULL,
+  universityagent_id SERIAL NOT NULL,
   "name" character varying(255),
   "family" character varying(255) NOT NULL,
   emailaddress character varying(255),

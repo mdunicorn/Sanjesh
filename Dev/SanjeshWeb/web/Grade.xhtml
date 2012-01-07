@@ -47,10 +47,10 @@
 
             <p:fieldset legend="اطلاعات پایه علمی"
                         rendered="#{not empty gradeController.toEdit}">
-                <p:focus/>
+                <p:focus for="txtName"/>
                 <h:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="نام : *"/>
-                    <p:inputText value="#{gradeController.toEdit.name}"/>
+                    <p:inputText id="txtName" value="#{gradeController.toEdit.name}"/>
                 </h:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
                                  action="#{gradeController.save}"  image="okButton"/>
