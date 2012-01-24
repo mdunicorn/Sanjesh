@@ -20,6 +20,9 @@
                 <f:facet name="header">
                     لیست گروه های تحصیلی
                 </f:facet>
+                <p:column headerText="کد" sortBy="#{current.code}" filterBy="#{current.code}" filterMatchMode="contains">
+                    <h:outputText value="#{current.code}"/>
+                </p:column>
                 <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
                     <h:outputText value="#{current.name}"/>
                 </p:column>
@@ -47,8 +50,10 @@
 
             <p:fieldset legend="اطلاعات گروه تحصیلی"
                         rendered="#{not empty educationGroupController.toEdit}">
-                <p:focus for="txtName"/>
+                <p:focus for="txtCode"/>
                 <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="کد : *"/>
+                    <p:inputText id="txtCode" value="#{educationGroupController.toEdit.code}"/>
                     <h:outputText value="نام : *"/>
                     <p:inputText id="txtName" value="#{educationGroupController.toEdit.name}"/>
                 </h:panelGrid>

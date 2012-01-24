@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Temporal;
+
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -38,6 +40,8 @@ public class SanjeshAgent implements EntityBase, Serializable {
     @NotBlank(message="لطفاً نام خانوادگی کارشناس را وارد نمایید.")
     @Column(nullable=false)
     private String family;
+    @NotBlank(message="لطفاً آدرس ایمیل را وارد نمایید.")
+    @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
 //    private String nationalCode;
     private String organizationCode;

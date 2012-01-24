@@ -1,8 +1,4 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package model;
+﻿package model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +16,6 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Muhammad
  */
 @Entity
-//@NamedQuery(name="findAll", query="from EducationGroup")
 public class EducationGroup implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +23,9 @@ public class EducationGroup implements EntityBase, Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "educationgroup_id")
     private int id;
+	
+	@NotBlank(message="لطفاً کد گروه را وارد نمایید.")
+	private String code;
     @NotBlank(message = "لطفاً نام گروه تحصیلی را وارد نمایید.")
     @NotNull
     @Column(nullable = false, unique = true)
@@ -43,6 +41,14 @@ public class EducationGroup implements EntityBase, Serializable {
         this.id = id;
     }
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
     public String getName() {
         return name;
     }

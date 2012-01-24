@@ -61,7 +61,7 @@ public class LoginController {
 
             currentUser = u;
 
-            return "home";
+            return "home?faces-redirect=true";
         }
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("نام کاربری یا رمز عبور صحیح نمیباشد."));
@@ -72,7 +72,7 @@ public class LoginController {
         if (loggedIn) {
             loggedIn = false;
             currentUser = null;
-            return "/login.xhtml";
+            return "/login.xhtml?faces-redirect=true";
         }
         return null;
     }

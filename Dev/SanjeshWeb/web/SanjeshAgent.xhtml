@@ -27,14 +27,17 @@
 					filterBy="#{current.family}" filterMatchMode="contains">
 					<h:outputText value="#{current.family}" />
 				</p:column>
-				<ui:remove><!-- 
+				<ui:remove>
+					<!-- 
 					<p:column headerText="کد ملی" sortBy="#{current.nationalCode}"
 						filterBy="#{current.nationalCode}" filterMatchMode="contains">
 						<h:outputText value="#{current.nationalCode}" />
 					</p:column>
 					 -->
 				</ui:remove>
-				<p:column headerText="کد پرسنلی">
+				<p:column headerText="کد پرسنلی"
+					sortBy="#{current.organizationCode}"
+					filterBy="#{current.organizationCode}">
 					<h:outputText value="#{current.organizationCode}" />
 				</p:column>
 				<ui:remove>
@@ -76,12 +79,12 @@
 
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty sanjeshAgentController.toEdit}">
-				<p:focus />
+				<p:focus for="txtName"/>
 				<h:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">
 
 					<h:outputText value="#{msgs.name}:" />
-					<p:inputText value="#{sanjeshAgentController.toEdit.name}" />
+					<p:inputText id="txtName" value="#{sanjeshAgentController.toEdit.name}" />
 
 					<h:outputText value="#{msgs.family}:" />
 					<p:inputText value="#{sanjeshAgentController.toEdit.family}" />
@@ -121,6 +124,9 @@
 						value="#{sanjeshAgentController.toEdit.arbiterExpert}" />
 
 				</h:panelGrid>
+				
+				<p:messages />
+				
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{sanjeshAgentController.save}" image="okButton" />

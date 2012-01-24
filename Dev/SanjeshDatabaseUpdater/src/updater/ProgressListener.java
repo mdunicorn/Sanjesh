@@ -11,5 +11,5 @@ package updater;
 public interface ProgressListener {
     void progressChanged(float percent);
     void logEvent(LogCategory category, String message);
-    void executingQuery(String query);
+    void executingQuery(String query, Object... params);
 }

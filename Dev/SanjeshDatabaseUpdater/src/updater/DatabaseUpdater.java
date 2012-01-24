@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -58,17 +59,8 @@ public class DatabaseUpdater {
         return r;
     }
     
-    public int testExecuteUpdate( String statement) throws SQLException, ClassNotFoundException{
-        Connection con = getConnection(database);        
-        Statement stm = con.createStatement();
-        int r = stm.executeUpdate(statement);
-        stm.close();
-        return r;
-        
-    }
-
     public int executeUpdate(Connection connection, String statement, Object... params) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        pListener.executingQuery(statement);
+        pListener.executingQuery(statement, params);
         PreparedStatement p = connection.prepareStatement(statement);
         for (int i = 0; i < params.length; i++) {
             p.setObject(i + 1, params[i]);
@@ -85,7 +77,7 @@ public class DatabaseUpdater {
     }
 
     public ResultSet executeQuery(Connection connection, String statement, Object... params) throws SQLException {
-        pListener.executingQuery(statement);
+        pListener.executingQuery(statement, params);
         PreparedStatement p = connection.prepareStatement(statement);
         for (int i = 0; i < params.length; i++) {
             p.setObject(i + 1, params[i]);
@@ -124,7 +116,7 @@ public class DatabaseUpdater {
 
     private boolean columnExists(String tableName, String columnName) throws SQLException {
         return (Boolean) executeScalar(dbConnection,
-                "select exists(select * from information_schema.columns where table_name='?' and column_name='?')",
+                "select exists(select * from information_schema.columns where table_name=? and column_name=?)",
                 tableName, columnName);
     }
 
@@ -171,6 +163,22 @@ public class DatabaseUpdater {
                     logInfo("Creating table '" + t + "'");
                     executeResourceFile(dbConnection, "scripts/tbl" + t + ".sql");
                 }
+            }
+            
+            if(!columnExists("educationgroup", "code")){
+                pListener.logEvent(LogCategory.INFO, "Adding column 'code' to table 'educationgroup'");
+                executeUpdate(dbConnection, "ALTER TABLE educationgroup ADD COLUMN code character varying(50)");
+                ResultSet r = executeQuery(dbConnection, "SELECT educationgroup_id FROM educationgroup");
+                ArrayList<Integer> ids = new ArrayList<Integer>();
+                while( r.next()){
+                    ids.add((Integer)r.getObject(1));
+                }
+                r.close();
+                int i = 1;
+                for( Integer id : ids){
+                    executeUpdate(dbConnection, "UPDATE educationgroup SET code=? WHERE educationgroup_id=?", i++, id);
+                }
+                executeUpdate(dbConnection, "ALTER TABLE educationgroup ALTER COLUMN code SET NOT NULL");
             }
             
             

@@ -35,7 +35,8 @@ public class UniversityAgent implements EntityBase, Serializable {
     @NotBlank(message="لطفاً نام خانوادگی کارشناس را وارد نمایید.")
     @Column(nullable=false)
     private String family;
-    @Email
+    @NotBlank(message="لطفاً آدرس ایمیل را وارد نمایید.")
+    @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
     //private String nationalCode;
     private String organizationCode;

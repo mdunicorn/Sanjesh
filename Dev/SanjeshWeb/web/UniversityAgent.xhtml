@@ -19,28 +19,28 @@
 				<f:facet name="header">
                     لیست کارشناسان دانشگاه ها
                 </f:facet>
-                
+
 				<p:column headerText="نام" sortBy="#{current.name}"
 					filterBy="#{current.name}" filterMatchMode="contains">
 					<h:outputText value="#{current.name}" />
 				</p:column>
-				
+
 				<p:column headerText="نام خانوادگی" sortBy="#{current.family}"
 					filterBy="#{current.family}" filterMatchMode="contains">
 					<h:outputText value="#{current.family}" />
 				</p:column>
-				
+
 				<ui:remove>
 					<p:column headerText="کد ملی" sortBy="#{current.nationalCode}"
 						filterBy="#{current.nationalCode}" filterMatchMode="contains">
 						<h:outputText value="#{current.nationalCode}" />
 					</p:column>
 				</ui:remove>
-				
-				<p:column headerText="کد پرسنلی">
+
+				<p:column headerText="کد پرسنلی" sortBy="#{current.organizationCode}" filterBy="#{current.organizationCode}">
 					<h:outputText value="#{current.organizationCode}" />
 				</p:column>
-				
+
 				<ui:remove>
 					<p:column headerText="تاریخ تولد">
 						<h:outputText value="#{current.birthDate}" />
@@ -52,7 +52,7 @@
 						<h:outputText value="#{current.emailAddress}" />
 					</p:column>
 				</ui:remove>
-				
+
 				<p:column headerText="عملیات">
 					<h:panelGroup>
 						<p:commandButton value="ویرایش" ajax="false"
@@ -81,24 +81,24 @@
 
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty universityAgentController.toEdit}">
-				<p:focus />
+				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">
-					
+
 					<h:outputText value="#{msgs.name}:" />
-					<p:inputText value="#{universityAgentController.toEdit.name}" />
-					
+					<p:inputText id="txtName" value="#{universityAgentController.toEdit.name}" />
+
 					<h:outputText value="#{msgs.family}:" />
 					<p:inputText value="#{universityAgentController.toEdit.family}" />
-					
-					<h:outputText value="#{msgs.emailAddress}:" />					
+
+					<h:outputText value="#{msgs.emailAddress}:" />
 					<p:inputText
 						value="#{universityAgentController.toEdit.emailAddress}" />
-						
+
 					<h:outputText value="#{msgs.organizationCode}:" />
 					<p:inputText
 						value="#{universityAgentController.toEdit.organizationCode}" />
-						
+
 					<ui:remove>
 						<!-- 
 						<h:outputText value="#{msgs.university}:" />
@@ -111,15 +111,17 @@
 						</h:selectOneMenu>
 						 -->
 					</ui:remove>
-					
+
 					<h:outputText value="#{msgs.birthDate}:" />
 					<p:calendar value="#{universityAgentController.toEdit.birthDate}" />
-					
+
 					<h:outputText value="#{msgs.birthLocation}:" />
 					<p:inputText
 						value="#{universityAgentController.toEdit.birthLocation}" />
-						
 				</h:panelGrid>
+
+				<p:messages />
+
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{universityAgentController.save}" image="okButton" />

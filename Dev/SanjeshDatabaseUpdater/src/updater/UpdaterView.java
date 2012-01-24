@@ -413,7 +413,7 @@ public class UpdaterView extends FrameView {
             // doInBackground() depends on from parameters
             // to UpdateTask fields, here.
             super(app);
-            
+
             btnUpdate.setEnabled(false);
 
             upd = new DatabaseUpdater(
@@ -452,9 +452,20 @@ public class UpdaterView extends FrameView {
             txtLog.setCaretPosition(txtLog.getText().length());
         }
 
-        public void executingQuery(String query) {
+        public void executingQuery(String query, Object... params) {
             lastQuery = query;
-            txtQuery.setText(txtQuery.getText() + "\n" + query);
+            String text = query;
+            if (params.length > 0) {
+                text += "\n Parameters: ";
+                boolean first = true;
+                for (Object o : params) {
+                    if (!first)
+                        text += ", ";
+                    first = false;
+                    text += o.toString();
+                }
+            }
+            txtQuery.setText(txtQuery.getText() + "\n" + text);
             txtQuery.setCaretPosition(txtQuery.getText().length());
         }
     }

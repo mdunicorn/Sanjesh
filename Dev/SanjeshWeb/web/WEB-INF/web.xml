@@ -5,10 +5,10 @@
   <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
   <param-value>/WEB-INF/usercontrols.taglib.xml</param-value>
  </context-param>
- <context-param>
-  <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
-  <param-value>true</param-value>
- </context-param>
+ <!--  <context-param> 
+   <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name> 
+   <param-value>true</param-value> 
+  </context-param> -->
  <context-param>
   <param-name>javax.faces.PROJECT_STAGE</param-name>
   <!--        <param-value>Development</param-value>-->
@@ -35,6 +35,10 @@
   <session-timeout>30</session-timeout>
  </session-config>
  <welcome-file-list>
-  <welcome-file>login.xhtml</welcome-file>
+  <welcome-file>/login.xhtml</welcome-file>
  </welcome-file-list>
+ <error-page>
+  <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+  <location>/login.xhtml</location>
+ </error-page>
 </web-app>

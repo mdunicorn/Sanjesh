@@ -37,10 +37,15 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public void remove() {
 		try {
 			dao.remove(toDelete);
-		} catch (ValidationException ve) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(ve.getMessage()));
+		} catch (EJBException e) {
+			if (e.getCause() instanceof ValidationException) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(e.getCause().getMessage()));
+				return;
+			}
+			throw e;
 		}
+		list = dao.findAll();
 	}
 
 	public void edit(T u) {

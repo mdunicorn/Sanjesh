@@ -20,7 +20,6 @@ import javax.persistence.FetchType;
  * @author Muhammad
  */
 @Entity
-//@NamedQuery(name="findAll", query="from Course")
 public class Course implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
