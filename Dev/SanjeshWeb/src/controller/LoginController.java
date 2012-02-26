@@ -4,6 +4,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+
+import dao.UserDao;
+
 import model.User;
 
 /**
@@ -14,9 +18,11 @@ import model.User;
 @SessionScoped
 public class LoginController {
 
+	@Inject
+	private UserDao userDao;
+	
     private String userName;
     private String password;
-    private boolean loggedIn;
     private User currentUser;
 
     public String getUserName() {
@@ -36,41 +42,31 @@ public class LoginController {
     }
 
     public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+        return currentUser != null;
     }
 
     public User getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(User user) {
-        currentUser = user;
-    }
-
     public String doLogin() {
-        if ("admin".equals(userName.toLowerCase()) && "admin".equals(password)) {
-            loggedIn = true;
-            User u = new User();
-            u.setUserName("admin");
-            u.setPassword("admin");
-            u.setFullName("سرپرست");
-
-            currentUser = u;
-
+    	
+    	User user = userDao.findByUserName(userName);
+    	if( user != null && user.getPassword().equals(password)){
+            currentUser = user;
+            userName = null;
+            password = null;
             return "home?faces-redirect=true";
         }
+    	
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("نام کاربری یا رمز عبور صحیح نمیباشد."));
+        
         return null;
     }
 
     public String doLogout() {
-        if (loggedIn) {
-            loggedIn = false;
+        if (currentUser != null) {
             currentUser = null;
             return "/login.xhtml?faces-redirect=true";
         }

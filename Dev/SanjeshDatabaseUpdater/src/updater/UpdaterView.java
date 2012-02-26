@@ -19,6 +19,7 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * The application's main frame.
@@ -432,14 +433,22 @@ public class UpdaterView extends FrameView {
             // on a background thread, so don't reference
             // the Swing GUI from here.
 
-            upd.Update();
-            return null;  // return your result
+            return upd.Update();
         }
 
         @Override
         protected void succeeded(Object result) {
             // Runs on the EDT.  Update the GUI based on
             // the result computed by doInBackground().
+            boolean r = (Boolean) result;
+            if (r) {
+                JOptionPane.showMessageDialog(null, "Update Succeeded!",
+                        "Database Updater", JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Update failed!",
+                        "Database Updater", JOptionPane.ERROR_MESSAGE);
+            }
+
             btnUpdate.setEnabled(true);
         }
 
@@ -459,8 +468,9 @@ public class UpdaterView extends FrameView {
                 text += "\n Parameters: ";
                 boolean first = true;
                 for (Object o : params) {
-                    if (!first)
+                    if (!first) {
                         text += ", ";
+                    }
                     first = false;
                     text += o.toString();
                 }

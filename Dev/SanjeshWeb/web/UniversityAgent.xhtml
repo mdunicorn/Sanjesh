@@ -20,35 +20,44 @@
                     لیست کارشناسان دانشگاه ها
                 </f:facet>
 
-				<p:column headerText="نام" sortBy="#{current.name}"
+				<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
 					filterBy="#{current.name}" filterMatchMode="contains">
 					<h:outputText value="#{current.name}" />
 				</p:column>
 
-				<p:column headerText="نام خانوادگی" sortBy="#{current.family}"
+				<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
 					filterBy="#{current.family}" filterMatchMode="contains">
 					<h:outputText value="#{current.family}" />
 				</p:column>
 
 				<ui:remove>
-					<p:column headerText="کد ملی" sortBy="#{current.nationalCode}"
+					<p:column headerText="#{msgs.nationalCode}"
+						sortBy="#{current.nationalCode}"
 						filterBy="#{current.nationalCode}" filterMatchMode="contains">
 						<h:outputText value="#{current.nationalCode}" />
 					</p:column>
 				</ui:remove>
 
-				<p:column headerText="کد پرسنلی" sortBy="#{current.organizationCode}" filterBy="#{current.organizationCode}">
+				<p:column headerText="#{msgs.organizationCode}"
+					sortBy="#{current.organizationCode}"
+					filterBy="#{current.organizationCode}"
+					filterMatchMode="contains">
 					<h:outputText value="#{current.organizationCode}" />
 				</p:column>
 
+				<p:column headerText="#{msgs.userName}" sortBy="#{msgs.userName}"
+					filterBy="#{msgs.userName}" filterMatchMode="contains">
+					<h:outputText value="#{current.user.userName}" />
+				</p:column>
+
 				<ui:remove>
-					<p:column headerText="تاریخ تولد">
+					<p:column headerText="#{msgs.birthDate}">
 						<h:outputText value="#{current.birthDate}" />
 					</p:column>
-					<p:column headerText="محل تولد">
+					<p:column headerText="#{msgs.birthLocation}">
 						<h:outputText value="#{current.birthLocation}" />
 					</p:column>
-					<p:column headerText="آدرس ایمل">
+					<p:column headerText="#{msgs.emailAddress}">
 						<h:outputText value="#{current.emailAddress}" />
 					</p:column>
 				</ui:remove>
@@ -86,7 +95,8 @@
 					columnClasses="editorCol1, editorCol2">
 
 					<h:outputText value="#{msgs.name}:" />
-					<p:inputText id="txtName" value="#{universityAgentController.toEdit.name}" />
+					<p:inputText id="txtName"
+						value="#{universityAgentController.toEdit.name}" />
 
 					<h:outputText value="#{msgs.family}:" />
 					<p:inputText value="#{universityAgentController.toEdit.family}" />
@@ -118,6 +128,19 @@
 					<h:outputText value="#{msgs.birthLocation}:" />
 					<p:inputText
 						value="#{universityAgentController.toEdit.birthLocation}" />
+						
+					<h:outputText value="#{msgs.userName}:" />
+					<p:inputText
+						value="#{universityAgentController.toEdit.user.userName}" />
+						
+					<h:outputText value="#{msgs.password}:" />
+					<p:password feedback="false" minLength="1"
+						value="#{universityAgentController.toEdit.user.password}"/>
+
+					<h:outputText value="#{msgs.confirmPassword}:" />
+					<p:password feedback="false" minLength="1"
+						value="#{universityAgentController.passwordCoinfirmation}"/>
+
 				</h:panelGrid>
 
 				<p:messages />

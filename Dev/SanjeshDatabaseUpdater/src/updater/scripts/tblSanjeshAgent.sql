@@ -7,9 +7,15 @@ CREATE TABLE sanjeshagent
   organizationcode character varying(255),
   birthdate date,
   birthlocation character varying(255),
-  IsQuestionExpert boolean,
-  IsArbiterExpert boolean,
-  CONSTRAINT sanjeshagent_pkey PRIMARY KEY (sanjeshagent_id)
+  isquestionexpert boolean,
+  isarbiterexpert boolean,
+  isdesignerexpert boolean,
+  isdataexpert boolean,
+  suser_ref integer not null,
+  CONSTRAINT sanjeshagent_pkey PRIMARY KEY (sanjeshagent_id),
+  CONSTRAINT fkey_sanjeshagent_suser_ref FOREIGN KEY (suser_ref)
+      REFERENCES suser (suser_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
   OIDS=FALSE

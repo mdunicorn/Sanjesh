@@ -1,18 +1,18 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package model;
+﻿package model;
 
 
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 import org.hibernate.validator.constraints.Email;
@@ -32,25 +32,32 @@ public class SanjeshAgent implements EntityBase, Serializable {
     @Column(name="sanjeshagent_id")
     private int id;
 	
-//    @NotBlank(message="لطفاً نام کارشناس را وارد نمایید.")
-//    @NotNull
-//    @Column(nullable=false)
     private String name;
     
     @NotBlank(message="لطفاً نام خانوادگی کارشناس را وارد نمایید.")
     @Column(nullable=false)
     private String family;
+    
     @NotBlank(message="لطفاً آدرس ایمیل را وارد نمایید.")
     @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
+    
 //    private String nationalCode;
+    
     private String organizationCode;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDate;
     private String birthLocation;
 
     private boolean isQuestionExpert;
     private boolean isArbiterExpert;
+    private boolean isDesignerExpert;
+    private boolean isDataExpert;
+    
+    @OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "suser_ref", nullable = false)
+    private User user;
 
     @Override
     public int getId() {
@@ -125,5 +132,35 @@ public class SanjeshAgent implements EntityBase, Serializable {
 	public void setArbiterExpert(boolean isArbiterExpert) {
 		this.isArbiterExpert = isArbiterExpert;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
     
+	public String getFullName(){
+		if( this.name == null || "".equals("")){
+			return this.family;
+		}
+		return this.name + " " + this.family;
+	}
+
+	public boolean isDesignerExpert() {
+		return isDesignerExpert;
+	}
+
+	public void setDesignerExpert(boolean isDesignerExpert) {
+		this.isDesignerExpert = isDesignerExpert;
+	}
+
+	public boolean isDataExpert() {
+		return isDataExpert;
+	}
+
+	public void setDataExpert(boolean isDataExpert) {
+		this.isDataExpert = isDataExpert;
+	}
 }

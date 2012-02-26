@@ -19,27 +19,38 @@
 				<f:facet name="header">
                     لیست کارشناسان سازمان سنجش
                 </f:facet>
-				<p:column headerText="نام" sortBy="#{current.name}"
+                
+				<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
 					filterBy="#{current.name}" filterMatchMode="contains">
 					<h:outputText value="#{current.name}" />
 				</p:column>
-				<p:column headerText="نام خانوادگی" sortBy="#{current.family}"
+				
+				<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
 					filterBy="#{current.family}" filterMatchMode="contains">
 					<h:outputText value="#{current.family}" />
 				</p:column>
+				
 				<ui:remove>
 					<!-- 
-					<p:column headerText="کد ملی" sortBy="#{current.nationalCode}"
+					<p:column headerText="#{msgs.nationalCode}" sortBy="#{current.nationalCode}"
 						filterBy="#{current.nationalCode}" filterMatchMode="contains">
 						<h:outputText value="#{current.nationalCode}" />
 					</p:column>
 					 -->
 				</ui:remove>
-				<p:column headerText="کد پرسنلی"
+
+				<p:column headerText="#{msgs.organizationCode}"
 					sortBy="#{current.organizationCode}"
-					filterBy="#{current.organizationCode}">
+					filterBy="#{current.organizationCode}"
+					filterMatchMode="contains">
 					<h:outputText value="#{current.organizationCode}" />
 				</p:column>
+
+				<p:column headerText="#{msgs.userName}" sortBy="#{msgs.userName}"
+					filterBy="#{msgs.userName}" filterMatchMode="contains">
+					<h:outputText value="#{current.user.userName}" />
+				</p:column>
+
 				<ui:remove>
 					<p:column headerText="تاریخ تولد">
 						<h:outputText value="#{current.birthDate}" />
@@ -51,6 +62,7 @@
 						<h:outputText value="#{current.emailAddress}" />
 					</p:column>
 				</ui:remove>
+				
 				<p:column headerText="عملیات">
 					<h:panelGroup>
 						<p:commandButton value="ویرایش" ajax="false"
@@ -61,11 +73,13 @@
 							oncomplete="dlgRemove.show()" image="deleteButton" />
 					</h:panelGroup>
 				</p:column>
+				
 				<f:facet name="footer">
 					<p:commandButton ajax="false" value="تعریف کارشناس سازمان سنجش"
 						style="" action="#{sanjeshAgentController.createNew()}"
 						image="addButton" />
 				</f:facet>
+				
 			</p:dataTable>
 
 			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
@@ -79,12 +93,13 @@
 
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty sanjeshAgentController.toEdit}">
-				<p:focus for="txtName"/>
+				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">
 
 					<h:outputText value="#{msgs.name}:" />
-					<p:inputText id="txtName" value="#{sanjeshAgentController.toEdit.name}" />
+					<p:inputText id="txtName"
+						value="#{sanjeshAgentController.toEdit.name}" />
 
 					<h:outputText value="#{msgs.family}:" />
 					<p:inputText value="#{sanjeshAgentController.toEdit.family}" />
@@ -123,10 +138,30 @@
 					<h:selectBooleanCheckbox
 						value="#{sanjeshAgentController.toEdit.arbiterExpert}" />
 
+					<h:outputText value="#{msgs.isDesignerExpert}" />
+					<h:selectBooleanCheckbox
+						value="#{sanjeshAgentController.toEdit.designerExpert}" />
+
+					<h:outputText value="#{msgs.isDataExpert}" />
+					<h:selectBooleanCheckbox
+						value="#{sanjeshAgentController.toEdit.dataExpert}" />
+
+					<h:outputText value="#{msgs.userName}:" />
+					<p:inputText
+						value="#{sanjeshAgentController.toEdit.user.userName}" />
+						
+					<h:outputText value="#{msgs.password}:" />
+					<p:password feedback="false" minLength="1"
+						value="#{sanjeshAgentController.toEdit.user.password}"/>
+
+					<h:outputText value="#{msgs.confirmPassword}:" />
+					<p:password feedback="false" minLength="1"
+						value="#{sanjeshAgentController.passwordCoinfirmation}"/>
+						
 				</h:panelGrid>
-				
+
 				<p:messages />
-				
+
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{sanjeshAgentController.save}" image="okButton" />

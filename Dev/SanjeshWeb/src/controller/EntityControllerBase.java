@@ -67,9 +67,7 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 			}
 			throw e;
 		}
-		
-		toEdit = null;
-		list = dao.findAll();
+		showList();
 	}
 
 	public void showList() {
