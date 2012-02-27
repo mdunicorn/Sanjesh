@@ -218,12 +218,12 @@ public class DatabaseUpdater {
                             "Database Updater", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 
                         executeUpdate(dbConnection, "DELETE FROM sanjeshagent");
-                        executeUpdate(dbConnection, "ALTER TABLE sanjeshagent ADD COLUMN suser_ref integer NOT NULL");
                     }
                     else{
                         return false;
                     }
                 }
+                executeUpdate(dbConnection, "ALTER TABLE sanjeshagent ADD COLUMN suser_ref integer NOT NULL");
             }
 
             if (!foreignKeyExists("fkey_sanjeshagent_suser_ref")) {
@@ -240,11 +240,11 @@ public class DatabaseUpdater {
                             "Database Updater", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 
                         executeUpdate(dbConnection, "DELETE FROM universityagent");
-                        executeUpdate(dbConnection, "ALTER TABLE universityagent ADD COLUMN suser_ref integer NOT NULL");
                     } else {
                         return false;
                     }
                 }
+                executeUpdate(dbConnection, "ALTER TABLE universityagent ADD COLUMN suser_ref integer NOT NULL");
             }
 
             if (!foreignKeyExists("fkey_universityagent_suser_ref")) {
@@ -286,8 +286,8 @@ public class DatabaseUpdater {
         role = "طراح سؤال";
         AddRoleIfNotExists(3, role);
 
-        if (getLastId("role") < 3) {
-            setLastId("role", 3);
+        if (getLastId("role") < 100) {
+            setLastId("role", 100); // reserve space for all the possible roles
         }
     }
 
@@ -303,9 +303,9 @@ public class DatabaseUpdater {
             logInfo("Adding admin user.");
             executeUpdate(dbConnection,
                     "INSERT INTO suser (suser_id, username, password, fullname) VALUES(1, 'admin', 'admin', 'سرپرست')");
-            if(getLastId("suser") < 1){
-                setLastId("suser", 1);
             }
+            if(getLastId("suser") < 10){
+                setLastId("suser", 10);
         }
     }
 
