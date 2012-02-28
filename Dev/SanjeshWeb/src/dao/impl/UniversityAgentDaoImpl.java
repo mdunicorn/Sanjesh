@@ -23,5 +23,12 @@ public class UniversityAgentDaoImpl extends DaoImplBase<UniversityAgent> impleme
 		ua.setUser(userDao.newEntity());
 		return ua;
 	}
+	
+	@Override
+	public void save(UniversityAgent ua){
+		ua.getUser().setFullName(ua.getFullName());
+		userDao.save(ua.getUser());
+		super.save(ua);
+	}
     
 }

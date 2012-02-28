@@ -18,7 +18,6 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Muhammad
  */
 @Entity
-//@NamedQuery(name="findAll", query="from University")
 public class University implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;

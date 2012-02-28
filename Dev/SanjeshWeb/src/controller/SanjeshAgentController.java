@@ -48,7 +48,6 @@ public class SanjeshAgentController extends EntityControllerBase<SanjeshAgent> {
 			return;
 		}
 		else{
-			sa.getUser().setFullName(sa.getFullName());
 			super.save();
 			this.setPasswordCoinfirmation(null);
 		}

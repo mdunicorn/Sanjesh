@@ -142,7 +142,7 @@ public class SanjeshAgent implements EntityBase, Serializable {
 	}
     
 	public String getFullName(){
-		if( this.name == null || "".equals("")){
+		if( this.name == null || "".equals(this.name)){
 			return this.family;
 		}
 		return this.name + " " + this.family;

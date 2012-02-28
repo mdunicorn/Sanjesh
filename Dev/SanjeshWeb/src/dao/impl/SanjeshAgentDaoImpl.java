@@ -24,4 +24,11 @@ public class SanjeshAgentDaoImpl extends DaoImplBase<SanjeshAgent> implements Sa
 		return sa;
 	}
 	
+	@Override
+	public void save(SanjeshAgent sa){
+		sa.getUser().setFullName(sa.getFullName());
+		userDao.save(sa.getUser());
+		super.save(sa);
+	}
+	
 }

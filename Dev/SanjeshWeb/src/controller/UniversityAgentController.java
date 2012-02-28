@@ -49,7 +49,6 @@ public class UniversityAgentController extends
 			return;
 		}
 		else{
-			ua.getUser().setFullName(ua.getFullName());
 			super.save();
 			this.setPasswordCoinfirmation(null);
 		}
