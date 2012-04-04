@@ -1,48 +1,69 @@
-﻿<?xml version='1.0' encoding='UTF-8' ?> 
+﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      >
-    <body>
-        <ui:composition template="./mainTemplate.xhtml">
-            <ui:define name="content1">
 
-                <div>
-                    <div id="right">
-                        <!--                <ui:insert name="right">Right</ui:insert>-->
-                        <p:menu>
-                            <p:submenu label="اطلاعات پایه">
-                                <p:menuitem value="اطلاعات دانشگاه ها" url="/University.xhtml" icon="menuItemIcon menuItemUniversityIcon" />
-                                <p:menuitem value="پایه های علمی" url="/Grade.xhtml" icon="menuItemIcon menuItemGradeIcon" />
-                                <p:menuitem value="گروه های تحصیلی" url="/EducationGroup.xhtml" icon="menuItemIcon menuItemEducationGroupIcon"/>
-                                <p:menuitem value="رشته های تحصیلی" url="/EducationField.xhtml" icon="menuItemIcon menuItemEducationFieldIcon"/>
-                                <p:menuitem value="دروس" url="/Course.xhtml" icon="menuItemIcon menuItemCourseIcon"/>
-                                <p:menuitem value="سرفصل ها" url="/Topic.xhtml" icon="menuItemIcon menuItemTopicIcon"/>
-                            </p:submenu>
-                            <p:submenu label="کاربران">
-                                <p:menuitem value="کارشناسان سازمان سنجش" url="/SanjeshAgent.xhtml" icon="menuItemIcon menuItemSanjeshAgentIcon"/>
-                                <p:menuitem value="کارشناسان دانشگاه ها" url="/UniversityAgent.xhtml" icon="menuItemIcon menuItemUniversityAgentIcon"/>
-                                <p:menuitem value="طراحان سؤال" url="/Designer.xhtml" icon="menuItemIcon menuItemDesignerIcon"/>
-                                <p:menuitem value="داوران سؤال" url="/Arbiter.xhtml" icon="menuItemIcon "/>
-                                <p:menuitem value="مدیریت کاربران و دسترسی ها" url="/AccessPermission.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="سؤال">
-                                <p:menuitem value="سؤالات" url="/Question.xhtml"/>
-                                <p:menuitem value="گردش سؤال" url="/QuestionFlow.xhtml"/>
-                            </p:submenu>
-                            <p:submenu label="گزارشات">
-                                
-                            </p:submenu>
-                        </p:menu>
-                    </div>
-                    <div id="content" class="right_content">
-                        <ui:insert name="content">Content</ui:insert>
-                    </div>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="./mainTemplate.xhtml">
+	<ui:define name="content1">
 
-                </div>
-            </ui:define>
-        </ui:composition>
-    </body>
-</html>
+		<div>
+			<div id="right">
+				<!--                <ui:insert name="right">Right</ui:insert>-->
+				<p:menu>
+					<p:submenu label="اطلاعات پایه"
+					 rendered="#{menuController.hasAccessToBasicDataRoot()}" >
+						<p:menuitem value="اطلاعات دانشگاه ها" url="/University.xhtml"
+							rendered="#{menuController.hasAccessToUniversity()}"
+							icon="menuItemIcon menuItemUniversityIcon" />
+						<p:menuitem value="پایه های علمی" url="/Grade.xhtml"
+							rendered="#{menuController.hasAccessToGrade()}"
+							icon="menuItemIcon menuItemGradeIcon" />
+						<p:menuitem value="گروه های تحصیلی" url="/EducationGroup.xhtml"
+							rendered="#{menuController.hasAccessToEducationGroup()}"
+							icon="menuItemIcon menuItemEducationGroupIcon" />
+						<p:menuitem value="رشته های تحصیلی" url="/EducationField.xhtml"
+							rendered="#{menuController.hasAccessToEducationField()}"
+							icon="menuItemIcon menuItemEducationFieldIcon" />
+						<p:menuitem value="دروس" url="/Course.xhtml"
+							rendered="#{menuController.hasAccessToCourse()}"
+							icon="menuItemIcon menuItemCourseIcon" />
+						<p:menuitem value="سرفصل ها" url="/Topic.xhtml"
+							rendered="#{menuController.hasAccessToTopic()}"
+							icon="menuItemIcon menuItemTopicIcon" />
+					</p:submenu>
+					<p:submenu label="کاربران" rendred="#{menuController.hasAccessToUsersRoot()}">
+						<p:menuitem value="کارشناسان سازمان سنجش" url="/SanjeshAgent.xhtml"
+							rendered="#{menuController.hasAccessToSanjeshAgent()}"
+							icon="menuItemIcon menuItemSanjeshAgentIcon" />
+						<p:menuitem value="کارشناسان دانشگاه ها" url="/UniversityAgent.xhtml"
+							rendered="#{menuController.hasAccessToUniversityAgent()}"
+							icon="menuItemIcon menuItemUniversityAgentIcon" />
+						<p:menuitem value="طراحان سؤال" url="/Designer.xhtml"
+							rendered="#{menuController.hasAccessToDesigner()}"
+							icon="menuItemIcon menuItemDesignerIcon" />
+						<p:menuitem value="داوران سؤال" url="/Arbiter.xhtml"
+							rendered="#{menuController.hasAccessToSanjeshAgent()}"
+							icon="menuItemIcon " />
+						<p:menuitem value="مدیریت کاربران و دسترسی ها" url="/AccessPermission.xhtml" 
+							rendered="#{menuController.hasAccessToSanjeshAgent()}" />
+					</p:submenu>
+					<p:submenu label="سؤال" rendered="#{menuController.hasAccessToQuestionRoot()}">
+						<p:menuitem value="سؤالات" url="/Question.xhtml"
+							rendered="#{menuController.hasAccessToQuestion()}" />
+						<p:menuitem value="گردش سؤال" url="/QuestionFlow.xhtml"
+							rendered="#{menuController.hasAccessToQuestion()}" />
+					</p:submenu>
+					<p:submenu label="گزارشات">
+
+					</p:submenu>
+				</p:menu>
+			</div>
+			<div id="content" class="right_content">
+				<ui:insert name="content">Content</ui:insert>
+			</div>
+
+		</div>
+	</ui:define>
+</ui:composition>

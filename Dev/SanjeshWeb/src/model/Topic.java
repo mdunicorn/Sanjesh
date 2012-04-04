@@ -16,13 +16,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
  * @author Muhammad
  */
+
 @Entity
+@Audited
 public class Topic implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;

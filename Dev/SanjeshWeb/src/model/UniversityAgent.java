@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,7 +24,9 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Abbas
  */
+
 @Entity
+@Audited
 public class UniversityAgent implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;

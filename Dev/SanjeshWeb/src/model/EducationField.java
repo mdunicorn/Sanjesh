@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -23,8 +25,9 @@ import javax.persistence.FetchType;
  *
  * @author Muhammad
  */
+
 @Entity
-//@NamedQuery(name="findAll", query="from EducationField")
+@Audited
 public class EducationField implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-CREATE TABLE SUser
+CREATE TABLE suser
 (
   suser_id SERIAL NOT NULL,
   username character varying(255) NOT NULL,

@@ -16,13 +16,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
  * @author Abbas
  */
+
 @Entity
+@Audited
 public class Designer implements EntityBase, Serializable {
 
    	private static final long serialVersionUID = 1L;

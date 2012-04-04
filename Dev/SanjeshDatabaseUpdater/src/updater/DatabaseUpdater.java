@@ -1,4 +1,4 @@
-package updater;
+﻿package updater;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -67,24 +67,25 @@ public class DatabaseUpdater {
             p.setObject(i + 1, params[i]);
         }
         int r = p.executeUpdate();
+        p.close();
         return r;
     }
 
-    public ResultSet executeQuery(Connection connection, String statement) throws SQLException {
+    public ResultSetWrapper executeQuery(Connection connection, String statement) throws SQLException {
         Statement stm = connection.createStatement();
         pListener.executingQuery(statement);
         ResultSet r = stm.executeQuery(statement);
-        return r;
+        return new ResultSetWrapper(stm, r);
     }
 
-    public ResultSet executeQuery(Connection connection, String statement, Object... params) throws SQLException {
+    public ResultSetWrapper executeQuery(Connection connection, String statement, Object... params) throws SQLException {
         pListener.executingQuery(statement, params);
         PreparedStatement p = connection.prepareStatement(statement);
         for (int i = 0; i < params.length; i++) {
             p.setObject(i + 1, params[i]);
         }
         ResultSet r = p.executeQuery();
-        return r;
+        return new ResultSetWrapper(p, r);
     }
 
     public Object executeScalar(Connection connection, String statement) throws SQLException {
@@ -92,14 +93,15 @@ public class DatabaseUpdater {
     }
 
     public Object executeScalar(Connection connection, String statement, Object... params) throws SQLException {
-        ResultSet r = executeQuery(connection, statement, params);
+        ResultSetWrapper rw = executeQuery(connection, statement, params);
+        ResultSet r = rw.getResultSet();
         try {
             if (r.next()) {
                 return r.getObject(1);
             }
             return null;
         } finally {
-            r.close();
+            rw.close();
         }
     }
 
@@ -109,6 +111,11 @@ public class DatabaseUpdater {
                 dbName);
     }
 
+    private void createDatabase(String dbName) throws FileNotFoundException, SQLException, IOException {
+        InputStream stream = this.getClass().getResourceAsStream("scripts/CreateDb.sql");
+        executeUpdate(masterConnection, IOUtils.toString(stream).replace("?", dbName));
+    }
+    
     private boolean tableExists(String tableName) throws SQLException {
         return (Boolean) executeScalar(dbConnection,
                 "select exists(select * from information_schema.tables where table_name=?)",
@@ -127,12 +134,40 @@ public class DatabaseUpdater {
     private boolean columnExists(String tableName, String columnName) throws SQLException {
         return (Boolean) executeScalar(dbConnection,
                 "select exists(select * from information_schema.columns where table_name=? and column_name=?)",
-                tableName, columnName);
+                tableName.toLowerCase(), columnName.toLowerCase());
     }
 
-    private void createDatabase(String dbName) throws FileNotFoundException, SQLException, IOException {
-        InputStream stream = this.getClass().getResourceAsStream("scripts/CreateDb.sql");
-        executeUpdate(masterConnection, IOUtils.toString(stream).replace("?", dbName));
+    private void createColumn(String tableName, String columnName, String type) throws SQLException{
+        createColumn(tableName, columnName, type, true, null);
+    }
+    
+    private void createColumn(String tableName, String columnName, String type,
+            boolean nullable, String defaultExpression) throws SQLException {
+        logInfo("Adding column '" + columnName + "' to table '" + tableName + "'.");
+        String stmt = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type;
+        if (!nullable) {
+            stmt += " NOT NULL";
+        }
+        if (defaultExpression != null) {
+            stmt += " DEFAULT " + defaultExpression;
+        }
+        executeUpdate(dbConnection, stmt);
+    }
+
+    private void createColumnIfNotExists(String tableName, String columnName, String type) throws SQLException{
+        createColumnIfNotExists(tableName, columnName, type, true, null);
+    }
+
+    private void createColumnIfNotExists(String tableName, String columnName, String type,
+            boolean nullable, String defaultExpression) throws SQLException {
+        if (!columnExists(tableName, columnName)) {
+            createColumn(tableName, columnName, type, nullable, defaultExpression);
+        }
+
+    }
+    
+    private void setColumnNotNull(String tableName, String columnName) throws SQLException{
+        executeUpdate(dbConnection, "ALTER TABLE " + tableName + " ALTER COLUMN " + columnName + " SET NOT NULL");
     }
 
     private void executeResourceFile(Connection connection, String path) throws IOException, SQLException {
@@ -162,6 +197,29 @@ public class DatabaseUpdater {
         String query = "SELECT * FROM pg_catalog.pg_constraint WHERE conname=?";
         return sqlExists(dbConnection, query, fkName);
     }
+    
+    private void createForeignKey(String keyName, String childTableName, String childColumnName,
+            String parentTableName, String parentColumnName, boolean cascadeOnUpdate, boolean cascadeOnDelete) throws SQLException {
+
+        String updateAction, deleteAction;
+        if (cascadeOnUpdate) {
+            updateAction = "ON UPDATE CASCADE";
+        } else {
+            updateAction = "ON UPDATE NO ACTION";
+        }
+
+        if (cascadeOnDelete) {
+            deleteAction = "ON DELETE CASCADE";
+        } else {
+            deleteAction = "ON DELETE NO ACTION";
+        }
+
+        String stmt = "ALTER TABLE " + childTableName + "\n"
+                + "ADD CONSTRAINT " + keyName + " FOREIGN KEY (" + childColumnName + ")\n"
+                + "REFERENCES " + parentTableName + " (" + parentColumnName + ") MATCH SIMPLE \n"
+                + updateAction + " " + deleteAction;
+        executeUpdate(dbConnection, stmt);
+    }
 
     public boolean Update() {
         try {
@@ -175,10 +233,9 @@ public class DatabaseUpdater {
             }
             dbConnection = getConnection(database);
 
-            String[] tables = new String[]{
+            String[] normalTables = new String[]{
                 "SUser",
                 "Role",
-                "SUser_Role",
                 "University",
                 "EducationGroup",
                 "EducationField",
@@ -190,81 +247,103 @@ public class DatabaseUpdater {
                 "Designer",
                 "Question",
             };
+            
+            String[] joinTables = new String[]{
+                "SUser_Role",
+            };
+            
 
-            for (String t : tables) {
+            String[] allTables = Utils.joinArrays(normalTables, joinTables);
+            
+            for (String t : allTables) {
                 checkAndCreateTable(t);
             }
+            
+            checkAndCreateTable("RevInfo");
+            
+            for (String t : allTables) {
+                checkAndCreateTable(t + "_AUD");
+            }
 
-            if (!columnExists("educationgroup", "code")) {
-                pListener.logEvent(LogCategory.INFO, "Adding column 'code' to table 'educationgroup'");
-                executeUpdate(dbConnection, "ALTER TABLE educationgroup ADD COLUMN code character varying(50)");
-                ResultSet r = executeQuery(dbConnection, "SELECT educationgroup_id FROM educationgroup");
+            String tableName = "educationgroup";
+            String colName = "code";
+            
+            if (!columnExists(tableName, colName)) {
+                
+                createColumn(tableName, colName, "character varying(50)");
+                
+                ResultSetWrapper rw = executeQuery(dbConnection, "SELECT educationgroup_id FROM educationgroup");
+                ResultSet r = rw.getResultSet();
                 ArrayList<Integer> ids = new ArrayList<Integer>();
                 while (r.next()) {
                     ids.add((Integer) r.getObject(1));
                 }
-                r.close();
+                rw.close();
                 int i = 1;
                 for (Integer id : ids) {
                     executeUpdate(dbConnection, "UPDATE educationgroup SET code=? WHERE educationgroup_id=?", i++, id);
                 }
-                executeUpdate(dbConnection, "ALTER TABLE educationgroup ALTER COLUMN code SET NOT NULL");
+                setColumnNotNull(tableName, colName);
             }
 
-            if (!columnExists("sanjeshagent", "suser_ref")) {
-                if (sqlExists(dbConnection, "SELECT * FROM sanjeshagent")) {
+            tableName = "sanjeshagent";
+            colName = "suser_ref";
+            if (!columnExists(tableName, colName)) {
+                if (sqlExists(dbConnection, "SELECT * FROM " + tableName)) {
                     if (JOptionPane.showConfirmDialog(null,
                             "All of the sanjesh agents you have already defined will be deleted. Press OK to continue.",
                             "Database Updater", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 
-                        executeUpdate(dbConnection, "DELETE FROM sanjeshagent");
+                        executeUpdate(dbConnection, "DELETE FROM " + tableName);
                     }
                     else{
                         return false;
                     }
                 }
-                executeUpdate(dbConnection, "ALTER TABLE sanjeshagent ADD COLUMN suser_ref integer NOT NULL");
+                createColumn(tableName, colName, "integer", false, null);
             }
 
             if (!foreignKeyExists("fkey_sanjeshagent_suser_ref")) {
-                executeUpdate(dbConnection, "ALTER TABLE sanjeshagent \n"
-                        + "ADD CONSTRAINT fkey_sanjeshagent_suser_ref FOREIGN KEY (suser_ref) \n"
-                        + "REFERENCES suser (suser_id) MATCH SIMPLE \n"
-                        + "ON UPDATE NO ACTION ON DELETE NO ACTION");
+                createForeignKey("fkey_sanjeshagent_suser_ref", tableName, colName,
+                        "suser", "suser_id", false, false);
             }
 
-            if (!columnExists("universityagent", "suser_ref")) {
-                if (sqlExists(dbConnection, "SELECT * FROM universityagent")) {
+            tableName = "universityagent";
+            colName = "suser_ref";
+            if (!columnExists(tableName, colName)) {
+                if (sqlExists(dbConnection, "SELECT * FROM " + tableName)) {
                     if (JOptionPane.showConfirmDialog(null,
                             "All of the university agents you have already defined will be deleted. Press OK to continue.",
                             "Database Updater", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 
-                        executeUpdate(dbConnection, "DELETE FROM universityagent");
+                        executeUpdate(dbConnection, "DELETE FROM " + tableName);
                     } else {
                         return false;
                     }
                 }
-                executeUpdate(dbConnection, "ALTER TABLE universityagent ADD COLUMN suser_ref integer NOT NULL");
+                createColumn(tableName, colName, "integer", false, null);
             }
 
             if (!foreignKeyExists("fkey_universityagent_suser_ref")) {
-                executeUpdate(dbConnection, "ALTER TABLE universityagent \n"
-                        + "ADD CONSTRAINT fkey_universityagent_suser_ref FOREIGN KEY (suser_ref) \n"
-                        + "REFERENCES suser (suser_id) MATCH SIMPLE \n"
-                        + "ON UPDATE NO ACTION ON DELETE NO ACTION");
+                createForeignKey("fkey_universityagent_suser_ref", tableName, colName,
+                        "suser", "suser_id", false, false);
             }
             
-            if(!columnExists("sanjeshagent", "isdesignerexpert")){
-                executeUpdate(dbConnection, "ALTER TABLE sanjeshagent ADD COLUMN isdesignerexpert boolean");
-            }
+            createColumnIfNotExists("sanjeshagent", "isdesignerexpert", "boolean", true, null);
+            createColumnIfNotExists("sanjeshagent", "isdataexpert", "boolean", true, null);
             
-            if(!columnExists("sanjeshagent", "isdataexpert")){
-                executeUpdate(dbConnection, "ALTER TABLE sanjeshagent ADD COLUMN isdataexpert boolean");
-            }
 
             // Static data
             AddAdminUserIfNotExists();
             AddDefaultRoles();
+            
+//            colName = "modifier_suser_ref";
+//            for( String t : normalTables){
+//                createColumnIfNotExists(t, colName, "integer", true, null);
+//                // Update existing rows to 'admin' user.
+//                executeUpdate(dbConnection, "UPDATE " + t + " SET " + colName + "=1 WHERE " + colName + " IS NULL");
+//                setColumnNotNull(t,colName);
+//            }
 
             logInfo("Done.");
 
@@ -276,19 +355,41 @@ public class DatabaseUpdater {
 
         return true;
     }
-
+    
     private void AddDefaultRoles() throws SQLException {
+        
+        String invalidRoles[] = new String[] // with id 1, 2, 3
+        {
+            "نماینده سازمان سنجش",
+            "نماینده دانشگاه",
+            "طراح سؤال"
+        };
+        
+        for( int i = 0; i < invalidRoles.length; i++ ){
+            RemoveRoleIfExists(i+1, invalidRoles[i]);
+        }
 
-        String role = "نماینده سازمان سنجش";
+        String role = "کارشناس سؤال (سازمان سنجش)";
         AddRoleIfNotExists(1, role);
-        role = "نماینده دانشگاه";
+        role = "کارشناس طراح (سازمان سنجش)";
         AddRoleIfNotExists(2, role);
-        role = "طراح سؤال";
+        role = "کارشناس داوری سؤال (سازمان سنجش)";
         AddRoleIfNotExists(3, role);
+        role = "کارشناس داده (سازمان سنجش)";
+        AddRoleIfNotExists(4, role);
+        
+        role = "نماینده دانشگاه";
+        AddRoleIfNotExists(10, role);
+        role = "طراح سؤال";
+        AddRoleIfNotExists(11, role);
 
         if (getLastId("role") < 100) {
             setLastId("role", 100); // reserve space for all the possible roles
         }
+    }
+    
+    private void RemoveRoleIfExists(int id, String name) throws SQLException{
+        executeUpdate(dbConnection, "DELETE FROM role WHERE role_id=? and name=?", id, name);
     }
 
     private void AddRoleIfNotExists(int id, String name) throws SQLException {
@@ -301,8 +402,10 @@ public class DatabaseUpdater {
     public void AddAdminUserIfNotExists() throws SQLException{
         if(!sqlExists(dbConnection, "SELECT * FROM suser WHERE suser_id=1")){
             logInfo("Adding admin user.");
+            String fullName = "سرپرست";
             executeUpdate(dbConnection,
-                    "INSERT INTO suser (suser_id, username, password, fullname) VALUES(1, 'admin', 'admin', 'سرپرست')");
+                    "INSERT INTO suser (suser_id, username, password, fullname) VALUES(1, 'admin', 'admin', ?)",
+                    fullName);
             }
             if(getLastId("suser") < 10){
                 setLastId("suser", 10);
@@ -316,4 +419,4 @@ public class DatabaseUpdater {
     private void logError(String message) {
         pListener.logEvent(LogCategory.ERROR, message);
     }
-}
+    }

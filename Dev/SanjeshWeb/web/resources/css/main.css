@@ -2,13 +2,13 @@
     Document   : main
     Created on : Nov 28, 2011, 7:57:33 PM
     Author     : Muhammad
-    Description:
-        Purpose of the stylesheet follows.
 */
-.ui-button span.ui-button-text 
+
+.ui-button-text
 {
-    margin-left: 5px;
+     margin-right: 5px;
 }
+
 .addButton {
     background-image: url('./../images/add.png') !important;
 }
@@ -26,40 +26,97 @@
     background-image: url('./../images/cancel.png') !important;
 }
 
-.ui-widget, .ui-widget .ui-widget {
-    font-size: 90% !important;
+.ui-widget, .ui-widget .ui-widget,
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button
+{
+    font-size: 11px !important;
     font-family: Tahoma;
     direction: rtl;
 }
 
-.wijmo-wijmenu .ui-widget-header h1,
-.wijmo-wijmenu .ui-widget-header h2,
-.wijmo-wijmenu .ui-widget-header h3,
-.wijmo-wijmenu .ui-widget-header h4,
-.wijmo-wijmenu .ui-widget-header h5,
-.wijmo-wijmenu .ui-widget-header h6
+.ui-menu .ui-widget-header h1,
+.ui-menu .ui-widget-header h2,
+.ui-menu .ui-widget-header h3,
+.ui-menu .ui-widget-header h4,
+.ui-menu .ui-widget-header h5,
+.ui-menu .ui-widget-header h6
 {
     float:right;
 }
 
-.wijmo-wijmenu .wijmo-wijmenu-item .wijmo-wijmenu-text,
-.wijmo-wijmenu-horizontal .wijmo-wijmenu-parent .ui-icon,
-.wij-menu-breadcrumb a,
-.wij-menu-breadcrumb span,
-.wij-menu-breadcrumb .wij-menu-prev-list a .ui-icon
+.ui-menu .ui-menuitem-text
 {
     float: right;
 }
 
-.wijmo-wijmenu {
+.ui-menu {
     width: 170px
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	float : right;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	right : inherit;
+	left : 0;
+	border-right-style : inherit;
+	border-right-color : inherit;
+	border-right-width : inherit;
+	border-left : none;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	text-align : inherit;
+}
+
+/* Swapping .ui-corner-right and .ui-corner-left */
+.ui-corner-left {
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-right-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.ui-corner-right {
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	border-top-left-radius: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default
+{
+	font-weight : inherit;
+}
+
+.ui-panelgrid td,
+.ui-panelgrid tr
+{
+	border : none;
+}
+
+fieldset
+{
+	border: 2px groove threedface !important;
+	border-image: initial;	
 }
 
 root { 
     display: block;
 }
 
-loginContainer{
+.loginContainer{
     position: absolute;
     width: 100%;
     min-width: 750px;
@@ -133,39 +190,39 @@ loginContainer{
 
 .menuItemUniversityIcon
 {
-    background: url('../images/university.png');
+    background: url('../images/university.png') !important;
 }
 
 .menuItemGradeIcon
 {
-    background: url('../images/knowledge_base.png');
+    background: url('../images/knowledge_base.png') !important;
 }
 .menuItemEducationGroupIcon
 {
-    background: url('../images/emblem_library.png');
+    background: url('../images/emblem_library.png') !important;
 }
 .menuItemEducationFieldIcon
 {
-    background: url('../images/book2_green.png');
+    background: url('../images/book2_green.png') !important;
 }
 .menuItemCourseIcon
 {
-    background: url('../images/book_open.png');
+    background: url('../images/book_open.png') !important;
 }
 .menuItemTopicIcon
 {
-    background: url('../images/stock_insert_section.png');
+    background: url('../images/stock_insert_section.png') !important;
 }
 .menuItemSanjeshAgentIcon
 {
-    background: url('../images/user_expert.png');
+    background: url('../images/user_expert.png') !important;
 }
 .menuItemUniversityAgentIcon
 {
-    background: url('../images/user_expert.png');
+    background: url('../images/user_expert.png') !important;
 }
 .menuItemDesignerIcon
 {
-    background: url('../images/designer.png');
+    background: url('../images/designer.png') !important;
 }
 

@@ -1,5 +1,6 @@
-#Mon Feb 27 07:46:06 IRST 2012
 eclipse.preferences.version=1
+encoding//src/core/SecurityItems.java=UTF-8
+encoding//src/dao/impl/RoleDaoImpl.java=UTF-8
 encoding//src/dao/impl/UserDaoImpl.java=UTF-8
 encoding//web/Course.xhtml=UTF-8
 encoding//web/Designer.xhtml=UTF-8
@@ -13,3 +14,5 @@ encoding//web/Topic.xhtml=UTF-8
 encoding//web/University.xhtml=UTF-8
 encoding//web/University/Edit.xhtml=UTF-8
 encoding//web/UniversityAgent.xhtml=UTF-8
+encoding//web/accessdenied.xhtml=UTF-8
+encoding/<project>=UTF-8

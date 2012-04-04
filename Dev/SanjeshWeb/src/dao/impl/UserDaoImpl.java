@@ -3,6 +3,8 @@ package dao.impl;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import model.User;
 import dao.UserDao;
@@ -10,6 +12,7 @@ import dao.UserDao;
 @Stateless
 public class UserDaoImpl extends DaoImplBase<User> implements UserDao {
 	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public User findByUserName(String userName) {
 		List<User> list = findByUserNameList(userName);
 		if(list.size() == 0)
@@ -18,6 +21,7 @@ public class UserDaoImpl extends DaoImplBase<User> implements UserDao {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<User> findByUserNameList(String userName){
 		return em.createQuery("from User where userName=?")
 				.setParameter(1, userName).getResultList();

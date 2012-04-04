@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 
@@ -15,6 +15,7 @@
             </ui:define>
 
             <ui:define name="content">
+            <ui:remove>
                 <h:form>
                 <p:dataTable
                     value="#{adminDashboardController.unacceptedDesigners}" var="current"
@@ -28,9 +29,6 @@
                     </p:column>
                     <p:column headerText="نام خانوادگی" sortBy="#{current.family}" filterBy="#{current.family}" filterMatchMode="contains">
                         <h:outputText value="#{current.family}"/>
-                    </p:column>
-                    <p:column headerText="کد ملی" sortBy="#{current.nationalCode}" filterBy="#{current.nationalCode}" filterMatchMode="contains">
-                        <h:outputText value="#{current.nationalCode}"/>
                     </p:column>
                     <p:column headerText="کد پرسنلی" sortBy="#{current.organizationCode}" filterBy="#{current.organizationCode}" filterMatchMode="contains">
                         <h:outputText value="#{current.organizationCode}"/>
@@ -67,7 +65,7 @@
                              emptyMessage="هیچ سؤال تأیید نشده ای وجود ندارد."
                              style="font-family: Tahoma; font-size:10pt">
                     <f:facet name="header">
-لیست سؤالات تأیید نشده
+                    	<h:outputText value="لیست سؤالات تأیید نشده"/>
                     </f:facet>
                     <p:column headerText="متن سؤال">
                     </p:column>
@@ -79,6 +77,15 @@
                     
                 </p:dataTable>
                 </h:form>
+                </ui:remove>
+                
+                <br /><br /><br />
+               	<div style="text-align: center;">
+                	<span style="font-size:15pt; font-weight:bold">خوش آمدید</span> <br />
+                	<br />
+					برای شروع کار با سیستم یکی از گزینه های موجود در سمت راست صفحه را انتخاب نمایید.<br />
+				</div>
+
             </ui:define>
 
         </ui:composition>

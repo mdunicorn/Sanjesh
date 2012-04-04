@@ -1,6 +1,10 @@
 package core;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,20 +43,77 @@ public class SecurityFilter implements Filter {
 			"/UniversityAgent.xhtml",
 		};
 	
+	private static Map<String, List<SecurityItem>> pageSecurityItems;
+	
+	static{
+		pageSecurityItems = new HashMap<String, List<SecurityItem>>();
+		pageSecurityItems.put("/Course.xhtml",
+			Arrays.asList(SecurityItems.Course));
+
+		pageSecurityItems.put("/Designer.xhtml",
+			Arrays.asList(SecurityItems.Designer));
+		
+		pageSecurityItems.put("/EducationField.xhtml",
+			Arrays.asList(SecurityItems.EducationField));
+
+		pageSecurityItems.put("/EducationGroup.xhtml",
+			Arrays.asList(SecurityItems.EducationGroup));
+
+		pageSecurityItems.put("/Grade.xhtml",
+			Arrays.asList(SecurityItems.Grade));
+
+		pageSecurityItems.put("/Question.xhtml",
+			Arrays.asList(SecurityItems.Question));
+		
+		pageSecurityItems.put("/SanjeshAgent.xhtml",
+			Arrays.asList(SecurityItems.SanjeshAgent));
+		
+		pageSecurityItems.put("/Topic.xhtml",
+			Arrays.asList(SecurityItems.Topic));
+		
+		pageSecurityItems.put("/University.xhtml",
+			Arrays.asList(SecurityItems.University));
+		
+		pageSecurityItems.put("/UniversityAgent.xhtml",
+			Arrays.asList(SecurityItems.UniversityAgent));		
+	}
+	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
 		
-		String path = req.getRequestURI().substring(req.getContextPath().length());
+		String contextPath = req.getContextPath();
 		
+		String path = req.getRequestURI().substring(contextPath.length());
+		
+		for( String s : pageSecurityItems.keySet()){
+			if( s.equalsIgnoreCase(path)){
+				
+				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
+				if(loginController == null){
+					res.sendRedirect(contextPath + "/SessionExpired.jsp?returnUrl=" + path);
+					return;
+				}
+
+				for( SecurityItem si : pageSecurityItems.get(s)){
+					if( !SecurityService.hasPermission(loginController, si) ){
+						res.sendRedirect(contextPath + "/accessdenied.xhtml");
+						return;
+					}
+				}
+			}
+		}
 		
 		for( String s : securedPages){
 			if( s.equalsIgnoreCase(path)){
 				
 				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
 				if(loginController == null){
-					res.sendRedirect(req.getContextPath() + "/SessionExpired.jsp");
+					res.sendRedirect(req.getContextPath() + "/SessionExpired.jsp?returnUrl=" + path);
 					return;
 				}
 

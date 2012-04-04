@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package updater;
 
 import java.io.File;
@@ -36,5 +32,13 @@ public class Utils {
             reader.close();
         }
         return new String(buf);
+    }
+    
+    public static String[] joinArrays(String[] a, String[] b) {
+        String[] c = new String[a.length + b.length];
+        System.arraycopy(a, 0, c, 0, a.length);
+        System.arraycopy(b, 0, c, a.length, b.length);
+
+        return c;
     }
 }

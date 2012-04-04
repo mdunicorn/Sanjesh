@@ -1,8 +1,4 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package dao.impl;
+﻿package dao.impl;
 
 import dao.DaoBase;
 import java.lang.reflect.ParameterizedType;
@@ -10,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ValidationException;
@@ -20,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Muhammad
  */
+
 public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
 
     @PersistenceContext(name = "sanjeshPUnit")
@@ -39,6 +39,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     
     @SuppressWarnings("unchecked")
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public T newEntity() {
         try {
             return (T) entityType.newInstance();
@@ -51,6 +52,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     }
 
     @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void save(T u) {
     	List<String> errorMessages = new ArrayList<String>();
     	if(!validateSave(u, errorMessages)){
@@ -60,6 +62,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     }
 
     @Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void remove(T u) {
     	List<String> errorMessages = new ArrayList<String>();
     	if(!validateRemove(u, errorMessages)){
@@ -80,14 +83,17 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     
     @SuppressWarnings("unchecked")
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<T> findAll() {
         return em.createQuery("from " + entityName).getResultList();
     }
 
     @SuppressWarnings("unchecked")
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public T findById(int id) {
-        return (T) em.createQuery("from " + entityName + " where id=:id").
-                setParameter("id", id).getSingleResult();
+//        return (T) em.createQuery("from " + entityName + " where id=:id").
+//                setParameter("id", id).getSingleResult();
+    	return (T)em.find(entityType, id);
     }
 }

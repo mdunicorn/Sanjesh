@@ -9,6 +9,8 @@ import java.util.List;
 import dao.UniversityDao;
 import model.University;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  * 
@@ -35,6 +37,7 @@ public class UniversityDaoImpl extends DaoImplBase<University> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<University> findByCode(String code) {
 		return em.createQuery("from University where code=:c")
 				.setParameter("c", code).getResultList();

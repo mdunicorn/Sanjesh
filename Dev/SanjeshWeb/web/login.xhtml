@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>ورود به سامانه</title>
@@ -16,10 +16,10 @@
             <div class="loginCenter">
                 <h:form styleClass="myform">
                     <h:panelGrid columns="1">
-                        <h:outputText value="نام کاربری:"/>
-                        <p:inputText value="#{loginController.userName}"/>
-                        <h:outputText value="رمز ورود:"/>
-                        <p:password value="#{loginController.password}" minLength="0" feedback="false"/>
+                        <h:outputLabel for="txtUserName" value="نام کاربری:"/>
+                        <p:inputText id="txtUserName" value="#{loginController.userName}"/>
+                        <h:outputLabel for="txtPassword" value="رمز ورود:"/>
+                        <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
                     </h:panelGrid>
                     <p:commandButton value="ورود" action="#{loginController.doLogin()}" ajax="false" />
                 </h:form>

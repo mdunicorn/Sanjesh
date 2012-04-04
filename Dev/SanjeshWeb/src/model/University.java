@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 
 
@@ -17,7 +19,9 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Muhammad
  */
+
 @Entity
+@Audited
 public class University implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;

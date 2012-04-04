@@ -44,8 +44,8 @@ public class UniversityAgentController extends
 				ua.getUser().getPassword())) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
-					new FacesMessage(
-							"رمز عبور وارد شده مطابق تکرار آن نمیباشد."));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"رمز عبور وارد شده مطابق تکرار آن نمیباشد.", "لطفاً با دقت بیشتری رمز و تکرار آن را وارد نمایید."));
 			return;
 		}
 		else{

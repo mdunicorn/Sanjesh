@@ -60,7 +60,7 @@ public class LoginController {
         }
     	
         FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("نام کاربری یا رمز عبور صحیح نمیباشد."));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "نام کاربری یا رمز عبور صحیح نمیباشد.", ""));
         
         return null;
     }

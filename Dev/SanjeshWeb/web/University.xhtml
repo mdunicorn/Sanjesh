@@ -3,11 +3,10 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/templates/menuTemplate.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 >
-
     <ui:define name="title">
         دانشگاه ها
     </ui:define>
@@ -35,41 +34,44 @@
                 <p:column headerText="عملیات">
                     <h:panelGroup>
                         <p:commandButton value="ویرایش" ajax="false"
-                                         action="#{universityController.edit(current)}" image="editButton"/>
+                                         action="#{universityController.edit(current)}" icon="editButton" iconPos="right"/>
                         <p:commandButton value="حذف" ajax="true"
                                          action="#{universityController.setToDelete(current)}"
-                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                                         oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
                     </h:panelGroup>
                 </p:column>
                 <f:facet name="footer">
                     <p:commandButton ajax="false" value="تعریف دانشگاه" style=""
-                                     action="#{universityController.createNew()}" image="addButton" />
+                                     action="#{universityController.createNew()}"
+                                     icon="addButton" iconPos="right"/>
                 </f:facet>
             </p:dataTable>
 
             <p:confirmDialog widgetVar="dlgRemove" severity="alert"
                              header="حذف دانشگاه" message="آیا از حذف دانشگاه اطمینان دارید؟"
                              position="center" modal="true">
-                <p:commandButton value="بله" ajax="false"  action="#{universityController.remove()}" image="okButton"/>
-                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
+                <p:commandButton value="بله" ajax="false"  action="#{universityController.remove()}" icon="okButton" iconPos="right" />
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" icon="cancelButton" iconPos="right"/>
             </p:confirmDialog>
 
             <p:fieldset legend="اطلاعات دانشگاه"
                         rendered="#{not empty universityController.toEdit}">
+                <p:messages />
                 <p:focus for="txtCode"/>
-                <h:panelGrid columns="2" cellpadding="10">
+                <p:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="کد : *"/>
                     <p:inputText id="txtCode" value="#{universityController.toEdit.code}"/>
                     <h:outputText value="نام : *"/>
                     <p:inputText id="txtName" value="#{universityController.toEdit.name}"/>
                     <h:outputText value="آدرس : "/>
                     <p:inputText value="#{universityController.toEdit.address}"/>
-                </h:panelGrid>
-                <p:messages />
+                </p:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
-                                 action="#{universityController.save}" image="okButton"/>
+                                 action="#{universityController.save}"
+                                 icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"
-                                 action="#{universityController.showList()}" image="cancelButton"/>
+                                 action="#{universityController.showList()}"
+                                 icon="cancelButton" iconPos="right"/>
             </p:fieldset>
 
         </h:form>
