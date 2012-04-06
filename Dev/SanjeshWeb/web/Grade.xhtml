@@ -49,10 +49,10 @@
                         rendered="#{not empty gradeController.toEdit}">
                 <p:messages />
                 <p:focus for="txtName"/>
-                <p:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="نام : *"/>
                     <p:inputText id="txtName" value="#{gradeController.toEdit.name}"/>
-                </p:panelGrid>
+                </h:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
                                  action="#{gradeController.save}"  icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"

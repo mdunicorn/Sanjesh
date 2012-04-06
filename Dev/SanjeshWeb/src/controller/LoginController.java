@@ -48,6 +48,11 @@ public class LoginController {
     public User getCurrentUser() {
         return currentUser;
     }
+    
+    public User reloadCurrentUser(){
+    	currentUser = userDao.refresh(currentUser);
+    	return currentUser;
+    }
 
     public String doLogin() {
     	

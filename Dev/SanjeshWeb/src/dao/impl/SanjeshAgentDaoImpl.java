@@ -5,6 +5,7 @@
  * @author Abbas
  */
 
+import java.util.List;
 import java.util.Set;
 
 import dao.RoleDao;
@@ -73,6 +74,16 @@ public class SanjeshAgentDaoImpl extends DaoImplBase<SanjeshAgent> implements Sa
 		
 		userDao.save(user);
 		super.save(sa);
+	}
+
+	@Override
+	public SanjeshAgent findByUser(int userId) {
+		List<SanjeshAgent> list =
+				em.createQuery("select s from SanjeshAgent s where s.user.id=?1", SanjeshAgent.class).
+				setParameter(1, userId).getResultList();
+		if( list.size() == 0)
+			return null;
+		return list.get(0);
 	}
 	
 }

@@ -95,7 +95,7 @@
 				rendered="#{not empty sanjeshAgentController.toEdit}">
 				<p:messages />
 				<p:focus for="txtName" />
-				<p:panelGrid columns="2" cellpadding="3"
+				<h:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">
 
 					<h:outputText value="#{msgs.name}:" />
@@ -159,7 +159,7 @@
 					<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off" redisplay="true"
 						value="#{sanjeshAgentController.passwordCoinfirmation}"/>
 						
-				</p:panelGrid>
+				</h:panelGrid>
 
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"

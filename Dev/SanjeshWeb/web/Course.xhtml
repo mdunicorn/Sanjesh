@@ -56,7 +56,7 @@
                         rendered="#{not empty courseController.toEdit}">
                 <p:messages />
                 <p:focus for="txtCode"/>
-                <p:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="10">
                 
                     <h:outputText value="کد : *"/>
                     <p:inputText id="txtCode" value="#{courseController.toEdit.code}"/>
@@ -72,7 +72,7 @@
                             var="field" itemLabel="#{field.name}" itemValue="#{field.id}"/>
                     </p:selectOneMenu>
 
-                </p:panelGrid>
+                </h:panelGrid>
                 <p:commandButton id="btnSave" value="ذخیره" ajax="false"
                                  action="#{courseController.save}" icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"

@@ -63,7 +63,7 @@
 				rendered="#{not empty topicController.toEdit}">
 				<p:messages />
 				<p:focus />
-				<p:panelGrid columns="2" cellpadding="10">
+				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="نام : *" />
 					<p:inputText value="#{topicController.toEdit.name}" />
 					<h:outputText value="درس : *" />
@@ -78,7 +78,7 @@
 							converterMessage="لطفا یک عدد معتبر وارد کنید." />
 							 -->
 					</ui:remove>
-				</p:panelGrid>
+				</h:panelGrid>
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{topicController.save}" icon="okButton" iconPos="right" />
 				<p:commandButton value="لغو" ajax="false" immediate="true"

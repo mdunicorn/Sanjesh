@@ -27,7 +27,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Audited
-public class Designer implements EntityBase, Serializable {
+public class Designer implements EntityBase, Person, Serializable {
 
    	private static final long serialVersionUID = 1L;
    	

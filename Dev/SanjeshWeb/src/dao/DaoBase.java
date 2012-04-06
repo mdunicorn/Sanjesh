@@ -23,6 +23,8 @@ public interface DaoBase<T extends EntityBase> {
     
     boolean validateRemove(T entity, List<String> messages);
 
+    T refresh(T entity);
+
     void remove(T u);
 
     List<T> findAll();

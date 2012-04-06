@@ -52,12 +52,12 @@
                         rendered="#{not empty educationGroupController.toEdit}">
                 <p:messages />
                 <p:focus for="txtCode"/>
-                <p:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="کد : *"/>
                     <p:inputText id="txtCode" value="#{educationGroupController.toEdit.code}"/>
                     <h:outputText value="نام : *"/>
                     <p:inputText id="txtName" value="#{educationGroupController.toEdit.name}"/>
-                </p:panelGrid>
+                </h:panelGrid>
                 <p:commandButton id="btnSave" value="ذخیره" ajax="false"
                                  action="#{educationGroupController.save}" icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"

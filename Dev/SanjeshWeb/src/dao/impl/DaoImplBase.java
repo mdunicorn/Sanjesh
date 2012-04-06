@@ -80,6 +80,13 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     public boolean validateRemove(T entity, List<String> messages) {
     	return true;
     }
+
+    @Override
+    public T refresh(T entity){
+    	entity = em.merge(entity);
+    	em.refresh(entity);
+    	return entity;
+    }
     
     @SuppressWarnings("unchecked")
 	@Override

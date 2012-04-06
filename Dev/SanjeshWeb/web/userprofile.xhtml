@@ -1,12 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"> 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"> 
 
-<h:head></h:head> 
-<body> 
+<ui:composition
+	template="/templates/menuTemplate.xhtml">
 
-</body> 
+<ui:define name="title">
+	اطلاعات کاربر
+</ui:define>
+<ui:define name="content">
+
+	<h:form>	
+
+	<p:messages />
+	
+	<h:panelGroup rendered="#{!userProfileController.editUserName and !userProfileController.editPassword}">
+		<p:commandButton value="تغییر نام و نام کاربری" ajax="false" action="#{userProfileController.setEditUserName()}" style="font-weight: bold; font-size:12px !important; width: 250px; padding: 10px; margin: 10px" />
+		<br />
+		<p:commandButton value="تغییر رمز ورود" ajax="false" action="#{userProfileController.setEditPassword()}" style="font-weight: bold; font-size:12px !important; width: 250px; padding: 10px; margin: 10px"/>
+	</h:panelGroup>
+
+	<h:panelGroup rendered="#{userProfileController.editUserName}">
+	
+	<p:fieldset>
+		<h:panelGrid columns="2" cellpadding="10">
+			<h:outputLabel for="txtUserName" value="نام کاربری:" />
+			<p:inputText id="txtUserName" value="#{userProfileController.currentUser.userName}"/>
+
+			<c:set scope="request" var="hasRelatedPerson" value="#{not empty userProfileController.relatedPerson}"/>
+
+			<h:outputLabel for="txtUserFullName" value="نام کامل:" rendered="#{not hasRelatedPerson}"/>
+			<p:inputText id="txtUserFullName" value="#{userProfileController.currentUser.fullName}"
+				rendered="#{not hasRelatedPerson}"/>
+			
+			<h:outputLabel for="txtName" value="#{msgs.name} :" rendered="#{hasRelatedPerson}"/>
+			<p:inputText id="txtName" value="#{userProfileController.relatedPerson.name}"
+				rendered="#{hasRelatedPerson}"/>
+
+			<h:outputLabel for="txtFamily" value="#{msgs.family} :" rendered="#{hasRelatedPerson}"/>
+			<p:inputText id="txtFamily" value="#{userProfileController.relatedPerson.family}"
+				rendered="#{hasRelatedPerson}"/>
+
+			<h:outputLabel for="txtEMail" value="#{msgs.emailAddress} :" rendered="#{hasRelatedPerson}"/>
+			<p:inputText id="txtEMail" value="#{userProfileController.relatedPerson.emailAddress}"
+				rendered="#{hasRelatedPerson}"/>
+
+		</h:panelGrid>
+
+		<p:commandButton value="تأیید" action="#{userProfileController.saveUserName()}"
+			ajax="false" icon="okButton" iconPos="right"/>
+		<p:commandButton value="لغو" action="#{userProfileController.cancelEdit()}"
+			ajax="false" immediate="true" icon="cancelButton" iconPos="right"/>
+
+	</p:fieldset>
+	
+	</h:panelGroup> 
+
+	<h:panelGroup rendered="#{userProfileController.editPassword}">
+	
+	<p:fieldset>
+		<h:panelGrid columns="2" cellpadding="10">
+		
+			<h:outputLabel for="txtOldPass" value="#{msgs.oldPassword} :"/>
+			<p:password id="txtOldPass" value="#{userProfileController.oldPassword}" redisplay="false"/> 
+
+			<h:outputLabel for="txtNewPass" value="#{msgs.newPassword} :"/>
+			<p:password id="txtNewPass" value="#{userProfileController.newPassword}"
+				required="true" requiredMessage="لطفاً رمز جدید را وارد نمایید." redisplay="true"/> 
+
+			<h:outputLabel for="txtConfirmPass" value="#{msgs.confirmNewPassword} :"/>
+			<p:password id="txtConfirmPass" value="#{userProfileController.confirmNewPassword}" redisplay="true"/> 
+
+		</h:panelGrid>
+		
+		<p:commandButton value="تأیید" action="#{userProfileController.savePassword()}"
+			ajax="false" icon="okButton" iconPos="right"/>
+		<p:commandButton value="لغو" action="#{userProfileController.cancelEdit()}"
+			ajax="false" immediate="true" icon="cancelButton" iconPos="right"/>
+	
+	</p:fieldset>
+			
+	</h:panelGroup>
+		
+	</h:form>
+	
+</ui:define>
+</ui:composition>
 </html>

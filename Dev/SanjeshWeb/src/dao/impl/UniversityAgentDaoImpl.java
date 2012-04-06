@@ -5,6 +5,8 @@
  * @author Abbas
  */
 
+import java.util.List;
+
 import dao.RoleDao;
 import dao.UniversityAgentDao;
 import dao.UserDao;
@@ -48,6 +50,16 @@ public class UniversityAgentDaoImpl extends DaoImplBase<UniversityAgent>
 
 		userDao.save(ua.getUser());
 		super.save(ua);
+	}
+
+	@Override
+	public UniversityAgent findByUser(int userId) {
+		List<UniversityAgent> list =
+				em.createQuery("select u from UniversityAgent u where u.user.id=?1", UniversityAgent.class).
+				setParameter(1, userId).getResultList();
+		if( list.size() == 0)
+			return null;
+		return list.get(0);
 	}
 
 }

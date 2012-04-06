@@ -100,12 +100,6 @@
 	font-weight : inherit;
 }
 
-.ui-panelgrid td,
-.ui-panelgrid tr
-{
-	border : none;
-}
-
 fieldset
 {
 	border: 2px groove threedface !important;

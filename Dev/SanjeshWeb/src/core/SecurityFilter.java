@@ -41,6 +41,7 @@ public class SecurityFilter implements Filter {
 			"/Topic.xhtml",
 			"/University.xhtml",
 			"/UniversityAgent.xhtml",
+			"/userprofile.xhtml",
 		};
 	
 	private static Map<String, List<SecurityItem>> pageSecurityItems;
@@ -94,8 +95,8 @@ public class SecurityFilter implements Filter {
 			if( s.equalsIgnoreCase(path)){
 				
 				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
-				if(loginController == null){
-					res.sendRedirect(contextPath + "/SessionExpired.jsp?returnUrl=" + path);
+				if(loginController == null || !loginController.isLoggedIn()){
+					res.sendRedirect(req.getContextPath() + "/notloggedin.xhtml?returnUrl=" + path);
 					return;
 				}
 
@@ -112,13 +113,8 @@ public class SecurityFilter implements Filter {
 			if( s.equalsIgnoreCase(path)){
 				
 				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
-				if(loginController == null){
-					res.sendRedirect(req.getContextPath() + "/SessionExpired.jsp?returnUrl=" + path);
-					return;
-				}
-
-				if(!loginController.isLoggedIn()){
-					res.sendRedirect(req.getContextPath() + "/login.xhtml?returnUrl=" + path);
+				if(loginController == null || !loginController.isLoggedIn()){
+					res.sendRedirect(req.getContextPath() + "/notloggedin.xhtml?returnUrl=" + path);
 					return;
 				}
 				break;

@@ -55,7 +55,7 @@
                         rendered="#{not empty educationFieldController.toEdit}">
                 <p:messages />
                 <p:focus for="txtCode"/>
-                <p:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="10">
                     <h:outputText value="کد : *"/>
                     <p:inputText id="txtCode" value="#{educationFieldController.toEdit.code}"/>                
                     <h:outputText value="نام : *"/>
@@ -67,7 +67,7 @@
                             var="group" itemLabel="#{group.name}" itemValue="#{group.id}"/>
 					<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً گروه تحصیلی را انتخاب نمایید." />  -->
                     </p:selectOneMenu>
-                </p:panelGrid>
+                </h:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
                                  action="#{educationFieldController.save}" icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"

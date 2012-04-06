@@ -40,7 +40,7 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 		} catch (EJBException e) {
 			if (e.getCause() instanceof ValidationException) {
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(e.getCause().getMessage()));
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCause().getMessage(), null));
 				return;
 			}
 			throw e;
@@ -62,7 +62,7 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 		} catch (EJBException e) {
 			if (e.getCause() instanceof ValidationException) {
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(e.getCause().getMessage()));
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCause().getMessage(), null));
 				return;
 			}
 			throw e;
