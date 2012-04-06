@@ -12,6 +12,7 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="false" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="org.hibernate.envers.store_data_at_delete" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>
