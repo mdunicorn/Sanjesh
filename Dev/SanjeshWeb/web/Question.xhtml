@@ -26,23 +26,23 @@
                 <p:column headerText="عملیات">
                     <h:panelGroup>
                         <p:commandButton value="ویرایش" ajax="false"
-                                         action="#{questionController.edit(current)}" image="editButton"/>
+                                         action="#{questionController.edit(current)}" icon="editButton" iconPos="right"/>
                         <p:commandButton value="حذف" ajax="true"
                                          action="#{questionController.setToDelete(current)}"
-                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                                         oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
                     </h:panelGroup>
                 </p:column>
                 <f:facet name="footer">
                     <p:commandButton ajax="false" value="تعریف سوال" style=""
-                                     action="#{questionController.createNew()}" image="addButton" />
+                                     action="#{questionController.createNew()}" icon="addButton" iconPos="right"/>
                 </f:facet>
             </p:dataTable>
 
             <p:confirmDialog widgetVar="dlgRemove" severity="alert"
                              header="حذف سوال" message="آیا از حذف سوال اطمینان دارید؟"
                              position="center" modal="true">
-                <p:commandButton value="بله" ajax="false"  action="#{questionController.remove()}" image="okButton"/>
-                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
+                <p:commandButton value="بله" ajax="false"  action="#{questionController.remove()}" icon="okButton" iconPos="right"/>
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" icon="cancelButton" iconPos="right"/>
             </p:confirmDialog>
 
             <p:fieldset legend="اطلاعات سؤال"
@@ -74,9 +74,9 @@
                     <p:inputText value="#{questionController.toEdit.answerTime}"/>
                 </h:panelGrid>
                 <p:commandButton value="ذخیره" ajax="false"
-                                 action="#{questionController.save}" image="okButton"/>
+                                 action="#{questionController.save}" icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"
-                                 action="#{questionController.showList()}" image="cancelButton"/>
+                                 action="#{questionController.showList()}" icon="cancelButton" iconPos="right"/>
             </p:fieldset>
 
         </h:form>

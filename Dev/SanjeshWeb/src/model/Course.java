@@ -33,7 +33,7 @@ public class Course implements EntityBase, Serializable {
     @Column(name = "course_id")
     private int id;
 	
-    @NotNull
+    @NotBlank(message="لطفاً کد درس را وارد نمایید.")
     private String code;
     
     @NotBlank(message="لطفاً نام درس را وارد نمایید.")

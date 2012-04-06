@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Audited
@@ -28,7 +29,8 @@ public class Role implements EntityBase, Serializable  {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "role_id")
     private int id;
-	
+
+	@NotBlank(message="لطفاً نام نقش را وارد نمایید.")
 	private String name;
 	private boolean fixed;
 

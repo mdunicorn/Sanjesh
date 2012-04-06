@@ -38,15 +38,15 @@
 				<p:column headerText="علمیات">
 					<h:panelGroup>
 						<p:commandButton value="ویرایش" ajax="false"
-							action="#{topicController.edit(current)}" image="editButton" />
+							action="#{topicController.edit(current)}" icon="editButton" iconPos="right"/>
 						<p:commandButton value="حذف" ajax="true"
 							action="#{topicController.setToDelete(current)}"
-							oncomplete="dlgRemove.show()" image="deleteButton" />
+							oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
 					</h:panelGroup>
 				</p:column>
 				<f:facet name="footer">
 					<p:commandButton ajax="false" value="تعریف سرفصل" style=""
-						action="#{topicController.createNew()}" image="addButton" />
+						action="#{topicController.createNew()}" icon="addButton" iconPos="right" />
 				</f:facet>
 			</p:dataTable>
 
@@ -54,34 +54,35 @@
 				header="حذف سرفصل" message="آیا از حذف سرفصل اطمینان دارید؟"
 				position="center" modal="true">
 				<p:commandButton value="بله" ajax="false"
-					action="#{topicController.remove()}" image="okButton" />
+					action="#{topicController.remove()}" icon="okButton" iconPos="right" />
 				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
-					style="font-family:Tahoma" image="cancelButton" />
+					style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
 			</p:confirmDialog>
 
 			<p:fieldset legend="اطلاعات سرفصل"
 				rendered="#{not empty topicController.toEdit}">
+				<p:messages />
 				<p:focus />
-				<h:panelGrid columns="2" cellpadding="10">
+				<p:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="نام : *" />
 					<p:inputText value="#{topicController.toEdit.name}" />
 					<h:outputText value="درس : *" />
-					<h:selectOneMenu value="#{topicController.selectedCourseId}">
-					<f:selectItem noSelectionOption="true" itemLabel="لطفاً درس را انتخاب نمایید." />
+					<p:selectOneMenu value="#{topicController.selectedCourseId}">
+						<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً درس را انتخاب نمایید." /> -->
 						<f:selectItems value="#{topicController.courses}" var="course"
 							itemLabel="#{course.name}" itemValue="#{course.id}" />
-					</h:selectOneMenu>
+					</p:selectOneMenu>
 					<ui:remove><!-- 
 						<h:outputText value="تعداد سؤالات:" />
 						<p:inputText value="#{topicController.toEdit.numberOfQuestions}"
 							converterMessage="لطفا یک عدد معتبر وارد کنید." />
 							 -->
 					</ui:remove>
-				</h:panelGrid>
+				</p:panelGrid>
 				<p:commandButton value="ذخیره" ajax="false"
-					action="#{topicController.save}" image="okButton" />
+					action="#{topicController.save}" icon="okButton" iconPos="right" />
 				<p:commandButton value="لغو" ajax="false" immediate="true"
-					action="#{topicController.showList()}" image="cancelButton" />
+					action="#{topicController.showList()}" icon="cancelButton" iconPos="right" />
 			</p:fieldset>
 
 		</h:form>

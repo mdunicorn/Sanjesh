@@ -13,47 +13,47 @@
 				<!--                <ui:insert name="right">Right</ui:insert>-->
 				<p:menu>
 					<p:submenu label="اطلاعات پایه"
-					 rendered="#{menuController.hasAccessToBasicDataRoot()}" >
+					 rendered="#{menuController.hasAccessToBasicDataRoot}" >
 						<p:menuitem value="اطلاعات دانشگاه ها" url="/University.xhtml"
-							rendered="#{menuController.hasAccessToUniversity()}"
+							rendered="#{menuController.hasAccessToUniversity}"
 							icon="menuItemIcon menuItemUniversityIcon" />
 						<p:menuitem value="پایه های علمی" url="/Grade.xhtml"
-							rendered="#{menuController.hasAccessToGrade()}"
+							rendered="#{menuController.hasAccessToGrade}"
 							icon="menuItemIcon menuItemGradeIcon" />
 						<p:menuitem value="گروه های تحصیلی" url="/EducationGroup.xhtml"
-							rendered="#{menuController.hasAccessToEducationGroup()}"
+							rendered="#{menuController.hasAccessToEducationGroup}"
 							icon="menuItemIcon menuItemEducationGroupIcon" />
 						<p:menuitem value="رشته های تحصیلی" url="/EducationField.xhtml"
-							rendered="#{menuController.hasAccessToEducationField()}"
+							rendered="#{menuController.hasAccessToEducationField}"
 							icon="menuItemIcon menuItemEducationFieldIcon" />
 						<p:menuitem value="دروس" url="/Course.xhtml"
-							rendered="#{menuController.hasAccessToCourse()}"
+							rendered="#{menuController.hasAccessToCourse}"
 							icon="menuItemIcon menuItemCourseIcon" />
 						<p:menuitem value="سرفصل ها" url="/Topic.xhtml"
-							rendered="#{menuController.hasAccessToTopic()}"
+							rendered="#{menuController.hasAccessToTopic}"
 							icon="menuItemIcon menuItemTopicIcon" />
 					</p:submenu>
-					<p:submenu label="کاربران" rendred="#{menuController.hasAccessToUsersRoot()}">
+					<p:submenu label="کاربران" rendred="#{menuController.hasAccessToUsersRoot}">
 						<p:menuitem value="کارشناسان سازمان سنجش" url="/SanjeshAgent.xhtml"
-							rendered="#{menuController.hasAccessToSanjeshAgent()}"
+							rendered="#{menuController.hasAccessToSanjeshAgent}"
 							icon="menuItemIcon menuItemSanjeshAgentIcon" />
 						<p:menuitem value="کارشناسان دانشگاه ها" url="/UniversityAgent.xhtml"
-							rendered="#{menuController.hasAccessToUniversityAgent()}"
+							rendered="#{menuController.hasAccessToUniversityAgent}"
 							icon="menuItemIcon menuItemUniversityAgentIcon" />
 						<p:menuitem value="طراحان سؤال" url="/Designer.xhtml"
-							rendered="#{menuController.hasAccessToDesigner()}"
+							rendered="#{menuController.hasAccessToDesigner}"
 							icon="menuItemIcon menuItemDesignerIcon" />
 						<p:menuitem value="داوران سؤال" url="/Arbiter.xhtml"
-							rendered="#{menuController.hasAccessToSanjeshAgent()}"
+							rendered="#{menuController.hasAccessToSanjeshAgent}"
 							icon="menuItemIcon " />
 						<p:menuitem value="مدیریت کاربران و دسترسی ها" url="/AccessPermission.xhtml" 
-							rendered="#{menuController.hasAccessToSanjeshAgent()}" />
+							rendered="#{menuController.hasAccessToSanjeshAgent}" />
 					</p:submenu>
-					<p:submenu label="سؤال" rendered="#{menuController.hasAccessToQuestionRoot()}">
+					<p:submenu label="سؤال" rendered="#{menuController.hasAccessToQuestionRoot}">
 						<p:menuitem value="سؤالات" url="/Question.xhtml"
-							rendered="#{menuController.hasAccessToQuestion()}" />
+							rendered="#{menuController.hasAccessToQuestion}" />
 						<p:menuitem value="گردش سؤال" url="/QuestionFlow.xhtml"
-							rendered="#{menuController.hasAccessToQuestion()}" />
+							rendered="#{menuController.hasAccessToQuestion}" />
 					</p:submenu>
 					<p:submenu label="گزارشات">
 

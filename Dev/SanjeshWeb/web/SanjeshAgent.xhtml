@@ -67,17 +67,17 @@
 					<h:panelGroup>
 						<p:commandButton value="ویرایش" ajax="false"
 							action="#{sanjeshAgentController.edit(current)}"
-							image="editButton" />
+							icon="editButton" iconPos="right"/>
 						<p:commandButton value="حذف" ajax="true"
 							action="#{sanjeshAgentController.setToDelete(current)}"
-							oncomplete="dlgRemove.show()" image="deleteButton" />
+							oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
 					</h:panelGroup>
 				</p:column>
 				
 				<f:facet name="footer">
 					<p:commandButton ajax="false" value="تعریف کارشناس سازمان سنجش"
 						style="" action="#{sanjeshAgentController.createNew()}"
-						image="addButton" />
+						icon="addButton" iconPos="right"/>
 				</f:facet>
 				
 			</p:dataTable>
@@ -86,15 +86,16 @@
 				header="حذف کارشناس" message="آیا از حذف کارشناس اطمینان دارید؟"
 				position="center" modal="true">
 				<p:commandButton value="بله" ajax="false"
-					action="#{sanjeshAgentController.remove()}" image="okButton" />
+					action="#{sanjeshAgentController.remove()}" icon="okButton" iconPos="right"/>
 				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
-					style="font-family:Tahoma" image="cancelButton" />
+					style="font-family:Tahoma" icon="cancelButton" iconPos="right"/>
 			</p:confirmDialog>
 
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty sanjeshAgentController.toEdit}">
+				<p:messages />
 				<p:focus for="txtName" />
-				<h:panelGrid columns="2" cellpadding="3"
+				<p:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">
 
 					<h:outputText value="#{msgs.name}:" />
@@ -158,15 +159,13 @@
 					<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off" redisplay="true"
 						value="#{sanjeshAgentController.passwordCoinfirmation}"/>
 						
-				</h:panelGrid>
-
-				<p:messages />
+				</p:panelGrid>
 
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"
-					action="#{sanjeshAgentController.save}" image="okButton" />
+					action="#{sanjeshAgentController.save}" icon="okButton" iconPos="right"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
-					action="#{sanjeshAgentController.showList()}" image="cancelButton" />
+					action="#{sanjeshAgentController.showList()}" icon="cancelButton" iconPos="right" />
 			</p:fieldset>
 
 		</h:form>

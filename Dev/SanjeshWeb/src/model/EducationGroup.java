@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,7 +30,6 @@ public class EducationGroup implements EntityBase, Serializable {
 	@NotBlank(message="لطفاً کد گروه را وارد نمایید.")
 	private String code;
     @NotBlank(message = "لطفاً نام گروه تحصیلی را وارد نمایید.")
-    @NotNull
     @Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "group")

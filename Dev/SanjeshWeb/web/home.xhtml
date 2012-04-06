@@ -47,14 +47,14 @@
                     <p:column headerText="عملیات">
                         <h:panelGroup>
                             <p:commandButton value="ویرایش" ajax="false"
-                                             action="#{designerController.edit(current)}" image="editButton"/>
+                                             action="#{designerController.edit(current)}" icon="editButton" iconPos="right"/>
                             <p:commandButton value="حذف" ajax="true"
                                              action="#{designerController.setToDelete(current)}"
-                                             oncomplete="dlgRemove.show()" image="deleteButton"/>
+                                             oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
                             <p:commandButton value="تأیید" ajax="false"
-                                             image="okButton"/>
+                                             icon="okButton" iconPos="right"/>
                             <p:commandButton value="عدم تأیید" ajax="false"
-                                             image="cancelButton"/>
+                                             icon="cancelButton" iconPos="right"/>
                         </h:panelGroup>
                     </p:column>
                 </p:dataTable>

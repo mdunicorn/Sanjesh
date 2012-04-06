@@ -32,30 +32,31 @@
                 <p:column headerText="علمیات">
                     <h:panelGroup>
                         <p:commandButton value="ویرایش" ajax="false"
-                                         action="#{courseController.edit(current)}" image="editButton"/>
+                                         action="#{courseController.edit(current)}" icon="editButton" iconPos="right"/>
                         <p:commandButton value="حذف" ajax="true"
                                          action="#{courseController.setToDelete(current)}"
-                                         oncomplete="dlgRemove.show()" image="deleteButton"/>
+                                         oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
                     </h:panelGroup>
                 </p:column>
                 <f:facet name="footer">
                     <p:commandButton ajax="false" value="تعریف درس" style=""
-                                     action="#{courseController.createNew()}" image="addButton" />
+                                     action="#{courseController.createNew()}" icon="addButton" iconPos="right" />
                 </f:facet>
             </p:dataTable>
 
             <p:confirmDialog widgetVar="dlgRemove" severity="alert"
                              header="حذف درس" message="آیا از حذف درس اطمینان دارید؟"
                              position="center" modal="true">
-                <p:commandButton value="بله" ajax="false"  action="#{courseController.remove()}" image="okButton"/>
-                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" image="cancelButton" />
+                <p:commandButton value="بله" ajax="false"  action="#{courseController.remove()}" icon="okButton" iconPos="right"/>
+                <p:commandButton value="خیر" onclick="dlgRemove.hide()"  style="font-family:Tahoma" icon="cancelButton" iconPos="right"/>
             </p:confirmDialog>
 
 <!--            <p:tabView-->
             <p:fieldset legend="اطلاعات درس"
                         rendered="#{not empty courseController.toEdit}">
+                <p:messages />
                 <p:focus for="txtCode"/>
-                <h:panelGrid columns="2" cellpadding="10">
+                <p:panelGrid columns="2" cellpadding="10">
                 
                     <h:outputText value="کد : *"/>
                     <p:inputText id="txtCode" value="#{courseController.toEdit.code}"/>
@@ -64,18 +65,18 @@
                     <p:inputText value="#{courseController.toEdit.name}"/>
                     
                     <h:outputText value="رشته : *"/>
-                    <h:selectOneMenu value="#{courseController.selectedFieldId}">
-                    	<f:selectItem noSelectionOption="true" itemLabel="لطفاً رشته را انتخاب نمایید." />
+                    <p:selectOneMenu value="#{courseController.selectedFieldId}">
+                    	<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً رشته را انتخاب نمایید." />  -->
                         <f:selectItems
                             value="#{courseController.educationFields}"
                             var="field" itemLabel="#{field.name}" itemValue="#{field.id}"/>
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
-                </h:panelGrid>
+                </p:panelGrid>
                 <p:commandButton id="btnSave" value="ذخیره" ajax="false"
-                                 action="#{courseController.save}" image="okButton"/>
+                                 action="#{courseController.save}" icon="okButton" iconPos="right"/>
                 <p:commandButton value="لغو" ajax ="false" immediate="true"
-                                 action="#{courseController.showList()}" image="cancelButton" />
+                                 action="#{courseController.showList()}" icon="cancelButton" iconPos="right"/>
             </p:fieldset>
 
         </h:form>

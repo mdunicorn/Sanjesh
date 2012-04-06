@@ -36,15 +36,15 @@ public class EducationField implements EntityBase, Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "educationfield_id")
     private int id;
-    @NotNull
+    @NotBlank(message="لطفاً کد رشته را وارد نمایید.")
     @Column(nullable = false)
     private String code;
-    @NotBlank
+    @NotBlank(message="لطفاً نام رشته را وارد نمایید.")
     @Column(nullable = false)
     private String name;
     @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "educationgroup_ref", nullable = false)
-    @NotNull
+    @NotNull(message="لطفاً گروه تحصیلی را انتخاب نمایید.")
     private EducationGroup group;
     @OneToMany(mappedBy = "field")
     private List<Course> courses;
