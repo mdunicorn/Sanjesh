@@ -9,6 +9,11 @@
      margin-right: 5px;
 }
 
+.ui-icon {
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
 .addButton {
     background-image: url('./../images/add.png') !important;
 }
@@ -220,3 +225,7 @@ root {
     background: url('../images/designer.png') !important;
 }
 
+.calendarButtonIcon
+{
+	background-image: url('../images/calendarIcon.gif') !important;
+}

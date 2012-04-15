@@ -20,14 +20,14 @@
                 <f:facet name="header">
                     لیست دروس
                 </f:facet>
+                <p:column headerText="رشته" sortBy="#{current.field.name}" filterBy="#{current.field.name}"  filterMatchMode="contains">
+                    <h:outputText value="#{current.field.name}"/>
+                </p:column>
                 <p:column headerText="کد" sortBy="#{current.code}" filterBy="#{current.code}" filterMatchMode="contains">
                     <h:outputText value="#{current.code}"/>
                 </p:column>
                 <p:column headerText="نام" sortBy="#{current.name}" filterBy="#{current.name}" filterMatchMode="contains">
                     <h:outputText value="#{current.name}"/>
-                </p:column>
-                <p:column headerText="رشته" sortBy="#{current.field.name}" filterBy="#{current.field.name}"  filterMatchMode="contains">
-                    <h:outputText value="#{current.field.name}"/>
                 </p:column>
                 <p:column headerText="علمیات">
                     <h:panelGroup>
@@ -57,13 +57,7 @@
                 <p:messages />
                 <p:focus for="txtCode"/>
                 <h:panelGrid columns="2" cellpadding="10">
-                
-                    <h:outputText value="کد : *"/>
-                    <p:inputText id="txtCode" value="#{courseController.toEdit.code}"/>
-                    
-                    <h:outputText value="نام : *"/>
-                    <p:inputText value="#{courseController.toEdit.name}"/>
-                    
+
                     <h:outputText value="رشته : *"/>
                     <p:selectOneMenu value="#{courseController.selectedFieldId}">
                     	<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً رشته را انتخاب نمایید." />  -->
@@ -71,7 +65,13 @@
                             value="#{courseController.educationFields}"
                             var="field" itemLabel="#{field.name}" itemValue="#{field.id}"/>
                     </p:selectOneMenu>
-
+                
+                    <h:outputText value="کد : *"/>
+                    <p:inputText id="txtCode" value="#{courseController.toEdit.code}"/>
+                    
+                    <h:outputText value="نام : *"/>
+                    <p:inputText value="#{courseController.toEdit.name}"/>
+                    
                 </h:panelGrid>
                 <p:commandButton id="btnSave" value="ذخیره" ajax="false"
                                  action="#{courseController.save}" icon="okButton" iconPos="right"/>
