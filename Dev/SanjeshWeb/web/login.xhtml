@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>ورود به سامانه</title>
         <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
@@ -21,7 +22,9 @@
                         <h:outputLabel for="txtPassword" value="رمز ورود:"/>
                         <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
                     </h:panelGrid>
-                    <p:commandButton value="ورود" action="#{loginController.doLogin()}" ajax="false" />
+                    <c:set scope="request" var="retUrl" value="#{param['returnUrl']}"/>
+                    <h:outputText value="#{retUrl}"/>
+                    <p:commandButton value="ورود" action="#{loginController.doLogin(retUrl)}" ajax="false" />
                 </h:form>
                     <p:messages />
             </div>

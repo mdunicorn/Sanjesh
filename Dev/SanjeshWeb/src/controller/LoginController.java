@@ -1,10 +1,12 @@
 ﻿package controller;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
+
+import core.Utils;
 
 import dao.UserDao;
 
@@ -55,17 +57,24 @@ public class LoginController {
     }
 
     public String doLogin() {
+    	return doLogin(null);
+    }
+    
+    public String doLogin(String returnUrl) {
     	
     	User user = userDao.findByUserName(userName);
     	if( user != null && user.getPassword().equals(password)){
             currentUser = user;
             userName = null;
             password = null;
-            return "home?faces-redirect=true";
+            
+            if( StringUtils.isNotEmpty(returnUrl))
+            	return returnUrl + "?faces-redirect=true";
+            else
+            	return "home?faces-redirect=true";
         }
     	
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "نام کاربری یا رمز عبور صحیح نمیباشد.", ""));
+    	Utils.addFacesErrorMessage("نام کاربری یا رمز عبور صحیح نمیباشد.");
         
         return null;
     }

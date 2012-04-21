@@ -91,11 +91,18 @@ public class SecurityFilter implements Filter {
 		
 		String path = req.getRequestURI().substring(contextPath.length());
 		
-		for( String s : pageSecurityItems.keySet()){
-			if( s.equalsIgnoreCase(path)){
+		
+		LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
+		boolean isLoggedIn = loginController != null && loginController.isLoggedIn();
+		
+		if (isLoggedIn && "/".equals(path)) {
+			res.sendRedirect(contextPath + "/home.xhtml");
+		}
+
+		for (String s : pageSecurityItems.keySet()) {
+			if (s.equalsIgnoreCase(path)) {
 				
-				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
-				if(loginController == null || !loginController.isLoggedIn()){
+				if(!isLoggedIn){
 					res.sendRedirect(req.getContextPath() + "/notloggedin.xhtml?returnUrl=" + path);
 					return;
 				}
@@ -109,11 +116,9 @@ public class SecurityFilter implements Filter {
 			}
 		}
 		
-		for( String s : securedPages){
-			if( s.equalsIgnoreCase(path)){
-				
-				LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
-				if(loginController == null || !loginController.isLoggedIn()){
+		for (String s : securedPages) {
+			if (s.equalsIgnoreCase(path)) {
+				if (!isLoggedIn) {
 					res.sendRedirect(req.getContextPath() + "/notloggedin.xhtml?returnUrl=" + path);
 					return;
 				}
