@@ -8,96 +8,102 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:define name="head">
-		<link rel="stylesheet" href="#{request.contextPath}/jalalijscalendar/skins/aqua/theme.css"/>
+		<link rel="stylesheet"
+			href="#{request.contextPath}/jalalijscalendar/skins/aqua/theme.css" />
 		<script src="#{request.contextPath}/jalalijscalendar/jalali.js"></script>
 		<script src="#{request.contextPath}/jalalijscalendar/calendar.js"></script>
-		<script src="#{request.contextPath}/jalalijscalendar/calendar-setup.js"></script>
-		<script src="#{request.contextPath}/jalalijscalendar/lang/calendar-fa.js"></script>
+		<script
+			src="#{request.contextPath}/jalalijscalendar/calendar-setup.js"></script>
+		<script
+			src="#{request.contextPath}/jalalijscalendar/lang/calendar-fa.js"></script>
 	</ui:define>
 	<ui:define name="title">
         کارشناسان دانشگاه ها
     </ui:define>
 	<ui:define name="content">
-		
+
 		<h:form>
-			<p:dataTable rendered="#{empty universityAgentController.toEdit}"
-				value="#{universityAgentController.list}" var="current"
-				emptyMessage="هیچ کارشناسی تعریف نشده است."
-				style="font-family: Tahoma; font-size:10pt">
-				<f:facet name="header">
-                    لیست کارشناسان دانشگاه ها
-                </f:facet>
+			<h:panelGroup rendered="#{empty universityAgentController.toEdit}">
+				<p:messages />
+				<p:dataTable value="#{universityAgentController.list}" var="current"
+					emptyMessage="هیچ کارشناسی تعریف نشده است."
+					style="font-family: Tahoma; font-size:10pt">
+					<f:facet name="header">
+						<h:outputText value="لیست کارشناسان دانشگاه ها" />
+					</f:facet>
 
-				<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
-					filterBy="#{current.name}" filterMatchMode="contains">
-					<h:outputText value="#{current.name}" />
-				</p:column>
+					<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
+						filterBy="#{current.name}" filterMatchMode="contains">
+						<h:outputText value="#{current.name}" />
+					</p:column>
 
-				<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
-					filterBy="#{current.family}" filterMatchMode="contains">
-					<h:outputText value="#{current.family}" />
-				</p:column>
+					<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
+						filterBy="#{current.family}" filterMatchMode="contains">
+						<h:outputText value="#{current.family}" />
+					</p:column>
 
-				<ui:remove>
-					<!--
+					<ui:remove>
+						<!--
 					<p:column headerText="#{msgs.nationalCode}"
 						sortBy="#{current.nationalCode}"
 						filterBy="#{current.nationalCode}" filterMatchMode="contains">
 						<h:outputText value="#{current.nationalCode}" />
 					</p:column>
 					 -->
-				</ui:remove>
+					</ui:remove>
 
-				<p:column headerText="#{msgs.organizationCode}"
-					sortBy="#{current.organizationCode}"
-					filterBy="#{current.organizationCode}"
-					filterMatchMode="contains">
-					<h:outputText value="#{current.organizationCode}" />
-				</p:column>
-
-				<p:column headerText="#{msgs.userName}" sortBy="#{msgs.userName}"
-					filterBy="#{msgs.userName}" filterMatchMode="contains">
-					<h:outputText value="#{current.user.userName}" />
-				</p:column>
-
-				<ui:remove>
-					<p:column headerText="#{msgs.birthDate}">
-						<h:outputText value="#{current.birthDate}" />
+					<p:column headerText="#{msgs.organizationCode}"
+						sortBy="#{current.organizationCode}"
+						filterBy="#{current.organizationCode}" filterMatchMode="contains">
+						<h:outputText value="#{current.organizationCode}" />
 					</p:column>
-					<p:column headerText="#{msgs.birthLocation}">
-						<h:outputText value="#{current.birthLocation}" />
+
+					<p:column headerText="#{msgs.userName}" sortBy="#{msgs.userName}"
+						filterBy="#{msgs.userName}" filterMatchMode="contains">
+						<h:outputText value="#{current.user.userName}" />
 					</p:column>
-					<p:column headerText="#{msgs.emailAddress}">
-						<h:outputText value="#{current.emailAddress}" />
+
+					<ui:remove>
+						<p:column headerText="#{msgs.birthDate}">
+							<h:outputText value="#{current.birthDate}" />
+						</p:column>
+						<p:column headerText="#{msgs.birthLocation}">
+							<h:outputText value="#{current.birthLocation}" />
+						</p:column>
+						<p:column headerText="#{msgs.emailAddress}">
+							<h:outputText value="#{current.emailAddress}" />
+						</p:column>
+					</ui:remove>
+
+					<p:column headerText="عملیات">
+						<h:panelGroup>
+							<p:commandButton value="ویرایش" ajax="false"
+								action="#{universityAgentController.edit(current)}"
+								icon="editButton" iconPos="right" />
+							<p:commandButton value="حذف" ajax="true"
+								action="#{universityAgentController.setToDelete(current)}"
+								oncomplete="dlgRemove.show()" icon="deleteButton"
+								iconPos="right" />
+						</h:panelGroup>
 					</p:column>
-				</ui:remove>
+					<f:facet name="footer">
+						<p:commandButton ajax="false" value="تعریف کارشناس دانشگاه"
+							style="" action="#{universityAgentController.createNew()}"
+							icon="addButton" iconPos="right" />
+					</f:facet>
+				</p:dataTable>
 
-				<p:column headerText="عملیات">
-					<h:panelGroup>
-						<p:commandButton value="ویرایش" ajax="false"
-							action="#{universityAgentController.edit(current)}"
-							icon="editButton" iconPos="right" />
-						<p:commandButton value="حذف" ajax="true"
-							action="#{universityAgentController.setToDelete(current)}"
-							oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right" />
-					</h:panelGroup>
-				</p:column>
-				<f:facet name="footer">
-					<p:commandButton ajax="false" value="تعریف کارشناس دانشگاه"
-						style="" action="#{universityAgentController.createNew()}"
-						icon="addButton" iconPos="right" />
-				</f:facet>
-			</p:dataTable>
+				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+					header="حذف کارشناس" message="آیا از حذف کارشناس اطمینان دارید؟"
+					position="center" modal="true">
+					<p:commandButton value="بله" ajax="false"
+						action="#{universityAgentController.remove()}" icon="okButton"
+						iconPos="right" />
+					<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+						style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+				</p:confirmDialog>
 
-			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
-				header="حذف کارشناس" message="آیا از حذف کارشناس اطمینان دارید؟"
-				position="center" modal="true">
-				<p:commandButton value="بله" ajax="false"
-					action="#{universityAgentController.remove()}" icon="okButton" iconPos="right" />
-				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
-					style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
-			</p:confirmDialog>
-
+			</h:panelGroup>
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty universityAgentController.toEdit}">
 				<p:messages />
@@ -134,12 +140,16 @@
 					</ui:remove>
 
 					<h:outputText value="#{msgs.birthDate}:" />
-					<ui:remove><p:calendar value="#{universityAgentController.toEdit.birthDate}" /></ui:remove>
+					<ui:remove>
+						<p:calendar value="#{universityAgentController.toEdit.birthDate}" />
+					</ui:remove>
 					<h:panelGroup>
-						<p:inputText id="date_input" style="width: 140px;" value="#{universityAgentController.toEdit.birthDate}">
-							<f:converter converterId="persianDateConverter"/>
+						<p:inputText id="date_input" style="width: 140px;"
+							value="#{universityAgentController.toEdit.birthDate}">
+							<f:converter converterId="persianDateConverter" />
 						</p:inputText>
-						<img src="resources/images/calendarIcon.gif" id="date_btn" style="cursor: pointer; "/>
+						<img src="resources/images/calendarIcon.gif" id="date_btn"
+							style="cursor: pointer;" />
 						<script>
 						Calendar.setup({
 						    inputField: '#{p:component('date_input')}',
@@ -149,28 +159,31 @@
 						});
 						</script>
 					</h:panelGroup>
-					
+
 					<h:outputText value="#{msgs.birthLocation}:" />
 					<p:inputText
 						value="#{universityAgentController.toEdit.birthLocation}" />
-						
+
 					<h:outputText value="#{msgs.userName}:" />
 					<p:inputText autocomplete="off"
 						value="#{universityAgentController.toEdit.user.userName}" />
-						
+
 					<h:outputText value="#{msgs.password}:" />
-					<p:password id="txtPassword" feedback="false" minLength="1" autocomplete="off" redisplay="true"
-						value="#{universityAgentController.toEdit.user.password}"/>
+					<p:password id="txtPassword" feedback="false" minLength="1"
+						autocomplete="off" redisplay="true"
+						value="#{universityAgentController.toEdit.user.password}" />
 
 					<h:outputText value="#{msgs.confirmPassword}:" />
-					<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off" redisplay="true"
-						value="#{universityAgentController.passwordCoinfirmation}"/>
+					<p:password id="txtConfirmPassword" feedback="false" minLength="1"
+						autocomplete="off" redisplay="true"
+						value="#{universityAgentController.passwordCoinfirmation}" />
 
 				</h:panelGrid>
 
 				<br />
 				<p:commandButton value="ذخیره" ajax="false"
-					action="#{universityAgentController.save}" icon="okButton" iconPos="right" />
+					action="#{universityAgentController.save}" icon="okButton"
+					iconPos="right" />
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{universityAgentController.showList()}"
 					icon="cancelButton" iconPos="right" />

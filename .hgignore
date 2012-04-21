@@ -1,3 +1,5 @@
 syntax: glob
 Dev/SanjeshWeb/build
 Dev/SanjeshDatabaseUpdater/build
+Docs/files/dan.txt
+Docs/files/dan.csv

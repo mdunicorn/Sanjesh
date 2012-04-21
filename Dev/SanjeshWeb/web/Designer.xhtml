@@ -11,82 +11,95 @@
 	<ui:composition template="/templates/menuTemplate.xhtml">
 
 		<ui:define name="title">
-        طراحان سوال
-    </ui:define>
+			<h:outputText value="طراحان سوال" />
+		</ui:define>
 		<ui:define name="content">
 			<h:form>
-				<p:dataTable rendered="#{empty designerController.toEdit}"
-					value="#{designerController.list}" var="current"
-					emptyMessage="هیچ طراحی تعریف نشده است."
-					style="font-family: Tahoma; font-size:10pt">
-					<f:facet name="header">
-                    لیست طراحان
-                </f:facet>
-					<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
-						filterBy="#{current.name}" filterMatchMode="contains">
-						<h:outputText value="#{current.name}" />
-					</p:column>
-					<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
-						filterBy="#{current.family}" filterMatchMode="contains">
-						<h:outputText value="#{current.family}" />
-					</p:column>
-					<p:column headerText="#{msgs.organizationCode}"
-						sortBy="#{current.organizationCode}"
-						filterBy="#{current.organizationCode}" filterMatchMode="contains">
-						<h:outputText value="#{current.organizationCode}" />
-					</p:column>
-					<p:column headerText="#{msgs.emailAddress}" sortBy="current.emailAddress"
-						filterBy="current.emailAddress" filterMatchMode="contains">
-						<h:outputText value="#{current.emailAddress}" />
-					</p:column>
-					<ui:remove>
-						<p:column headerText="#{msgs.birthDate}" sortBy="#{current.birthDate}"
-							filterBy="#{current.birthDate}" filterMatchMode="contains">
-							<h:outputText value="#{current.birthDate}" />
+				<h:panelGoup rendered="#{empty designerController.toEdit}">
+					<p:messages />
+					<p:dataTable value="#{designerController.list}" var="current"
+						emptyMessage="هیچ طراحی تعریف نشده است."
+						style="font-family: Tahoma; font-size:10pt">
+						<f:facet name="header">
+							<h:outputText value="لیست طراحان" />
+						</f:facet>
+						<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
+							filterBy="#{current.name}" filterMatchMode="contains">
+							<h:outputText value="#{current.name}" />
 						</p:column>
-						<p:column headerText="#{msgs.birthLocation}" sortBy="#{current.birthLocation}"
-							filterBy="#{current.birthLocation}" filterMatchMode="contains">
-							<h:outputText value="#{current.birthLocation}" />
+						<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
+							filterBy="#{current.family}" filterMatchMode="contains">
+							<h:outputText value="#{current.family}" />
 						</p:column>
-					</ui:remove>
-					<p:column headerText="عملیات">
-						<h:panelGroup>
-							<p:commandButton value="ویرایش" ajax="false"
-								action="#{designerController.edit(current)}" icon="editButton" iconPos="right" />
-							<p:commandButton value="حذف" ajax="true"
-								action="#{designerController.setToDelete(current)}"
-								oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right"/>
-							<p:commandButton value="تأیید" ajax="false"  />
-							<p:commandButton value="عدم تأیید" ajax="false"  />
-						</h:panelGroup>
-					</p:column>
-					<f:facet name="footer">
-						<p:commandButton ajax="false" value="تعریف طراح سوال" style=""
-							action="#{designerController.createNew()}" icon="addButton" iconPos="right" />
-					</f:facet>
-				</p:dataTable>
+						<p:column headerText="#{msgs.organizationCode}"
+							sortBy="#{current.organizationCode}"
+							filterBy="#{current.organizationCode}" filterMatchMode="contains">
+							<h:outputText value="#{current.organizationCode}" />
+						</p:column>
+						<p:column headerText="#{msgs.emailAddress}"
+							sortBy="current.emailAddress" filterBy="current.emailAddress"
+							filterMatchMode="contains">
+							<h:outputText value="#{current.emailAddress}" />
+						</p:column>
+						<ui:remove>
+							<p:column headerText="#{msgs.birthDate}"
+								sortBy="#{current.birthDate}" filterBy="#{current.birthDate}"
+								filterMatchMode="contains">
+								<h:outputText value="#{current.birthDate}" />
+							</p:column>
+							<p:column headerText="#{msgs.birthLocation}"
+								sortBy="#{current.birthLocation}"
+								filterBy="#{current.birthLocation}" filterMatchMode="contains">
+								<h:outputText value="#{current.birthLocation}" />
+							</p:column>
+						</ui:remove>
+						<p:column headerText="عملیات">
+							<h:panelGroup>
+								<p:commandButton value="ویرایش" ajax="false"
+									action="#{designerController.edit(current)}" icon="editButton"
+									iconPos="right" />
+								<p:commandButton value="حذف" ajax="true"
+									action="#{designerController.setToDelete(current)}"
+									oncomplete="dlgRemove.show()" icon="deleteButton"
+									iconPos="right" />
+								<p:commandButton value="تأیید" ajax="false" />
+								<p:commandButton value="عدم تأیید" ajax="false" />
+							</h:panelGroup>
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton ajax="false" value="تعریف طراح سوال" style=""
+								action="#{designerController.createNew()}" icon="addButton"
+								iconPos="right" />
+						</f:facet>
+					</p:dataTable>
 
-				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
-					header="حذف نماینده" message="آیا از حذف طراح اطمینان دارید؟"
-					position="center" modal="true">
-					<p:commandButton value="بله" ajax="false"
-						action="#{designerController.remove()}" icon="okButton" iconPos="right"/>
-					<p:commandButton value="خیر" onclick="dlgRemove.hide()"
-						style="font-family:Tahoma" icon="cancelButton" iconPos="right"/>
-				</p:confirmDialog>
+					<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+						header="حذف نماینده" message="آیا از حذف طراح اطمینان دارید؟"
+						position="center" modal="true">
+						<p:commandButton value="بله" ajax="false"
+							action="#{designerController.remove()}" icon="okButton"
+							iconPos="right" />
+						<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+							style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+					</p:confirmDialog>
+				</h:panelGoup>
 
 				<p:fieldset legend="اطلاعات طراح"
 					rendered="#{not empty designerController.toEdit}">
 					<p:focus for="txtName" />
 					<h:panelGrid columns="4"
 						columnClasses="editorCol1, editorCol2, editorCol3, editorCol4">
+						
 						<h:outputText value="#{msgs.name}:" />
 						<p:inputText id="txtName"
 							value="#{designerController.toEdit.name}" />
+							
 						<h:outputText value="#{msgs.family}:" />
 						<p:inputText value="#{designerController.toEdit.family}" />
+						
 						<h:outputText value="#{msgs.organizationCode}:" />
 						<p:inputText value="#{designerController.toEdit.organizationCode}" />
+						
 						<ui:remove>
 							<!--
 					<h:outputText value="#{msgs.university}:" />
@@ -96,12 +109,16 @@
 						</h:selectOneMenu>
 					 -->
 						</ui:remove>
+						
 						<h:outputText value="#{msgs.birthDate}:" />
 						<p:calendar value="#{designerController.toEdit.birthDate}" />
+						
 						<h:outputText value="#{msgs.birthLocation}:" />
 						<p:inputText value="#{designerController.toEdit.birthLocation}" />
+						
 						<h:outputText value="#{msgs.emailAddress}:" />
 						<p:inputText value="#{designerController.toEdit.emailAddress}" />
+						
 						<ui:remove>
 							<h:outputText value="#{msgs.employmentDate}:" />
 							<p:calendar />
@@ -118,8 +135,10 @@
 									itemLabel="#{msgs.pleaseSelectEducationField}" />
 							</h:selectOneMenu>
 						</ui:remove>
+						
 						<h:outputText value="#{msgs.expertInCourses}:" />
 						<h:selectManyListbox />
+						
 						<h:outputText value="#{msgs.grade}:" />
 						<h:selectOneMenu value="#{designerController.selectedGradeId}">
 							<f:selectItem noSelectionOption="true"
@@ -127,6 +146,7 @@
 							<f:selectItems value="#{designerController.gradeList}"
 								var="group" itemLabel="#{group.name}" itemValue="#{group.id}" />
 						</h:selectOneMenu>
+						
 						<h:outputText value="#{msgs.expertInCoursesQuestions}:"
 							escape="false" />
 						<h:selectManyListbox />
@@ -134,9 +154,11 @@
 					</h:panelGrid>
 					<br />
 					<p:commandButton id="btnSave" value="ذخیره" ajax="false"
-						action="#{designerController.save}" icon="okButton" iconPos="right" />
+						action="#{designerController.save}" icon="okButton"
+						iconPos="right" />
 					<p:commandButton value="لغو" ajax="false" immediate="true"
-						action="#{designerController.showList()}" icon="cancelButton" iconPos="right" />
+						action="#{designerController.showList()}" icon="cancelButton"
+						iconPos="right" />
 				</p:fieldset>
 
 			</h:form>

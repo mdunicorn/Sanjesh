@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.validation.ValidationException;
 
 import core.NotLoggedInException;
+import core.Utils;
 import dao.SanjeshAgentDao;
 import dao.UniversityAgentDao;
 import dao.UserDao;
@@ -160,15 +161,11 @@ public class UserProfileController {
 			editUserName = false;
 			editPassword = false;
 			
-		} catch (EJBException e) {
-			if (e.getCause() instanceof ValidationException) {
-				FacesContext.getCurrentInstance().addMessage(
-						null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCause().getMessage(),
-								null));
+		} catch (Throwable e) {
+			if( Utils.handleBeanException(e))
 				return;
-			}
-			throw e;
+			else
+				throw e;
 		}
 	}
 

@@ -10,55 +10,58 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
-			<p:dataTable rendered="#{empty universityController.toEdit}"
-				value="#{universityController.list}" var="current"
-				emptyMessage="هیچ دانشگاهی تعریف نشده است."
-				style="font-family: Tahoma; font-size:10pt">
-				<f:facet name="header">
-                    لیست دانشگاه ها
+			<h:panelGroup rendered="#{empty universityController.toEdit}">
+				<p:messages />
+				<p:dataTable value="#{universityController.list}" var="current"
+					emptyMessage="هیچ دانشگاهی تعریف نشده است."
+					style="font-family: Tahoma; font-size:10pt">
+					<f:facet name="header">
+					<h:outputText value="لیست دانشگاه ها" />
                 </f:facet>
-				<p:column headerText="کد" sortBy="#{current.code}"
-					filterBy="#{current.code}" filterMatchMode="startsWith">
-					<h:outputText value="#{current.code}" />
-				</p:column>
-				<p:column headerText="نام" sortBy="#{current.name}"
-					filterBy="#{current.name}" filterMatchMode="contains">
-					<h:outputText value="#{current.name}" />
-				</p:column>
-				<p:column headerText="آدرس" sortBy="#{current.address}"
-					filterBy="#{current.address}" filterMatchMode="contains">
-					<h:outputText value="#{current.address}" />
-				</p:column>
-				<p:column headerText="تلفن" sortBy="#{current.phone}"
-					filterBy="#{current.phone}" filterMatchMode="contains">
-					<h:outputText value="#{current.phone}" />
-				</p:column>
-				<p:column headerText="عملیات">
-					<h:panelGroup>
-						<p:commandButton value="ویرایش" ajax="false"
-							action="#{universityController.edit(current)}" icon="editButton"
+					<p:column headerText="کد" sortBy="#{current.code}"
+						filterBy="#{current.code}" filterMatchMode="startsWith">
+						<h:outputText value="#{current.code}" />
+					</p:column>
+					<p:column headerText="نام" sortBy="#{current.name}"
+						filterBy="#{current.name}" filterMatchMode="contains">
+						<h:outputText value="#{current.name}" />
+					</p:column>
+					<p:column headerText="آدرس" sortBy="#{current.address}"
+						filterBy="#{current.address}" filterMatchMode="contains">
+						<h:outputText value="#{current.address}" />
+					</p:column>
+					<p:column headerText="تلفن" sortBy="#{current.phone}"
+						filterBy="#{current.phone}" filterMatchMode="contains">
+						<h:outputText value="#{current.phone}" />
+					</p:column>
+					<p:column headerText="عملیات">
+						<h:panelGroup>
+							<p:commandButton value="ویرایش" ajax="false"
+								action="#{universityController.edit(current)}" icon="editButton"
+								iconPos="right" />
+							<p:commandButton value="حذف" ajax="true"
+								action="#{universityController.setToDelete(current)}"
+								oncomplete="dlgRemove.show()" icon="deleteButton"
+								iconPos="right" />
+						</h:panelGroup>
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton ajax="false" value="تعریف دانشگاه" style=""
+							action="#{universityController.createNew()}" icon="addButton"
 							iconPos="right" />
-						<p:commandButton value="حذف" ajax="true"
-							action="#{universityController.setToDelete(current)}"
-							oncomplete="dlgRemove.show()" icon="deleteButton" iconPos="right" />
-					</h:panelGroup>
-				</p:column>
-				<f:facet name="footer">
-					<p:commandButton ajax="false" value="تعریف دانشگاه" style=""
-						action="#{universityController.createNew()}" icon="addButton"
-						iconPos="right" />
-				</f:facet>
-			</p:dataTable>
+					</f:facet>
+				</p:dataTable>
 
-			<p:confirmDialog widgetVar="dlgRemove" severity="alert"
-				header="حذف دانشگاه" message="آیا از حذف دانشگاه اطمینان دارید؟"
-				position="center" modal="true">
-				<p:commandButton value="بله" ajax="false"
-					action="#{universityController.remove()}" icon="okButton"
-					iconPos="right" />
-				<p:commandButton value="خیر" onclick="dlgRemove.hide()"
-					style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
-			</p:confirmDialog>
+				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+					header="حذف دانشگاه" message="آیا از حذف دانشگاه اطمینان دارید؟"
+					position="center" modal="true">
+					<p:commandButton value="بله" ajax="false"
+						action="#{universityController.remove()}" icon="okButton"
+						iconPos="right" />
+					<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+						style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+				</p:confirmDialog>
+			</h:panelGroup>
 
 			<p:fieldset legend="اطلاعات دانشگاه"
 				rendered="#{not empty universityController.toEdit}">
@@ -71,8 +74,9 @@
 					<h:outputText value="نام : *" />
 					<p:inputText id="txtName"
 						value="#{universityController.toEdit.name}" />
-					<h:outputText value="تلفن : "/>
-					<p:inputText id="txtPhone" value="#{universityController.toEdit.phone}" />
+					<h:outputText value="تلفن : " />
+					<p:inputText id="txtPhone"
+						value="#{universityController.toEdit.phone}" />
 					<h:outputText value="آدرس : " />
 					<p:inputText value="#{universityController.toEdit.address}" />
 				</h:panelGrid>
