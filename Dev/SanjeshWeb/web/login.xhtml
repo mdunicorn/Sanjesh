@@ -23,7 +23,6 @@
                         <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
                     </h:panelGrid>
                     <c:set scope="request" var="retUrl" value="#{param['returnUrl']}"/>
-                    <h:outputText value="#{retUrl}"/>
                     <p:commandButton value="ورود" action="#{loginController.doLogin(retUrl)}" ajax="false" />
                 </h:form>
                     <p:messages />

@@ -4,6 +4,8 @@
  */
 package dao;
 
+import java.util.List;
+
 import model.Topic;
 
 /**
@@ -11,4 +13,5 @@ import model.Topic;
  * @author Muhammad
  */
 public interface TopicDao extends DaoBase<Topic>{
+	List<Topic> findByName(String name);
 }
