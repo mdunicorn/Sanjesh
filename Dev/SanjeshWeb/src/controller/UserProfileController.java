@@ -25,8 +25,8 @@ import model.User;
 @ViewScoped
 public class UserProfileController {
 
-	@ManagedProperty(value = "#{loginController}")
-	private LoginController loginController;
+	@ManagedProperty(value = "#{loginBean}")
+	private LoginBean loginBean;
 	private User currentUser;
 	private Person relatedPerson;
 
@@ -46,10 +46,10 @@ public class UserProfileController {
 
 	@PostConstruct
 	public void init() {
-		if (loginController == null || loginController.getCurrentUser() == null) {
+		if (loginBean == null || loginBean.getCurrentUser() == null) {
 			throw new NotLoggedInException();
 		}
-		currentUser = loginController.reloadCurrentUser();
+		currentUser = loginBean.reloadCurrentUser();
 		loadRelatedPerson();
 	}
 
@@ -69,12 +69,12 @@ public class UserProfileController {
 		}		
 	}
 
-	public LoginController getLoginController() {
-		return loginController;
-	}
+//	public LoginBean getLoginBean() {
+//		return loginBean;
+//	}
 
-	public void setLoginController(LoginController lc) {
-		this.loginController = lc;
+	public void setLoginBean(LoginBean lb) {
+		this.loginBean = lb;
 	}
 
 	public Person getRelatedPerson() {
@@ -108,7 +108,7 @@ public class UserProfileController {
 		editPassword = false;
 		
 		refreshRelatedPerson();
-		currentUser = loginController.reloadCurrentUser();
+		currentUser = loginBean.reloadCurrentUser();
 	}
 
 	public String getOldPassword() {
@@ -153,7 +153,7 @@ public class UserProfileController {
 				}
 			}
 
-			currentUser = loginController.reloadCurrentUser();
+			currentUser = loginBean.reloadCurrentUser();
 
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "تغییرات ثبت شدند.", null));
@@ -173,7 +173,7 @@ public class UserProfileController {
 
 		try {
 
-			currentUser = loginController.reloadCurrentUser();
+			currentUser = loginBean.reloadCurrentUser();
 
 			if (!oldPassword.equals(currentUser.getPassword())) {
 				FacesContext.getCurrentInstance().addMessage(

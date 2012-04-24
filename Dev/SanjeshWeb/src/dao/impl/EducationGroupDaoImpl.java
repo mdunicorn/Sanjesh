@@ -5,6 +5,8 @@ import java.util.List;
 import dao.EducationGroupDao;
 import model.EducationGroup;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  * 
@@ -30,6 +32,7 @@ public class EducationGroupDaoImpl extends DaoImplBase<EducationGroup> implement
 	
 	@Override
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<EducationGroup> findByCode(String code) {
 		return em.createQuery("from EducationGroup where code=:c")
 				.setParameter("c", code).getResultList();

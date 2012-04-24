@@ -9,6 +9,8 @@ import java.util.List;
 import dao.TopicDao;
 import model.Topic;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  * 
@@ -35,6 +37,7 @@ public class TopicDaoImpl extends DaoImplBase<Topic> implements TopicDao {
 
 	@Override
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Topic> findByName(String name) {
 		return em.createQuery("from Topic where name=:n").setParameter("n", name).getResultList();
 	}

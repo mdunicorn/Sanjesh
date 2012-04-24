@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.LoginController;
+import controller.LoginBean;
 
 @WebFilter("/*")
 public class SecurityFilter implements Filter {
@@ -92,8 +92,8 @@ public class SecurityFilter implements Filter {
 		String path = req.getRequestURI().substring(contextPath.length());
 		
 		
-		LoginController loginController = (LoginController)req.getSession().getAttribute("loginController");
-		boolean isLoggedIn = loginController != null && loginController.isLoggedIn();
+		LoginBean loginBean = (LoginBean)req.getSession().getAttribute("loginBean");
+		boolean isLoggedIn = loginBean != null && loginBean.isLoggedIn();
 		
 		if (isLoggedIn && "/".equals(path)) {
 			res.sendRedirect(contextPath + "/home.xhtml");
@@ -108,7 +108,7 @@ public class SecurityFilter implements Filter {
 				}
 
 				for( SecurityItem si : pageSecurityItems.get(s)){
-					if( !SecurityService.hasPermission(loginController, si) ){
+					if( !SecurityService.hasPermission(loginBean, si) ){
 						res.sendRedirect(contextPath + "/accessdenied.xhtml");
 						return;
 					}

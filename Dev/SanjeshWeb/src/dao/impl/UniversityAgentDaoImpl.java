@@ -53,6 +53,7 @@ public class UniversityAgentDaoImpl extends DaoImplBase<UniversityAgent>
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public UniversityAgent findByUser(int userId) {
 		List<UniversityAgent> list =
 				em.createQuery("select u from UniversityAgent u where u.user.id=?1", UniversityAgent.class).

@@ -77,6 +77,7 @@ public class SanjeshAgentDaoImpl extends DaoImplBase<SanjeshAgent> implements Sa
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public SanjeshAgent findByUser(int userId) {
 		List<SanjeshAgent> list =
 				em.createQuery("select s from SanjeshAgent s where s.user.id=?1", SanjeshAgent.class).

@@ -4,26 +4,26 @@ import java.util.Set;
 
 import model.Role;
 import model.User;
-import controller.LoginController;
+import controller.LoginBean;
 
 public class SecurityService {
 
 //	public static boolean isLoggedIn() {
-//		LoginController lc = getLoginController();
+//		LoginBean lc = getLoginBean();
 //		if (lc == null)
 //			return false;
 //		return lc.isLoggedIn();
 //	}
 
-	 public static LoginController getLoginController() {
-		 LoginController lc = (LoginController) Utils.findBean("loginController");
+	 public static LoginBean getLoginBean() {
+		 LoginBean lc = (LoginBean) Utils.findBean("loginBean");
 		 if( lc == null )
 			 throw new RuntimeException("Login controller could not be retrieved.");
 		 return lc;
 	 }
 
 	// public static User getCurrentUser() {
-	// LoginController lc = getLoginController();
+	// LoginBean lc = getLoginBean();
 	// if (lc == null)
 	// return null;
 	// return lc.getCurrentUser();
@@ -46,11 +46,11 @@ public class SecurityService {
 		return false;
 	}
 
-	public static boolean hasPermission(LoginController loginController, SecurityItem securityItem) {
-		return hasPermission(loginController.getCurrentUser(), securityItem);
+	public static boolean hasPermission(LoginBean loginBean, SecurityItem securityItem) {
+		return hasPermission(loginBean.getCurrentUser(), securityItem);
 	}
 	
 	public static boolean hasPermission(SecurityItem securityItem){
-		return hasPermission(getLoginController(), securityItem);
+		return hasPermission(getLoginBean(), securityItem);
 	}
 }

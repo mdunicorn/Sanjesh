@@ -6,6 +6,8 @@ import dao.CourseDao;
 import model.Course;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  *
@@ -31,6 +33,7 @@ public class CourseDaoImpl extends DaoImplBase<Course> implements CourseDao {
 	
 	@Override
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Course> findByCode(String code) {
 		return em.createQuery("from EducationField where code=:c")
 				.setParameter("c", code).getResultList();
@@ -38,6 +41,7 @@ public class CourseDaoImpl extends DaoImplBase<Course> implements CourseDao {
 	
 	@Override
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Course> findByCodeAndField(String code, int educationFieldId){
 		return em.createQuery("from Course where code=:c and field.id=:gid")
 				.setParameter("c", code).setParameter("gid", educationFieldId).getResultList();
