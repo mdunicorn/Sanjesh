@@ -85,21 +85,26 @@ public class SecurityItems {
 	static {
 		RoleAccessKeys = new HashMap<Integer, List<String>>();
 
-		RoleAccessKeys.put(Role.QUESTION_EXPERT_ROLE_ID, getAllKeys(SecurityItems.Question));
+		RoleAccessKeys.put(Role.QUESTION_EXPERT_ROLE_ID, new ArrayList<String>());
 		RoleAccessKeys.get(Role.QUESTION_EXPERT_ROLE_ID).add(SecurityItems.QuestionRoot.getFullKey());
+		RoleAccessKeys.get(Role.QUESTION_EXPERT_ROLE_ID).addAll(getAllKeys(SecurityItems.Question));
 
-		RoleAccessKeys.put(Role.DESIGNER_EXPERT_ROLE_ID, getAllKeys(SecurityItems.Designer));
+		RoleAccessKeys.put(Role.DESIGNER_EXPERT_ROLE_ID, new ArrayList<String>());
 		RoleAccessKeys.get(Role.DESIGNER_EXPERT_ROLE_ID).add(SecurityItems.UsersRoot.getFullKey());
+		RoleAccessKeys.get(Role.DESIGNER_EXPERT_ROLE_ID).addAll(getAllKeys(SecurityItems.Designer));
 
 		// RoleAccessKeys.put(Role.ARBITER_EXPERT_ROLE_ID,
 		// getAllKeys(SecurityItems.)
 
 		RoleAccessKeys.put(Role.DATA_EXPERT_ROLE_ID, getAllKeys(SecurityItems.BasicDataRoot));
 
-		RoleAccessKeys.put(Role.UNIVERSITY_AGENT_ROLE_ID, getAllKeys(SecurityItems.Designer));
+		RoleAccessKeys.put(Role.UNIVERSITY_AGENT_ROLE_ID, new ArrayList<String>());
 		RoleAccessKeys.get(Role.UNIVERSITY_AGENT_ROLE_ID).add(SecurityItems.UsersRoot.getFullKey());
+		RoleAccessKeys.get(Role.UNIVERSITY_AGENT_ROLE_ID).addAll(getAllKeys(SecurityItems.Designer));
 
-		RoleAccessKeys.put(Role.DESIGNER_ROLE_ID, getAllKeys(SecurityItems.Question));
+		RoleAccessKeys.put(Role.DESIGNER_ROLE_ID, new ArrayList<String>());
+		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).add(SecurityItems.QuestionRoot.getFullKey());
+		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).addAll(getAllKeys(SecurityItems.Question));
 		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).remove(SecurityItems.QuestionAccept.getFullKey());
 	}
 

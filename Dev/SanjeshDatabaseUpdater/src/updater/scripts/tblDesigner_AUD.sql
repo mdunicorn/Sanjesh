@@ -12,11 +12,9 @@ CREATE TABLE designer_aud
   birthlocation character varying(255),
   grade_ref integer,
   registerstate integer,
+  suser_ref integer NOT NULL,
   CONSTRAINT designer_aud_pkey PRIMARY KEY (designer_id, rev),
   CONSTRAINT designer_aud_rev_fkey FOREIGN KEY (rev)
-      REFERENCES revinfo (rev) MATCH SIMPLE
+      REFERENCES revinfo (rev)
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-WITH (
-  OIDS=FALSE
 );

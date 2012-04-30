@@ -10,12 +10,20 @@
 
 	<ui:composition template="/templates/menuTemplate.xhtml">
 
+		<ui:define name="head">
+			<link rel="stylesheet"
+				href="#{request.contextPath}/jalalijscalendar/skins/aqua/theme.css" />
+			<script src="#{request.contextPath}/jalalijscalendar/jalali.js"></script>
+			<script src="#{request.contextPath}/jalalijscalendar/calendar.js"></script>
+			<script src="#{request.contextPath}/jalalijscalendar/calendar-setup.js"></script>
+			<script src="#{request.contextPath}/jalalijscalendar/lang/calendar-fa.js"></script>
+		</ui:define>
 		<ui:define name="title">
 			<h:outputText value="طراحان سوال" />
 		</ui:define>
 		<ui:define name="content">
 			<h:form>
-				<h:panelGoup rendered="#{empty designerController.toEdit}">
+				<h:panelGroup rendered="#{empty designerController.toEdit}">
 					<p:messages />
 					<p:dataTable value="#{designerController.list}" var="current"
 						emptyMessage="هیچ طراحی تعریف نشده است."
@@ -82,10 +90,11 @@
 						<p:commandButton value="خیر" onclick="dlgRemove.hide()"
 							style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
 					</p:confirmDialog>
-				</h:panelGoup>
+				</h:panelGroup>
 
 				<p:fieldset legend="اطلاعات طراح"
 					rendered="#{not empty designerController.toEdit}">
+					<p:messages />
 					<p:focus for="txtName" />
 					<h:panelGrid columns="4"
 						columnClasses="editorCol1, editorCol2, editorCol3, editorCol4">
@@ -111,7 +120,21 @@
 						</ui:remove>
 						
 						<h:outputText value="#{msgs.birthDate}:" />
-						<p:calendar value="#{designerController.toEdit.birthDate}" />
+						<h:panelGroup>
+							<p:inputText id="date_input" style="width: 130px;"
+								value="#{designerController.toEdit.birthDate}">
+								<f:converter converterId="persianDateConverter" />
+							</p:inputText>
+							<img src="resources/images/calendarIcon.gif" id="date_btn" style="cursor: pointer;" />
+							<script>
+							Calendar.setup({
+							    inputField: '#{p:component('date_input')}',
+							    button: 'date_btn',
+							    ifFormat: '%Y/%m/%d',
+							    dateType: 'jalali'
+							});
+							</script>
+						</h:panelGroup>
 						
 						<h:outputText value="#{msgs.birthLocation}:" />
 						<p:inputText value="#{designerController.toEdit.birthLocation}" />
@@ -136,20 +159,49 @@
 							</h:selectOneMenu>
 						</ui:remove>
 						
-						<h:outputText value="#{msgs.expertInCourses}:" />
-						<h:selectManyListbox />
-						
 						<h:outputText value="#{msgs.grade}:" />
-						<h:selectOneMenu value="#{designerController.selectedGradeId}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="#{msgs.pleaseSelectGrade}" />
+						<p:selectOneMenu value="#{designerController.selectedGradeId}">
+							<ui:remove><f:selectItem noSelectionOption="true"
+								itemLabel="#{msgs.pleaseSelectGrade}" /></ui:remove>
 							<f:selectItems value="#{designerController.gradeList}"
 								var="group" itemLabel="#{group.name}" itemValue="#{group.id}" />
-						</h:selectOneMenu>
+						</p:selectOneMenu>
+
+						<ui:remove>						
+						<h:outputText />
+						<h:outputText />
+						</ui:remove>
+						
+						<h:outputText value="#{msgs.userName}:" />
+						<p:inputText autocomplete="off"
+							value="#{designerController.toEdit.user.userName}" />
+
+						<h:outputText value="#{msgs.password}:" />
+						<p:password id="txtPassword" feedback="false" minLength="1" autocomplete="off"
+							redisplay="true" value="#{designerController.toEdit.user.password}" />
+	
+						<h:outputText value="#{msgs.confirmPassword}:" />
+						<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off"
+							redisplay="true" value="#{designerController.passwordCoinfirmation}" />
+												
+						<h:outputText value="#{msgs.expertInCourses}:" />						
+						<h:panelGroup layout="block" style="overflow: auto; height:200px; border: 1px solid #b0b0b0">
+							<p:selectManyCheckbox layout="pageDirection"
+								value="#{designerController.selectedCourseIds}">
+								<f:selectItems value="#{designerController.courseList}"
+									var="course" itemLabel="#{course.name}" itemValue="#{course.id}"/>
+							</p:selectManyCheckbox>
+						</h:panelGroup>
 						
 						<h:outputText value="#{msgs.expertInCoursesQuestions}:"
 							escape="false" />
-						<h:selectManyListbox />
+						<h:panelGroup layout="block" style="overflow: auto; height:200px; border: 1px solid #b0b0b0">
+							<p:selectManyCheckbox layout="pageDirection"
+								value="#{designerController.selectedQuestionCourseIds}">
+								<f:selectItems value="#{designerController.courseList}"
+									var="course" itemLabel="#{course.name}" itemValue="#{course.id}"/>
+							</p:selectManyCheckbox>
+						</h:panelGroup>
 
 					</h:panelGrid>
 					<br />

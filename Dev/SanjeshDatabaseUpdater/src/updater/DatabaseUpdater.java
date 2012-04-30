@@ -1,4 +1,4 @@
-﻿package updater;
+package updater;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -216,8 +216,21 @@ public class DatabaseUpdater {
 
         String stmt = "ALTER TABLE " + childTableName + "\n"
                 + "ADD CONSTRAINT " + keyName + " FOREIGN KEY (" + childColumnName + ")\n"
-                + "REFERENCES " + parentTableName + " (" + parentColumnName + ") MATCH SIMPLE \n"
+                + "REFERENCES " + parentTableName + " (" + parentColumnName + ") \n"
                 + updateAction + " " + deleteAction;
+        executeUpdate(dbConnection, stmt);
+    }
+    
+    public void createForeignKeyIfNotExists(String keyName, String childTableName, String childColumnName,
+            String parentTableName, String parentColumnName, boolean cascadeOnUpdate, boolean cascadeOnDelete) throws SQLException {
+        if(!foreignKeyExists(keyName))
+            createForeignKey(keyName, childTableName, childColumnName, parentTableName, parentColumnName,
+                    cascadeOnUpdate, cascadeOnDelete);
+    }
+    
+    public void dropForeignKey(String tableName, String fkeyName) throws SQLException{
+        String stmt = "ALTER TABLE " + tableName + "\n"
+                + "DROP CONSTRAINT " + fkeyName;
         executeUpdate(dbConnection, stmt);
     }
 
@@ -250,6 +263,8 @@ public class DatabaseUpdater {
             
             String[] joinTables = new String[]{
                 "SUser_Role",
+                "Designer_ExpertInCourses",
+                "Designer_ExpertInCoursesQuestions",
             };
             
 
@@ -331,6 +346,33 @@ public class DatabaseUpdater {
             
             createColumnIfNotExists("sanjeshagent", "isdesignerexpert", "boolean", true, null);
             createColumnIfNotExists("sanjeshagent", "isdataexpert", "boolean", true, null);
+
+            tableName = "designer";
+            colName = "suser_ref";
+            if (!columnExists(tableName, colName)){
+                if (sqlExists(dbConnection, "SELECT * FROM " + tableName)) {
+                    if (JOptionPane.showConfirmDialog(null,
+                            "All of the designers you have already defined will be deleted. Press OK to continue.",
+                            "Database Updater", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+
+                        executeUpdate(dbConnection, "DELETE FROM " + tableName);
+                    } else {
+                        return false;
+                    }
+                }
+                createColumn(tableName, colName, "integer", false, null);
+            }
+            
+            tableName += "_aud";
+            if (!columnExists(tableName, colName)){
+                executeUpdate(dbConnection, "DELETE FROM " + tableName);
+                createColumn(tableName, colName, "integer", false, null);
+            }    
+            
+            createForeignKeyIfNotExists("fkey_designer_suser_ref", "designer", "suser_ref", "suser", "suser_id", false, false);
+            
+            createColumnIfNotExists("suser", "isactive", "boolean", false, "true");
+            createColumnIfNotExists("suser_aud", "isactive", "boolean", false, "true");
             
 
             // Static data

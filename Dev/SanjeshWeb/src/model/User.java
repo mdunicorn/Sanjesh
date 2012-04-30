@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
@@ -41,12 +42,18 @@ public class User implements EntityBase, Serializable {
 	private String password;
 	@NotBlank(message="لطفاً نام کامل کاربر را وارد نمایید.")
 	private String fullName;
+	@NotNull
+	private boolean isActive;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JoinTable(
 			joinColumns = @JoinColumn(name = "suser_ref"),
 			inverseJoinColumns = @JoinColumn(name = "role_ref"))
 	private Set<Role> roles;
+	
+	public User(){
+		isActive = true;
+	}
 
 	@Override
 	public int getId() {
@@ -107,5 +114,13 @@ public class User implements EntityBase, Serializable {
 			return ((User)o).userName.equals(this.userName);
 		}
 		return false;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

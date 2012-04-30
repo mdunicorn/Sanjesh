@@ -4,6 +4,8 @@
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +15,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -48,15 +54,37 @@ public class Designer implements EntityBase, Person, Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDate;
     private String birthLocation;
+    @NotBlank(message="لطفاً آدرس ایمیل را وارد نمایید.")
+    @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
     
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name="grade_ref")
-    private Grade grade;
-    
-    
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH },
+			fetch = FetchType.EAGER)
+	@JoinColumn(name = "grade_ref")
+	private Grade grade;
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
+			fetch = FetchType.EAGER)
+	@JoinTable(
+			name="designer_expertincourses",
+			joinColumns = @JoinColumn(name = "designer_ref"),
+			inverseJoinColumns = @JoinColumn(name = "course_ref"))
+	private Set<Course> expertInCourses;    
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
+			fetch = FetchType.EAGER)
+	@JoinTable(
+			name="designer_expertincoursesquestions",
+			joinColumns = @JoinColumn(name = "designer_ref"),
+			inverseJoinColumns = @JoinColumn(name = "course_ref"))
+	private Set<Course> expertInCoursesQuestions;
+	
     @Column(name="registerstate")
     private RegisterState state;
+
+    @OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "suser_ref", nullable = false)
+    private User user;
 
     public Designer(){
         state = RegisterState.NONE;
@@ -136,11 +164,47 @@ public class Designer implements EntityBase, Person, Serializable {
 		this.grade = grade;
 	}
 
-    public RegisterState getState(){
+    public Set<Course> getExpertInCourses() {
+    	if (expertInCourses == null)
+    		expertInCourses = new HashSet<Course>();
+		return expertInCourses;
+	}
+
+	public void setExpertInCourses(Set<Course> expertInCourses) {
+		this.expertInCourses = expertInCourses;
+	}
+
+	public Set<Course> getExpertInCoursesQuestions() {
+		if (expertInCoursesQuestions == null)
+			expertInCoursesQuestions = new HashSet<Course>();
+		return expertInCoursesQuestions;
+	}
+
+	public void setExpertInCoursesQuestions(Set<Course> expertInCoursesQuestions) {
+		this.expertInCoursesQuestions = expertInCoursesQuestions;
+	}
+
+	public RegisterState getState(){
         return state;
     }
     
     public void setState(RegisterState s){
         state = s;
     }
+    
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
+	public String getFullName(){
+		if( this.name == null || "".equals(this.name)){
+			return this.family;
+		}
+		return this.name + " " + this.family;
+	}
+
 }

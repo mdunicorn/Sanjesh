@@ -16,5 +16,5 @@ import model.RegisterState;
 public interface DesignerDao extends DaoBase<Designer>{
         
     List<Designer> findByState(RegisterState state);
-    
+    Designer findByUser(int userId);    
 }

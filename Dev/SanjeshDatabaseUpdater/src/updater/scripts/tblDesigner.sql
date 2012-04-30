@@ -10,11 +10,12 @@ CREATE TABLE designer
   birthlocation character varying(255),
   grade_ref integer,
   registerstate integer,
+  suser_ref integer NOT NULL,
   CONSTRAINT designer_pkey PRIMARY KEY (designer_id),
   CONSTRAINT fkey_designer_grade FOREIGN KEY (grade_ref)
       REFERENCES grade (grade_id)
-      ON UPDATE NO ACTION ON DELETE RESTRICT
-)
-WITH (
-  OIDS=FALSE
+      ON UPDATE NO ACTION ON DELETE RESTRICT,
+  CONSTRAINT fkey_designer_suser_ref FOREIGN KEY (suser_ref)
+      REFERENCES suser (suser_id)
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 );
