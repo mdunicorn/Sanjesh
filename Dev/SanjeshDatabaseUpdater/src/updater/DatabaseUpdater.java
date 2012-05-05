@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.IOUtils;
 
@@ -25,6 +26,7 @@ public class DatabaseUpdater {
     private static String mainDb = "postgres";
     private ProgressListener pListener;
     private Connection masterConnection, dbConnection;
+    private int defaultSqlDateType = java.sql.Types.TIMESTAMP;
 
     public DatabaseUpdater(
             String server, String port, String database,
@@ -64,7 +66,12 @@ public class DatabaseUpdater {
         pListener.executingQuery(statement, params);
         PreparedStatement p = connection.prepareStatement(statement);
         for (int i = 0; i < params.length; i++) {
-            p.setObject(i + 1, params[i]);
+            if( params[i] instanceof Date){
+                p.setObject(i+1, params[i], defaultSqlDateType);
+            }
+            else{
+                p.setObject(i + 1, params[i]);
+            }
         }
         int r = p.executeUpdate();
         p.close();
@@ -233,6 +240,25 @@ public class DatabaseUpdater {
                 + "DROP CONSTRAINT " + fkeyName;
         executeUpdate(dbConnection, stmt);
     }
+    
+    public DBVersion getLastDBVersion() throws SQLException{
+        ResultSetWrapper rw = executeQuery(dbConnection, "SELECT * FROM dbversion ORDER BY insertdate DESC LIMIT 1");
+        ResultSet r = rw.getResultSet();
+        if(r.next()){
+            DBVersion v = new DBVersion();
+            v.setMajor(r.getInt("major"));
+            v.setMinor(r.getInt("minor"));
+            v.setInsertDate(r.getDate("insertdate"));
+            return v;
+        }
+        return null;
+    }
+    
+    public void insertDBVersion(int major, int minor, Date date) throws SQLException{
+        defaultSqlDateType = java.sql.Types.TIMESTAMP;
+        executeUpdate(dbConnection, "INSERT INTO dbversion (major, minor, insertdate) VALUES (?,?,?)",
+                major, minor, date);
+    }
 
     public boolean Update() {
         try {
@@ -246,6 +272,10 @@ public class DatabaseUpdater {
             }
             dbConnection = getConnection(database);
 
+            checkAndCreateTable("DBVersion");
+            
+            DBVersion dbVersion = getLastDBVersion();
+            
             String[] normalTables = new String[]{
                 "SUser",
                 "Role",
@@ -279,6 +309,13 @@ public class DatabaseUpdater {
             for (String t : allTables) {
                 checkAndCreateTable(t + "_AUD");
             }
+            
+            // Adding version column
+            for (String t : normalTables){
+                createColumnIfNotExists(t.toLowerCase(), "version", "integer", false, "0");
+                createColumnIfNotExists(t.toLowerCase() + "_aud", "version", "integer", false, "0");
+            }
+
 
             String tableName = "educationgroup";
             String colName = "code";
@@ -374,6 +411,25 @@ public class DatabaseUpdater {
             createColumnIfNotExists("suser", "isactive", "boolean", false, "true");
             createColumnIfNotExists("suser_aud", "isactive", "boolean", false, "true");
             
+            if (dbVersion == null) { // less than v0.5
+                ResultSetWrapper rw = executeQuery(dbConnection,
+                        "SELECT suser_id \n"
+                        + "FROM suser u \n"
+                        + "  LEFT JOIN universityagent ua ON u.suser_id=ua.suser_ref \n"
+                        + "  LEFT JOIN sanjeshagent sa ON u.suser_id=sa.suser_ref \n"
+                        + "  LEFT JOIN designer d ON u.suser_id=d.suser_ref \n"
+                        + "WHERE suser_id > 1 AND \n"
+                        + "  ua.universityagent_id IS NULL AND sa.sanjeshagent_id IS NULL AND d.designer_id is NULL");
+                ResultSet r = rw.getResultSet();
+                ArrayList<Integer> ids = new ArrayList<Integer>();
+                while(r.next()){
+                    ids.add(r.getInt(1));
+                }
+                rw.close();
+                for( int id : ids){
+                    executeUpdate(dbConnection, "DELETE FROM suser WHERE suser_id=?", id);
+                }
+            }
 
             // Static data
             AddAdminUserIfNotExists();
@@ -386,6 +442,15 @@ public class DatabaseUpdater {
 //                executeUpdate(dbConnection, "UPDATE " + t + " SET " + colName + "=1 WHERE " + colName + " IS NULL");
 //                setColumnNotNull(t,colName);
 //            }
+            
+            
+            int major = 0;
+            int minor = 5;
+            if (dbVersion == null || dbVersion.getMajor() < major || dbVersion.getMinor() < minor) {
+                logInfo("Updating version...");
+                insertDBVersion(major, minor, new Date());
+                logInfo("v" + major + "." + minor);
+            }
 
             logInfo("Done.");
 

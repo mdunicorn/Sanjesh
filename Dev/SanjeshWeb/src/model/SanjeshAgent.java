@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Email;
@@ -28,9 +29,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 public class SanjeshAgent implements EntityBase, Person, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 	
-	@Id
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="sanjeshagent_id")
     private int id;
@@ -62,6 +63,9 @@ public class SanjeshAgent implements EntityBase, Person, Serializable {
     @JoinColumn(name = "suser_ref", nullable = false)
     private User user;
 
+    @Version
+    private int version;
+    
     @Override
     public int getId() {
         return id;
@@ -120,50 +124,58 @@ public class SanjeshAgent implements EntityBase, Person, Serializable {
         this.emailAddress = emailAddress;
     }
 
-	public boolean isQuestionExpert() {
-		return isQuestionExpert;
-	}
+    public boolean isQuestionExpert() {
+        return isQuestionExpert;
+    }
 
-	public void setQuestionExpert(boolean isQuestionExpert) {
-		this.isQuestionExpert = isQuestionExpert;
-	}
+    public void setQuestionExpert(boolean isQuestionExpert) {
+        this.isQuestionExpert = isQuestionExpert;
+    }
 
-	public boolean isArbiterExpert() {
-		return isArbiterExpert;
-	}
+    public boolean isArbiterExpert() {
+        return isArbiterExpert;
+    }
 
-	public void setArbiterExpert(boolean isArbiterExpert) {
-		this.isArbiterExpert = isArbiterExpert;
-	}
+    public void setArbiterExpert(boolean isArbiterExpert) {
+        this.isArbiterExpert = isArbiterExpert;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
     
-	public String getFullName(){
-		if( this.name == null || "".equals(this.name)){
-			return this.family;
-		}
-		return this.name + " " + this.family;
-	}
+    public String getFullName(){
+        if( this.name == null || "".equals(this.name)){
+            return this.family;
+        }
+        return this.name + " " + this.family;
+    }
 
-	public boolean isDesignerExpert() {
-		return isDesignerExpert;
-	}
+    public boolean isDesignerExpert() {
+        return isDesignerExpert;
+    }
 
-	public void setDesignerExpert(boolean isDesignerExpert) {
-		this.isDesignerExpert = isDesignerExpert;
-	}
+    public void setDesignerExpert(boolean isDesignerExpert) {
+        this.isDesignerExpert = isDesignerExpert;
+    }
 
-	public boolean isDataExpert() {
-		return isDataExpert;
-	}
+    public boolean isDataExpert() {
+        return isDataExpert;
+    }
 
-	public void setDataExpert(boolean isDataExpert) {
-		this.isDataExpert = isDataExpert;
-	}
+    public void setDataExpert(boolean isDataExpert) {
+        this.isDataExpert = isDataExpert;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }

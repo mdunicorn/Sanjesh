@@ -10,13 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 
-
 /**
- *
+ * 
  * @author Muhammad
  */
 
@@ -24,18 +24,23 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 public class University implements EntityBase, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="university_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "university_id")
     private int id;
-    @NotBlank(message="لطفاً کد دانشگاه را وارد نمایید.")
-	private String code;
-    @NotBlank(message="لطفاً نام دانشکاه را وارد نمایید.")
+
+    @NotBlank(message = "لطفاً کد دانشگاه را وارد نمایید.")
+    private String code;
+
+    @NotBlank(message = "لطفاً نام دانشکاه را وارد نمایید.")
     private String name;
     private String phone;
     private String address;
+
+    @Version
+    private int version;
 
     @Override
     public int getId() {
@@ -63,19 +68,27 @@ public class University implements EntityBase, Serializable {
         this.name = name;
     }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }

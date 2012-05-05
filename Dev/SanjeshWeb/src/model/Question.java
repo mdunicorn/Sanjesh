@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -54,26 +55,34 @@ public class Question implements EntityBase, Serializable {
     
     @NotNull
     private boolean taught;
+
     @NotNull
     private int answerTime;
+
     @NotNull
     private QuestionLevel questionLevel;
     
     @Column(name="answer_text")
     private String answerText;
+
     @Column(name="answer_image")
     private byte[] answerImage;
     
     @Column(name="incorrect_option1_text")
     private String incorrectOption1Text;
+
     @Column(name="incorrect_option1_image")
     private byte[] incorrectOption1Image;
+
     @Column(name="incorrect_option2_text")
     private String incorrectOption2Text;
+
     @Column(name="incorrect_option2_image")
     private byte[] incorrectOption2Image;
+
     @Column(name="incorrect_option3_text")
     private String incorrectOption3Text;
+
     @Column(name="incorrect_option3_image")
     private byte[] incorrectOption3Image;
     
@@ -81,7 +90,10 @@ public class Question implements EntityBase, Serializable {
     private Date designDate;
     
     private RegisterState registerState;
-    
+
+    @Version
+    private int version;
+
     public Question(){
     	registerState = RegisterState.NONE;
     	taught = false;
@@ -100,22 +112,22 @@ public class Question implements EntityBase, Serializable {
     }
 
     public Designer getDesigner() {
-		return designer;
-	}
+        return designer;
+    }
 
-	public void setDesigner(Designer designer) {
-		this.designer = designer;
-	}
+    public void setDesigner(Designer designer) {
+        this.designer = designer;
+    }
 
-	public Course getCourse() {
-		return course;
-	}
+    public Course getCourse() {
+        return course;
+    }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-	public String getQuestionText() {
+    public String getQuestionText() {
         return questionText;
     }
 
@@ -137,102 +149,110 @@ public class Question implements EntityBase, Serializable {
 
     public void setAnswerTime(int answerTime) {
         this.answerTime = answerTime;
-	}
+    }
 
-	public boolean isTaught() {
-		return taught;
-	}
+    public boolean isTaught() {
+        return taught;
+    }
 
-	public void setTaught(boolean taught) {
-		this.taught = taught;
-	}
+    public void setTaught(boolean taught) {
+        this.taught = taught;
+    }
 
-	public QuestionLevel getQuestionLevel() {
-		return questionLevel;
-	}
+    public QuestionLevel getQuestionLevel() {
+        return questionLevel;
+    }
 
-	public void setQuestionLevel(QuestionLevel questionLevel) {
-		this.questionLevel = questionLevel;
-	}
+    public void setQuestionLevel(QuestionLevel questionLevel) {
+        this.questionLevel = questionLevel;
+    }
 
-	public String getAnswerText() {
-		return answerText;
-	}
+    public String getAnswerText() {
+        return answerText;
+    }
 
-	public void setAnswerText(String answerText) {
-		this.answerText = answerText;
-	}
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
 
-	public byte[] getAnswerImage() {
-		return answerImage;
-	}
+    public byte[] getAnswerImage() {
+        return answerImage;
+    }
 
-	public void setAnswerImage(byte[] answerImage) {
-		this.answerImage = answerImage;
-	}
+    public void setAnswerImage(byte[] answerImage) {
+        this.answerImage = answerImage;
+    }
 
-	public String getIncorrectOption1Text() {
-		return incorrectOption1Text;
-	}
+    public String getIncorrectOption1Text() {
+        return incorrectOption1Text;
+    }
 
-	public void setIncorrectOption1Text(String incorrectOption1Text) {
-		this.incorrectOption1Text = incorrectOption1Text;
-	}
+    public void setIncorrectOption1Text(String incorrectOption1Text) {
+        this.incorrectOption1Text = incorrectOption1Text;
+    }
 
-	public byte[] getIncorrectOption1Image() {
-		return incorrectOption1Image;
-	}
+    public byte[] getIncorrectOption1Image() {
+        return incorrectOption1Image;
+    }
 
-	public void setIncorrectOption1Image(byte[] incorrectOption1Image) {
-		this.incorrectOption1Image = incorrectOption1Image;
-	}
+    public void setIncorrectOption1Image(byte[] incorrectOption1Image) {
+        this.incorrectOption1Image = incorrectOption1Image;
+    }
 
-	public String getIncorrectOption2Text() {
-		return incorrectOption2Text;
-	}
+    public String getIncorrectOption2Text() {
+        return incorrectOption2Text;
+    }
 
-	public void setIncorrectOption2Text(String incorrectOption2Text) {
-		this.incorrectOption2Text = incorrectOption2Text;
-	}
+    public void setIncorrectOption2Text(String incorrectOption2Text) {
+        this.incorrectOption2Text = incorrectOption2Text;
+    }
 
-	public byte[] getIncorrectOption2Image() {
-		return incorrectOption2Image;
-	}
+    public byte[] getIncorrectOption2Image() {
+        return incorrectOption2Image;
+    }
 
-	public void setIncorrectOption2Image(byte[] incorrectOption2Image) {
-		this.incorrectOption2Image = incorrectOption2Image;
-	}
+    public void setIncorrectOption2Image(byte[] incorrectOption2Image) {
+        this.incorrectOption2Image = incorrectOption2Image;
+    }
 
-	public String getIncorrectOption3Text() {
-		return incorrectOption3Text;
-	}
+    public String getIncorrectOption3Text() {
+        return incorrectOption3Text;
+    }
 
-	public void setIncorrectOption3Text(String incorrectOption3Text) {
-		this.incorrectOption3Text = incorrectOption3Text;
-	}
+    public void setIncorrectOption3Text(String incorrectOption3Text) {
+        this.incorrectOption3Text = incorrectOption3Text;
+    }
 
-	public byte[] getIncorrectOption3Image() {
-		return incorrectOption3Image;
-	}
+    public byte[] getIncorrectOption3Image() {
+        return incorrectOption3Image;
+    }
 
-	public void setIncorrectOption3Image(byte[] incorrectOption3Image) {
-		this.incorrectOption3Image = incorrectOption3Image;
-	}
+    public void setIncorrectOption3Image(byte[] incorrectOption3Image) {
+        this.incorrectOption3Image = incorrectOption3Image;
+    }
 
-	public Date getDesignDate() {
-		return designDate;
-	}
+    public Date getDesignDate() {
+        return designDate;
+    }
 
-	public void setDesignDate(Date designDate) {
-		this.designDate = designDate;
-	}
+    public void setDesignDate(Date designDate) {
+        this.designDate = designDate;
+    }
 
-	public RegisterState getRegisterState() {
-		return registerState;
-	}
+    public RegisterState getRegisterState() {
+        return registerState;
+    }
 
-	public void setRegisterState(RegisterState registerState) {
-		this.registerState = registerState;
-	}
+    public void setRegisterState(RegisterState registerState) {
+        this.registerState = registerState;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
 }

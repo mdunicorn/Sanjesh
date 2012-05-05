@@ -2,6 +2,7 @@ package core;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.OptimisticLockException;
 import javax.validation.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,12 @@ public class Utils {
 			// handled in one of the above cases.
 			return true;
 		}
+        OptimisticLockException le = findExceptionInChain(e, OptimisticLockException.class);
+        if (le != null) {
+            addFacesErrorMessage("امکان ثبت تغییرات وجود ندارد زیرا این مورد توسط شخص دیگری وایریش شده است. لطفا پس از زدن دکمه لغو، مجددا از روی لیست عمل ویرایش را انجام دهید.");
+            return true;
+        }
+
 		return false;
 	}
 

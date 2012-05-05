@@ -1,7 +1,5 @@
 ﻿package model;
 
-
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,13 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- *
+ * 
  * @author Abbas
  */
 
@@ -29,35 +28,37 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 public class UniversityAgent implements EntityBase, Person, Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="universityagent_id")
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "universityagent_id")
     private int id;
-	
+
     private String name;
-    
-    @NotBlank(message="لطفاً نام خانوادگی کارشناس را وارد نمایید.")
-    @Column(nullable=false)
+
+    @NotBlank(message = "لطفاً نام خانوادگی کارشناس را وارد نمایید.")
+    @Column(nullable = false)
     private String family;
-    
-    @NotBlank(message="لطفاً آدرس ایمیل را وارد نمایید.")
-    @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
+
+    @NotBlank(message = "لطفاً آدرس ایمیل را وارد نمایید.")
+    @Email(message = "لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
-    
-    //private String nationalCode;
-    
+
+    // private String nationalCode;
+
     private String organizationCode;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDate;
     private String birthLocation;
-    
-    @OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
+
+    @OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinColumn(name = "suser_ref", nullable = false)
     private User user;
 
+    @Version
+    private int version;
 
     @Override
     public int getId() {
@@ -85,13 +86,13 @@ public class UniversityAgent implements EntityBase, Person, Serializable {
         this.family = family;
     }
 
-//    public String getNationalCode() {
-//        return nationalCode;
-//    }
-//
-//    public void setNationalCode(String nationalCode) {
-//        this.nationalCode = nationalCode;
-//    }
+    // public String getNationalCode() {
+    // return nationalCode;
+    // }
+    //
+    // public void setNationalCode(String nationalCode) {
+    // this.nationalCode = nationalCode;
+    // }
 
     public String getOrganizationCode() {
         return organizationCode;
@@ -124,19 +125,27 @@ public class UniversityAgent implements EntityBase, Person, Serializable {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-    
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	public String getFullName(){
-		if (this.name == null || "".equals(this.name)) {
-			return this.family;
-		}
-		return this.name + " " + this.family;
-	}
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getFullName() {
+        if (this.name == null || "".equals(this.name)) {
+            return this.family;
+        }
+        return this.name + " " + this.family;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }

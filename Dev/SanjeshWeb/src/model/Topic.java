@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -29,6 +30,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Topic implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "topic_id")
@@ -50,6 +52,9 @@ public class Topic implements EntityBase, Serializable {
 //    @NotNull
 //    @Min(value=0, message="تعداد سؤالات نباید منفی باشد.")
 //    private int numberOfQuestions;
+
+    @Version
+    private int version;
 
     public int getId() {
         return id;
@@ -81,6 +86,14 @@ public class Topic implements EntityBase, Serializable {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
 }

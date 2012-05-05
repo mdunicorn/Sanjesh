@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -29,98 +30,110 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 public class User implements EntityBase, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "suser_id")
-	private int id;
-	
-	@NotBlank(message="لطفاً نام کاربری را وارد نمایید.")
-	private String userName;
-	@NotBlank(message="لطفاً رمز ورود را وارد نمایید.")
-	private String password;
-	@NotBlank(message="لطفاً نام کامل کاربر را وارد نمایید.")
-	private String fullName;
-	@NotNull
-	private boolean isActive;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "suser_id")
+    private int id;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-	@JoinTable(
-			joinColumns = @JoinColumn(name = "suser_ref"),
-			inverseJoinColumns = @JoinColumn(name = "role_ref"))
-	private Set<Role> roles;
-	
-	public User(){
-		isActive = true;
-	}
+    @NotBlank(message = "لطفاً نام کاربری را وارد نمایید.")
+    private String userName;
 
-	@Override
-	public int getId() {
-		return id;
-	}
+    @NotBlank(message = "لطفاً رمز ورود را وارد نمایید.")
+    private String password;
 
-	@Override
-	public void setId(int id) {
-		this.id = id;
-	}
+    @NotBlank(message = "لطفاً نام کامل کاربر را وارد نمایید.")
+    private String fullName;
 
-	public String getUserName() {
-		return userName;
-	}
+    @NotNull
+    private boolean isActive;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "suser_ref"), inverseJoinColumns = @JoinColumn(name = "role_ref"))
+    private Set<Role> roles;
 
-	public String getPassword() {
-		return password;
-	}
+    @Version
+    private int version;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public User() {
+        isActive = true;
+    }
 
-	public String getFullName() {
-		return fullName;
-	}
+    @Override
+    public int getId() {
+        return id;
+    }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Set<Role> getRoles() {
-		if (roles == null)
-			roles = new HashSet<Role>();
-		return roles;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-	
-	public boolean isAdmin(){
-		return getId() == 1;
-	}
-	
-	@Override
-	public int hashCode(){
-		return userName == null ? 0 : userName.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object o){
-		if( o instanceof User ){
-			return ((User)o).userName.equals(this.userName);
-		}
-		return false;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public boolean isActive() {
-		return isActive;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Set<Role> getRoles() {
+        if (roles == null)
+            roles = new HashSet<Role>();
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public boolean isAdmin() {
+        return getId() == 1;
+    }
+
+    @Override
+    public int hashCode() {
+        return userName == null ? 0 : userName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof User) {
+            return ((User) o).userName.equals(this.userName);
+        }
+        return false;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }

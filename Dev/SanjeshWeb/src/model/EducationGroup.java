@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,6 +23,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class EducationGroup implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "educationgroup_id")
@@ -29,11 +31,16 @@ public class EducationGroup implements EntityBase, Serializable {
 	
 	@NotBlank(message="لطفاً کد گروه را وارد نمایید.")
 	private String code;
-    @NotBlank(message = "لطفاً نام گروه تحصیلی را وارد نمایید.")
+
+	@NotBlank(message = "لطفاً نام گروه تحصیلی را وارد نمایید.")
     @Column(nullable = false, unique = true)
     private String name;
+
     @OneToMany(mappedBy = "group")
     private List<EducationField> fields;
+
+    @Version
+    private int version;
 
     public int getId() {
         return id;
@@ -73,5 +80,13 @@ public class EducationGroup implements EntityBase, Serializable {
 
     public void setFields(List<EducationField> fields) {
         this.fields = fields;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

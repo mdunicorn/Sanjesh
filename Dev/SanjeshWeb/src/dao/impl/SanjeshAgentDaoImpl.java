@@ -71,8 +71,8 @@ public class SanjeshAgentDaoImpl extends DaoImplBase<SanjeshAgent> implements Sa
 			else
 				roles.remove(roleDao.getQuestionExpertRole());
 		}
-		
-		userDao.save(user);
+
+        // The save (merge) operation will cascade to user and roles.
 		super.save(sa);
 	}
 

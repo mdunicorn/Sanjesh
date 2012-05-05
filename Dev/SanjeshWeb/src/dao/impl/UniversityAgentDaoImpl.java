@@ -48,7 +48,7 @@ public class UniversityAgentDaoImpl extends DaoImplBase<UniversityAgent>
 			user.getRoles().add(roleDao.getUniversityAgentRole());
 		}
 
-		userDao.save(ua.getUser());
+        // The save (merge) operation will cascade to user and roles.
 		super.save(ua);
 	}
 

@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -85,6 +86,10 @@ public class Designer implements EntityBase, Person, Serializable {
     @OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
     @JoinColumn(name = "suser_ref", nullable = false)
     private User user;
+    
+    @Version
+    private int version;
+
 
     public Designer(){
         state = RegisterState.NONE;
@@ -200,11 +205,18 @@ public class Designer implements EntityBase, Person, Serializable {
 		this.user = user;
 	}
     
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
 	public String getFullName(){
 		if( this.name == null || "".equals(this.name)){
 			return this.family;
 		}
 		return this.name + " " + this.family;
 	}
-
 }

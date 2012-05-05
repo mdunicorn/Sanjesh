@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -47,6 +48,9 @@ public class Course implements EntityBase, Serializable {
     
     @OneToMany(mappedBy="course")
     private List<Topic> topics;
+    
+    @Version
+    private int version;
 
     public int getId() {
         return id;
@@ -86,5 +90,13 @@ public class Course implements EntityBase, Serializable {
 
     public void setTopics(List<Topic> topics) {
         this.topics = topics;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
