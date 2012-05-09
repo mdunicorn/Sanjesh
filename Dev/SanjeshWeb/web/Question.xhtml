@@ -12,8 +12,13 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+
+			<p:growl rendered="#{not questionController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty questionController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{questionController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{questionController.list}" var="current"
 					emptyMessage="هیچ سوالی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -55,7 +60,9 @@
 
 			<p:fieldset legend="اطلاعات سؤال"
 				rendered="#{not empty questionController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{questionController.anyErrorMessageQueued}" />
+				
 				<p:focus />
 				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="متن سوال : *" />

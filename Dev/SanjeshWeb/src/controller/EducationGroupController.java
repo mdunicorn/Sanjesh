@@ -22,4 +22,9 @@ public class EducationGroupController extends EntityControllerBase<EducationGrou
     public void init() {
         super.init(dao);
     }
+
+    @Override
+    public String getEntityName() {
+        return "گروه تحصیلی";
+    }
 }

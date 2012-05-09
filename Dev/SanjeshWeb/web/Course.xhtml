@@ -12,8 +12,13 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+		
+			<p:growl rendered="#{not courseController.anyErrorMessageQueued}" />
+			
 			<h:panelGroup rendered="#{empty courseController.toEdit}">
-				<p:messages />
+			
+				<p:messages rendered="#{courseController.anyErrorMessageQueued}" />
+				
 				<p:dataTable value="#{courseController.list}" var="current"
 					emptyMessage="هیچ درسی تعریف نشده است." style="font-family: Tahoma; font-size:10pt">
 					<f:facet name="header">
@@ -58,7 +63,9 @@
 
 			<!--            <p:tabView-->
 			<p:fieldset legend="اطلاعات درس" rendered="#{not empty courseController.toEdit}">
-				<p:messages />
+			
+				<p:messages rendered="#{courseController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtCode" />
 				<h:panelGrid columns="2" cellpadding="10">
 
@@ -77,10 +84,13 @@
 
 				</h:panelGrid>
 
+				<p:commandButton id="btnSaveNew" value="ذخیره و جدید" ajax="false"
+					action="#{courseController.saveAndNew}"  icon="saveAndNewButton" iconPos="right"
+					style="margin: 5px;" />
 				<p:commandButton id="btnSave" value="ذخیره" ajax="false"
-					action="#{courseController.save}" icon="okButton" iconPos="right" />
+					action="#{courseController.save}" icon="okButton" iconPos="right" style="margin: 5px;" />
 				<p:commandButton value="لغو" ajax="false" immediate="true"
-					action="#{courseController.showList()}" icon="cancelButton" iconPos="right" />
+					action="#{courseController.showList()}" icon="cancelButton" iconPos="right" style="margin: 5px;" />
 			</p:fieldset>
 
 		</h:form>

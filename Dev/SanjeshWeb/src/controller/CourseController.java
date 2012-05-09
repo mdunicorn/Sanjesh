@@ -30,7 +30,19 @@ public class CourseController extends EntityControllerBase<Course> {
     public void init() {
         super.init(dao);
     }
-        
+    
+    @Override
+    public String getEntityName() {
+        return "درس";
+    }
+    
+    @Override
+    public void saveAndNew() {
+        EducationField field = getToEdit().getField();
+        super.saveAndNew();
+        getToEdit().setField(field);
+    }
+    
     public List<EducationField> getEducationFields(){
         return fieldDao.findAll();
     }

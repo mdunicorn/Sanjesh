@@ -51,7 +51,7 @@ public class EducationField implements EntityBase, Serializable {
     @NotNull(message="لطفاً گروه تحصیلی را انتخاب نمایید.")
     private EducationGroup group;
 
-    @OneToMany(mappedBy = "field")
+    @OneToMany(mappedBy = "field", fetch = FetchType.LAZY)
     private List<Course> courses;
 
     @Version
@@ -103,5 +103,10 @@ public class EducationField implements EntityBase, Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+    
+    @Override
+    public String toString(){
+        return name;
     }
 }

@@ -30,7 +30,9 @@
 .cancelButton {
     background-image: url('./../images/cancel.png') !important;
 }
-
+.saveAndNewButton {
+	background-image: url('./../images/saveandnew.png') !important;
+}
 .ui-widget, .ui-widget .ui-widget,
 .ui-widget input,
 .ui-widget select,
@@ -228,4 +230,10 @@ root {
 .calendarButtonIcon
 {
 	background-image: url('../images/calendarIcon.gif') !important;
+}
+
+.ui-growl {
+	left: 20px;
+	right: auto;
+	top: 30px;
 }

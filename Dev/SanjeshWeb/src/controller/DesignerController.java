@@ -43,6 +43,11 @@ public class DesignerController extends EntityControllerBase<Designer> {
     }
     
     @Override
+    public String getEntityName() {
+        return "طراح";
+    }
+    
+    @Override
     public void edit(Designer d){
     	super.edit(d);
     	updateDetailLists();

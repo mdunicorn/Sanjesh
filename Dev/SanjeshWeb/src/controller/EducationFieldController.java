@@ -28,7 +28,19 @@ public class EducationFieldController extends EntityControllerBase<EducationFiel
     public void init() {
         super.init(dao);
     }
-        
+
+    @Override
+    public String getEntityName() {
+        return "رشته تحصیلی";
+    }
+
+    @Override
+    public void saveAndNew() {
+        EducationGroup g = getToEdit().getGroup();
+        super.saveAndNew();
+        getToEdit().setGroup(g);
+    }
+
     public List<EducationGroup> getEducationGroups(){
         return groupDao.findAll();
     }

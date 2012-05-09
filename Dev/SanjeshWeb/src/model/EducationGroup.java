@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class EducationGroup implements EntityBase, Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<EducationField> fields;
 
     @Version
@@ -88,5 +89,10 @@ public class EducationGroup implements EntityBase, Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+    
+    @Override
+    public String toString(){
+        return name;
     }
 }

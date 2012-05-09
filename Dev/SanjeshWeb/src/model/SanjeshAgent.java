@@ -178,4 +178,9 @@ public class SanjeshAgent implements EntityBase, Person, Serializable {
     public void setVersion(int version) {
         this.version = version;
     }
+    
+    @Override
+    public String toString(){
+        return getFullName();
+    }
 }

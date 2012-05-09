@@ -22,4 +22,9 @@ public class GradeController extends EntityControllerBase<Grade> {
     public void init() {
         super.init(dao);
     }
+
+    @Override
+    public String getEntityName() {
+        return "رتبه علمی";
+    }
 }

@@ -255,4 +255,9 @@ public class Question implements EntityBase, Serializable {
         this.version = version;
     }
 
+    
+    @Override
+    public String toString(){
+        return "";
+    }
 }

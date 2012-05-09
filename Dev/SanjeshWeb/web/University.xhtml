@@ -10,8 +10,11 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+			<p:growl rendered="#{not universityController.anyErrorMessageQueued}" />
 			<h:panelGroup rendered="#{empty universityController.toEdit}">
-				<p:messages />
+			
+				<p:messages rendered="#{universityController.anyErrorMessageQueued}" />
+				
 				<p:dataTable value="#{universityController.list}" var="current"
 					emptyMessage="هیچ دانشگاهی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -65,7 +68,9 @@
 
 			<p:fieldset legend="اطلاعات دانشگاه"
 				rendered="#{not empty universityController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{universityController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtCode" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="کد : *" />
@@ -80,12 +85,16 @@
 					<h:outputText value="آدرس : " />
 					<p:inputText value="#{universityController.toEdit.address}" />
 				</h:panelGrid>
+				
+				<p:commandButton id="btnSaveNew" value="ذخیره و جدید" ajax="false"
+					action="#{universityController.saveAndNew}" icon="saveAndNewButton" iconPos="right"
+					style="margin: 5px;"/>				
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{universityController.save}" icon="okButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{universityController.showList()}" icon="cancelButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 			</p:fieldset>
 
 		</h:form>

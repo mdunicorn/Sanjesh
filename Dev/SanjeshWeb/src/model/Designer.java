@@ -219,4 +219,9 @@ public class Designer implements EntityBase, Person, Serializable {
 		}
 		return this.name + " " + this.family;
 	}
+    
+    @Override
+    public String toString(){
+        return getFullName();
+    }
 }

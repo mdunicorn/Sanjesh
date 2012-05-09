@@ -12,8 +12,13 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form>
+
+			<p:growl rendered="#{not educationFieldController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty educationFieldController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{educationFieldController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{educationFieldController.list}" var="current"
 					emptyMessage="هیچ رشته تحصیلی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -65,7 +70,9 @@
 
 			<p:fieldset legend="اطلاعات رشته تحصیلی"
 				rendered="#{not empty educationFieldController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{educationFieldController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtCode" />
 				<h:panelGrid columns="2" cellpadding="10">
 
@@ -85,12 +92,15 @@
 					<p:inputText value="#{educationFieldController.toEdit.name}" />
 
 				</h:panelGrid>
+				<p:commandButton id="btnSaveNew" value="ذخیره و جدید" ajax="false"
+					action="#{educationFieldController.saveAndNew}" icon="saveAndNewButton" iconPos="right"
+					style="margin: 5px;"/>
 				<p:commandButton value="ذخیره" ajax="false"
 					action="#{educationFieldController.save}" icon="okButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{educationFieldController.showList()}" icon="cancelButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 			</p:fieldset>
 
 		</h:form>

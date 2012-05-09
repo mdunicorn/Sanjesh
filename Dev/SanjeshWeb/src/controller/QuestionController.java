@@ -35,6 +35,11 @@ public class QuestionController extends EntityControllerBase<Question> {
 		super.init(dao);
 	}
 
+    @Override
+    public String getEntityName() {
+        return "سؤال";
+    }
+    
 	public List<Designer> getDesignerList() {
 		return designerDao.findAll();
 	}

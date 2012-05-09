@@ -20,8 +20,13 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+
+			<p:growl rendered="#{not sanjeshAgentController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty sanjeshAgentController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{sanjeshAgentController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{sanjeshAgentController.list}" var="current"
 					emptyMessage="هیچ کارشناسی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -98,7 +103,9 @@
 
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty sanjeshAgentController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{sanjeshAgentController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="3" columnClasses="editorCol1, editorCol2">
 

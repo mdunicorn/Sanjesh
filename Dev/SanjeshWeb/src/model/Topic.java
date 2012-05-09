@@ -96,4 +96,8 @@ public class Topic implements EntityBase, Serializable {
         this.version = version;
     }
 
+    @Override
+    public String toString(){
+        return name;
+    }
 }

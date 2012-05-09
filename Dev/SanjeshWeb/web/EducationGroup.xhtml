@@ -12,8 +12,13 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+
+			<p:growl rendered="#{not educationGroupController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty educationGroupController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{educationGroupController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{educationGroupController.list}" var="current"
 					emptyMessage="هیچ گروه تحصیلی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -61,7 +66,9 @@
 
 			<p:fieldset legend="اطلاعات گروه تحصیلی"
 				rendered="#{not empty educationGroupController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{educationGroupController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtCode" />
 				<h:panelGrid columns="2" cellpadding="10">
 
@@ -75,12 +82,15 @@
 
 				</h:panelGrid>
 
+				<p:commandButton id="btnSaveNew" value="ذخیره و جدید" ajax="false"
+					action="#{educationGroupController.saveAndNew}" icon="saveAndNewButton" iconPos="right"
+					style="margin: 5px;"/>
 				<p:commandButton id="btnSave" value="ذخیره" ajax="false"
 					action="#{educationGroupController.save}" icon="okButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{educationGroupController.showList()}" icon="cancelButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 			</p:fieldset>
 
 		</h:form>

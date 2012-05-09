@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+
 import model.Course;
 
 /**
@@ -28,6 +29,18 @@ public class TopicController extends EntityControllerBase<Topic> {
         super.init(dao);
     }
     
+    @Override
+    public String getEntityName() {
+        return "سرفصل";
+    }
+    
+    @Override
+    public void saveAndNew() {
+        Course c = getToEdit().getCourse();
+        super.saveAndNew();
+        getToEdit().setCourse(c);
+    }
+
     public List<Course> getCourses(){
         return courseDao.findAll();
     }

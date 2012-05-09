@@ -12,8 +12,12 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+			<p:growl rendered="#{not topicController.anyErrorMessageQueued}" />
+				
 			<h:panelGroup rendered="#{empty topicController.toEdit}">
-				<p:messages />
+			
+				<p:messages rendered="#{topicController.anyErrorMessageQueued}" />
+				
 				<p:dataTable value="#{topicController.list}" var="current"
 					emptyMessage="هیچ سرفصلی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -67,17 +71,21 @@
 			</h:panelGroup>
 			<p:fieldset legend="اطلاعات سرفصل"
 				rendered="#{not empty topicController.toEdit}">
-				<p:messages />
-				<p:focus />
+				
+				<p:messages rendered="#{topicController.anyErrorMessageQueued}" />
+				
+				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="10">
-					<h:outputText value="نام : *" />
-					<p:inputText value="#{topicController.toEdit.name}" />
 					<h:outputText value="درس : *" />
 					<p:selectOneMenu value="#{topicController.selectedCourseId}">
 						<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً درس را انتخاب نمایید." /> -->
 						<f:selectItems value="#{topicController.courses}" var="course"
 							itemLabel="#{course.name}" itemValue="#{course.id}" />
 					</p:selectOneMenu>
+
+					<h:outputText value="نام : *" />
+					<p:inputText id="txtName" value="#{topicController.toEdit.name}" />
+
 					<ui:remove>
 						<!-- 
 						<h:outputText value="تعداد سؤالات:" />
@@ -85,12 +93,20 @@
 							converterMessage="لطفا یک عدد معتبر وارد کنید." />
 							 -->
 					</ui:remove>
+					
 				</h:panelGrid>
+				
+				<br/>
+				
+				<p:commandButton id="btnSaveNew" value="ذخیره و جدید" ajax="false"
+					action="#{topicController.saveAndNew}" icon="saveAndNewButton" iconPos="right"
+					style="margin: 5px;"/>
 				<p:commandButton value="ذخیره" ajax="false"
-					action="#{topicController.save}" icon="okButton" iconPos="right" />
+					action="#{topicController.save}" icon="okButton" iconPos="right"
+					style="margin: 5px;"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{topicController.showList()}" icon="cancelButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 			</p:fieldset>
 
 		</h:form>

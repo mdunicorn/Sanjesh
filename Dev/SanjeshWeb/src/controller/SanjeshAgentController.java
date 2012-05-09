@@ -28,6 +28,11 @@ public class SanjeshAgentController extends EntityControllerBase<SanjeshAgent> {
         super.init(dao);
     }
     
+    @Override
+    public String getEntityName() {
+        return "نماینده سازمان سنجش";
+    }
+    
 	public String getPasswordCoinfirmation() {
 		return passwordCoinfirmation;
 	}

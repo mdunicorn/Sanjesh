@@ -12,8 +12,13 @@
     </ui:define>
 	<ui:define name="content">
 		<h:form>
+
+			<p:growl rendered="#{not gradeController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty gradeController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{gradeController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{gradeController.list}" var="current"
 					emptyMessage="هیچ پایه علمی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -57,7 +62,9 @@
 
 			<p:fieldset legend="اطلاعات پایه علمی"
 				rendered="#{not empty gradeController.toEdit}">
-				<p:messages />
+				
+				<p:messages rendered="#{gradeController.anyErrorMessageQueued}" />
+				
 				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="نام : *" />

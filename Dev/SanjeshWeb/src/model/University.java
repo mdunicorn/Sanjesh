@@ -91,4 +91,9 @@ public class University implements EntityBase, Serializable {
     public void setVersion(int version) {
         this.version = version;
     }
+    
+    @Override
+    public String toString(){
+        return name;
+    }
 }

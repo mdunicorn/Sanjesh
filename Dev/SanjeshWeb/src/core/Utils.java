@@ -31,6 +31,19 @@ public class Utils {
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
 	}
 	
+	public static void addFacesInformationMessage(String message) {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
+	}
+	
+    public static boolean isAnyFacesErrorMessageQueued() {
+        for (FacesMessage m : FacesContext.getCurrentInstance().getMessageList()) {
+            if (m.getSeverity() == FacesMessage.SEVERITY_ERROR)
+                return true;
+        }
+        return false;
+    }
+	
 	public static boolean handleBeanException(Throwable e) {
 		ValidationException vx = Utils.findExceptionInChain(e, ValidationException.class);
 		if( vx != null ){

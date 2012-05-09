@@ -23,8 +23,13 @@
 	<ui:define name="content">
 
 		<h:form>
+
+			<p:growl rendered="#{not universityAgentController.anyErrorMessageQueued}" />
+
 			<h:panelGroup rendered="#{empty universityAgentController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{universityAgentController.anyErrorMessageQueued}" />
+
 				<p:dataTable value="#{universityAgentController.list}" var="current"
 					emptyMessage="هیچ کارشناسی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
@@ -106,7 +111,9 @@
 			</h:panelGroup>
 			<p:fieldset legend="اطلاعات کارشناس"
 				rendered="#{not empty universityAgentController.toEdit}">
-				<p:messages />
+
+				<p:messages rendered="#{universityAgentController.anyErrorMessageQueued}" />
+
 				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="3"
 					columnClasses="editorCol1, editorCol2">

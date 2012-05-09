@@ -23,4 +23,8 @@ public class UniversityController extends EntityControllerBase<University>{
         super.init(dao);
     }
 
+    @Override
+    public String getEntityName() {
+        return "دانشگاه";
+    }
 }

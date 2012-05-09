@@ -23,8 +23,13 @@
 		</ui:define>
 		<ui:define name="content">
 			<h:form>
+			
+				<p:growl rendered="#{not designerController.anyErrorMessageQueued}" />
+				
 				<h:panelGroup rendered="#{empty designerController.toEdit}">
-					<p:messages />
+				
+					<p:messages rendered="#{designerController.anyErrorMessageQueued}" />
+
 					<p:dataTable value="#{designerController.list}" var="current"
 						emptyMessage="هیچ طراحی تعریف نشده است."
 						style="font-family: Tahoma; font-size:10pt">
@@ -94,7 +99,9 @@
 
 				<p:fieldset legend="اطلاعات طراح"
 					rendered="#{not empty designerController.toEdit}">
-					<p:messages />
+					
+					<p:messages rendered="#{designerController.anyErrorMessageQueued}" />
+					
 					<p:focus for="txtName" />
 					<h:panelGrid columns="4"
 						columnClasses="editorCol1, editorCol2, editorCol3, editorCol4">

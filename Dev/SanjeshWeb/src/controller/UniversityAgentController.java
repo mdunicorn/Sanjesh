@@ -29,6 +29,11 @@ public class UniversityAgentController extends
 		super.init(dao);
 	}
 
+    @Override
+    public String getEntityName() {
+        return "نماینده دانشگاه";
+    }
+    
 	public String getPasswordCoinfirmation() {
 		return passwordCoinfirmation;
 	}
