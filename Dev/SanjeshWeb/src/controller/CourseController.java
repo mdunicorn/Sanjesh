@@ -22,6 +22,8 @@ public class CourseController extends EntityControllerBase<Course> {
     private CourseDao dao;
     @Inject
     private EducationFieldDao fieldDao;
+    
+    private boolean showingTopicList = false;
 
     public CourseController() {
     }
@@ -55,5 +57,20 @@ public class CourseController extends EntityControllerBase<Course> {
     
     public void setSelectedFieldId(int id){
         this.getToEdit().setField(fieldDao.findById(id));
+    }
+    
+    public boolean isShowingTopicList() {
+        return showingTopicList;
+    }
+    
+    public void showTopicList() {
+        dao.fillTopics(toEdit);
+        showingTopicList = true;
+    }
+    
+    @Override
+    public void showList() {
+        super.showList();
+        showingTopicList = false;
     }
 }

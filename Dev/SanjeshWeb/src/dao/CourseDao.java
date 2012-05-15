@@ -11,4 +11,5 @@ import model.Course;
 public interface CourseDao extends DaoBase<Course>{
 	List<Course> findByCode(String code);
 	List<Course> findByCodeAndField(String code, int educationFieldId);
+	void fillTopics(Course c);
 }

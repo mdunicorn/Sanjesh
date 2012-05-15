@@ -1,8 +1,4 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package model;
+﻿package model;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -14,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +24,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Audited
+@NamedQuery(name="findTopicByCourse", query="select t from Topic t where t.course.id=:cid")
 public class Topic implements EntityBase, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -98,6 +96,6 @@ public class Topic implements EntityBase, Serializable {
 
     @Override
     public String toString(){
-        return name;
+        return name + " (" + getCourse().getName() + ")";
     }
 }

@@ -62,7 +62,8 @@
 			</h:panelGroup>
 
 			<!--            <p:tabView-->
-			<p:fieldset legend="اطلاعات درس" rendered="#{not empty courseController.toEdit}">
+			<h:panelGroup rendered="#{not empty courseController.toEdit}"> <!-- showing item -->
+			<p:fieldset legend="اطلاعات درس">
 			
 				<p:messages rendered="#{courseController.anyErrorMessageQueued}" />
 				
@@ -93,6 +94,36 @@
 					action="#{courseController.showList()}" icon="cancelButton" iconPos="right" style="margin: 5px;" />
 			</p:fieldset>
 
+			<p:commandButton value="نمایش سرفصل ها" 
+				action="#{courseController.showTopicList()}" ajax="true" update="topics"/>
+
+			<ui:remove>				
+			<p:ajaxStatus>
+				<f:facet name="start">
+					<h:graphicImage value="/resources/images/small-loading.gif" />
+				</f:facet>
+			</p:ajaxStatus>
+			</ui:remove>
+			<h:panelGroup id="topics">
+				<p:dataTable value="#{courseController.toEdit.topics}"
+					rendered="#{courseController.showingTopicList}"
+					emptyMessage="هیچ سرفصلی برای درس تعریف نشده است." var="topic"
+					style="font-family: Tahoma; font-size:10pt">
+					<f:facet name="header">
+						<h:outputText value="لیست سرفصل های درس" />
+					</f:facet>
+					<p:column sortBy="#{topic.name}">
+						<f:facet name="header">
+							<h:outputText style="text-align: right" value="نام" />
+						</f:facet>
+						<h:outputText value="#{topic.name}" />
+					</p:column>
+				</p:dataTable>
+								
+			</h:panelGroup>
+			
+			</h:panelGroup> <!-- showing item -->
+			
 		</h:form>
 	</ui:define>
 

@@ -28,9 +28,9 @@
 						filterBy="#{current.name}" filterMatchMode="contains">
 						<h:outputText value="#{current.name}" />
 					</p:column>
-					<p:column headerText="درس" sortBy="#{current.course.name}"
-						filterBy="#{current.course.name}" filterMatchMode="contains">
-						<h:outputText value="#{current.course.name}" />
+					<p:column headerText="درس" sortBy="#{current.course.toString()}"
+						filterBy="#{current.course.toString()}" filterMatchMode="contains">
+						<h:outputText value="#{current.course.toString()}" />
 					</p:column>
 					<ui:remove>
 						<!-- 
@@ -77,14 +77,14 @@
 				<p:focus for="txtName" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<h:outputText value="درس : *" />
-					<p:selectOneMenu value="#{topicController.selectedCourseId}">
+					<p:selectOneMenu value="#{topicController.selectedCourseId}" style="width: 350px;">
 						<!-- <f:selectItem noSelectionOption="true" itemLabel="لطفاً درس را انتخاب نمایید." /> -->
 						<f:selectItems value="#{topicController.courses}" var="course"
-							itemLabel="#{course.name}" itemValue="#{course.id}" />
+							itemLabel="#{course.toString()}" itemValue="#{course.id}" />
 					</p:selectOneMenu>
 
 					<h:outputText value="نام : *" />
-					<p:inputText id="txtName" value="#{topicController.toEdit.name}" />
+					<p:inputText id="txtName" value="#{topicController.toEdit.name}" style="width: 350px;"/>
 
 					<ui:remove>
 						<!-- 

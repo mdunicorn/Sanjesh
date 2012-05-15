@@ -53,22 +53,22 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
 
     @Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void save(T u) {
+    public void save(T e) {
     	List<String> errorMessages = new ArrayList<String>();
-    	if(!validateSave(u, errorMessages)){
+    	if(!validateSave(e, errorMessages)){
     		throw new ValidationException(StringUtils.join(errorMessages, "\n"));
     	}
-        em.merge(u);
+        em.merge(e);
     }
 
     @Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void remove(T u) {
+    public void remove(T e) {
     	List<String> errorMessages = new ArrayList<String>();
-    	if(!validateRemove(u, errorMessages)){
+    	if(!validateRemove(e, errorMessages)){
     		throw new ValidationException(StringUtils.join(errorMessages, "\n"));
     	}
-        em.remove(em.merge(u));
+        em.remove(em.merge(e));
     }
     
     @Override
@@ -82,7 +82,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     }
 
     @Override
-    public T refresh(T entity){
+    public T refresh(T entity) {
     	entity = em.merge(entity);
     	em.refresh(entity);
     	return entity;

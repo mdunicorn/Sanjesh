@@ -1,8 +1,4 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package dao;
+﻿package dao;
 
 import model.EntityBase;
 import java.util.List;
@@ -15,9 +11,7 @@ public interface DaoBase<T extends EntityBase> {
 
     T newEntity();
 
-    void save(T u);
-
-//    void update(T u);
+    void save(T entity);
     
     boolean validateSave(T entity, List<String> messages);
     
@@ -25,7 +19,7 @@ public interface DaoBase<T extends EntityBase> {
 
     T refresh(T entity);
 
-    void remove(T u);
+    void remove(T entity);
 
     List<T> findAll();
     

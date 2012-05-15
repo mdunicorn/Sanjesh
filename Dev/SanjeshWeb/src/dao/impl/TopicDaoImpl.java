@@ -1,8 +1,4 @@
-﻿/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package dao.impl;
+﻿package dao.impl;
 
 import java.util.List;
 
@@ -40,6 +36,12 @@ public class TopicDaoImpl extends DaoImplBase<Topic> implements TopicDao {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Topic> findByName(String name) {
 		return em.createQuery("from Topic where name=:n").setParameter("n", name).getResultList();
+	}
+	
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Topic> findByCourse(int courseId) {
+	    return em.createNamedQuery("findTopicByCourse", Topic.class).
+	            setParameter("cid", courseId).getResultList();
 	}
 
 }

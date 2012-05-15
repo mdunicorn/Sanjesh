@@ -196,7 +196,7 @@
 							<p:selectManyCheckbox layout="pageDirection"
 								value="#{designerController.selectedCourseIds}">
 								<f:selectItems value="#{designerController.courseList}"
-									var="course" itemLabel="#{course.name}" itemValue="#{course.id}"/>
+									var="course" itemLabel="#{course.toString()}" itemValue="#{course.id}"/>
 							</p:selectManyCheckbox>
 						</h:panelGroup>
 						
@@ -206,7 +206,7 @@
 							<p:selectManyCheckbox layout="pageDirection"
 								value="#{designerController.selectedQuestionCourseIds}">
 								<f:selectItems value="#{designerController.courseList}"
-									var="course" itemLabel="#{course.name}" itemValue="#{course.id}"/>
+									var="course" itemLabel="#{course.toString()}" itemValue="#{course.id}"/>
 							</p:selectManyCheckbox>
 						</h:panelGroup>
 
