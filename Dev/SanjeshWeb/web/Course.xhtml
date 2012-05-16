@@ -22,7 +22,7 @@
 				<p:dataTable value="#{courseController.list}" var="current"
 					emptyMessage="هیچ درسی تعریف نشده است." style="font-family: Tahoma; font-size:10pt">
 					<f:facet name="header">
-						<h:outputText value="لیست دروس" />
+						<h:outputText value="لیست دروس" style="font-size: 120%"/>
 					</f:facet>
 					<p:column headerText="رشته" sortBy="#{current.field.name}"
 						filterBy="#{current.field.name}" filterMatchMode="contains">

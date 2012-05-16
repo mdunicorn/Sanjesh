@@ -88,6 +88,13 @@
 	-moz-border-radius-bottomright: 3px;
 	-webkit-border-bottom-right-radius: 3px;
 	border-bottom-right-radius: 3px;
+	
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
 }
 
 .ui-corner-right {
@@ -97,6 +104,13 @@
 	-moz-border-radius-bottomleft: 3px;
 	-webkit-border-bottom-left-radius: 3px;
 	border-bottom-left-radius: 3px;
+	
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
 }
 
 
@@ -236,4 +250,20 @@ root {
 	left: 20px;
 	right: auto;
 	top: 30px;
+}
+
+.ui-icon-seek-prev {
+	background-position : -32px -160px
+}
+
+.ui-icon-seek-next {
+	background-position : -48px -160px;	
+}
+
+.ui-icon-seek-end {
+	background-position : -80px -160px;	
+}
+
+.ui-icon-seek-first {
+	background-position : -64px -160px;
 }

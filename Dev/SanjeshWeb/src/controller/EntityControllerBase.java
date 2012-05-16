@@ -21,7 +21,7 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 
 	public void init(DaoBase<T> d) {
 		dao = d;
-		list = dao.findAll();
+		loadList();
 	}
 	
 	public abstract String getEntityName();
@@ -102,7 +102,11 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 
 	public void showList() {
 		toEdit = null;
-		list = dao.findAll();
+		loadList();
+	}
+	
+	public void loadList() {
+	    list = dao.findAll();
 	}
 
     public ControllerState getControllerState() {

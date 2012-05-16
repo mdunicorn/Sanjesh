@@ -18,20 +18,29 @@
 			
 				<p:messages rendered="#{topicController.anyErrorMessageQueued}" />
 				
-				<p:dataTable value="#{topicController.list}" var="current"
+				<p:dataTable value="#{topicController.list2}" var="current"
 					emptyMessage="هیچ سرفصلی تعریف نشده است."
-					style="font-family: Tahoma; font-size:10pt">
+					style="font-family: Tahoma; font-size:10pt"
+					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,30,50,100"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
 					<f:facet name="header">
-						<h:outputText value="لیست سرفصل ها" />
+						<h:outputText value="لیست سرفصل ها" style="font-size: 120%"/>
 					</f:facet>
+					<p:column headerText="ردیف">#{topicController.list2.rowIndex+1}</p:column>
 					<p:column headerText="نام" sortBy="#{current.name}"
 						filterBy="#{current.name}" filterMatchMode="contains">
 						<h:outputText value="#{current.name}" />
 					</p:column>
-					<p:column headerText="درس" sortBy="#{current.course.toString()}"
-						filterBy="#{current.course.toString()}" filterMatchMode="contains">
-						<h:outputText value="#{current.course.toString()}" />
+					<p:column headerText="درس" sortBy="#{current.course.getCodeAndName()}"
+						filterBy="#{current.course.getCodeAndName()}" filterMatchMode="contains">
+						#{current.course.getCodeAndName()}
 					</p:column>
+					<p:column headerText="رشته" sortBy="#{current.course.field.name}"
+						filterBy="#{current.course.field.name}" filterMatchMode="contains">
+						#{current.course.field.name}
+					</p:column>
+					
 					<ui:remove>
 						<!-- 
 					<p:column headerText="تعدا سؤالات"

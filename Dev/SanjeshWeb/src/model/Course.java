@@ -102,7 +102,11 @@ public class Course implements EntityBase, Serializable {
     
     @Override
     public String toString(){
-        return code + "- " + name + " (" + getField().getName() + ")";
+        return code + " - " + name + " (" + getField().getName() + ")";
+    }
+    
+    public String getCodeAndName() {
+        return code + " - " + name;
     }
     
 }
