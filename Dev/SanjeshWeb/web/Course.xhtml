@@ -19,11 +19,15 @@
 			
 				<p:messages rendered="#{courseController.anyErrorMessageQueued}" />
 				
-				<p:dataTable value="#{courseController.list}" var="current"
-					emptyMessage="هیچ درسی تعریف نشده است." style="font-family: Tahoma; font-size:10pt">
+				<p:dataTable value="#{courseController.list2}" var="current"
+					emptyMessage="هیچ درسی تعریف نشده است." style="font-family: Tahoma; font-size:10pt"
+					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,30,50,100"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
 					<f:facet name="header">
 						<h:outputText value="لیست دروس" style="font-size: 120%"/>
 					</f:facet>
+					<p:column headerText="ردیف">#{courseController.list2.rowIndex+1}</p:column>
 					<p:column headerText="رشته" sortBy="#{current.field.name}"
 						filterBy="#{current.field.name}" filterMatchMode="contains">
 						<h:outputText value="#{current.field.name}" />

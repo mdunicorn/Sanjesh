@@ -6,6 +6,8 @@ import javax.faces.bean.ViewScoped;
 import model.Course;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import model.EducationField;
@@ -22,6 +24,8 @@ public class CourseController extends EntityControllerBase<Course> {
     private CourseDao dao;
     @Inject
     private EducationFieldDao fieldDao;
+    
+    private DataModel<Course> list2;
     
     private boolean showingTopicList = false;
 
@@ -73,4 +77,15 @@ public class CourseController extends EntityControllerBase<Course> {
         super.showList();
         showingTopicList = false;
     }
+    
+    public DataModel<Course> getList2() {
+        return list2;
+    }
+    
+    @Override
+    public void loadList() {
+        super.loadList();
+        list2 = new ListDataModel<Course>(super.getList());
+    }
+
 }
