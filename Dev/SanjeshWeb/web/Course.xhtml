@@ -100,14 +100,16 @@
 
 			<p:commandButton value="نمایش سرفصل ها" 
 				action="#{courseController.showTopicList()}" ajax="true" update="topics"/>
-
-			<ui:remove>				
+		
 			<p:ajaxStatus>
 				<f:facet name="start">
-					<h:graphicImage value="/resources/images/small-loading.gif" />
+					<h:graphicImage value="/resources/images/loading.gif" />
+				</f:facet>
+				<f:facet name="complete">
+					<h:outputText value="" />
 				</f:facet>
 			</p:ajaxStatus>
-			</ui:remove>
+			
 			<h:panelGroup id="topics">
 				<p:dataTable value="#{courseController.toEdit.topics}"
 					rendered="#{courseController.showingTopicList}"
