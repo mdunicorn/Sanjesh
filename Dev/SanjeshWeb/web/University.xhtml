@@ -17,10 +17,14 @@
 				
 				<p:dataTable value="#{universityController.list}" var="current"
 					emptyMessage="هیچ دانشگاهی تعریف نشده است."
-					style="font-family: Tahoma; font-size:10pt">
+					style="font-family: Tahoma; font-size:10pt" rowIndexVar="rowi"
+					paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20,30,50,100"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="صفحه {currentPage} از {totalPages}">					>
 					<f:facet name="header">
 					<h:outputText value="لیست دانشگاه ها" />
                 </f:facet>
+                	<p:column headerText="ردیف">#{rowi+1}</p:column>
 					<p:column headerText="کد" sortBy="#{current.code}"
 						filterBy="#{current.code}" filterMatchMode="startsWith">
 						<h:outputText value="#{current.code}" />
