@@ -27,6 +27,9 @@ public class DatabaseUpdater {
     private ProgressListener pListener;
     private Connection masterConnection, dbConnection;
     private int defaultSqlDateType = java.sql.Types.TIMESTAMP;
+    private static final String charVar255 = "character varying(255)";
+    private static final String charVar500 = "character varying(500)";
+    private static final String charVar4000 = "character varying(4000)";
 
     public DatabaseUpdater(
             String server, String port, String database,
@@ -143,6 +146,24 @@ public class DatabaseUpdater {
                 "select exists(select * from information_schema.columns where table_name=? and column_name=?)",
                 tableName.toLowerCase(), columnName.toLowerCase());
     }
+    
+    private boolean columnExists(String tableName, String columnName, String dataType) throws SQLException {
+        return (Boolean) executeScalar(dbConnection,
+                "select exists(select * from information_schema.columns where table_name=? and column_name=? and data_type=?)",
+                tableName.toLowerCase(), columnName.toLowerCase(), dataType.toLowerCase());
+    }
+    
+    private boolean charVarColumnExists(String tableName, String columnName, int maxLen) throws SQLException {
+        return (Boolean) executeScalar(dbConnection,
+                "select exists(select * from information_schema.columns where table_name=? and column_name=? and data_type='character varying' and character_maximum_length=?)",
+                tableName.toLowerCase(), columnName.toLowerCase(), maxLen);
+    }
+    
+    private int getColumnCharacterMaxLen(String tableName, String columnName) throws SQLException {
+       return (Integer)executeScalar(dbConnection,
+               "select character_maximum_length from information_schema.columns where table_name=? and column_name=?",
+               tableName.toLowerCase(), columnName.toLowerCase());
+    }
 
     private void createColumn(String tableName, String columnName, String type) throws SQLException{
         createColumn(tableName, columnName, type, true, null);
@@ -170,11 +191,24 @@ public class DatabaseUpdater {
         if (!columnExists(tableName, columnName)) {
             createColumn(tableName, columnName, type, nullable, defaultExpression);
         }
-
+    }
+    
+    private void createColumnIfNotExistsWithAud(String tableName, String columnName, String type,
+            boolean nullable, String defaultExpression) throws SQLException {
+        createColumnIfNotExists(tableName, columnName, type, nullable, defaultExpression);
+        createColumnIfNotExists(tableName + "_aud", columnName, type, nullable, defaultExpression);
     }
     
     private void setColumnNotNull(String tableName, String columnName) throws SQLException{
         executeUpdate(dbConnection, "ALTER TABLE " + tableName + " ALTER COLUMN " + columnName + " SET NOT NULL");
+    }
+    
+    private void changeColumnType(String tableName, String columnName, String newType, String conversionExpression) throws SQLException {
+        String sql = "ALTER TABLE " + tableName + " ALTER COLUMN " + columnName + " TYPE " + newType;
+        if( null != conversionExpression && !"".equals(conversionExpression)) {
+            sql += " USING " + conversionExpression;
+        }
+        executeUpdate(dbConnection, sql);
     }
 
     private void executeResourceFile(Connection connection, String path) throws IOException, SQLException {
@@ -195,12 +229,17 @@ public class DatabaseUpdater {
         executeQuery(dbConnection,
                 "SELECT setval('" + getSequenceNameForTable(tableName) + "'," + id + ")");
     }
+    
+    private int getNextId(String tableName) throws SQLException {
+        return (Integer)executeScalar(dbConnection,
+                "SELECT nextval('" + getSequenceNameForTable(tableName) + "')");
+    }
 
     private boolean sqlExists(Connection connection, String query, Object... params) throws SQLException {
         return (Boolean) executeScalar(connection, "SELECT EXISTS(" + query + ")", params);
     }
 
-    private boolean foreignKeyExists(String fkName) throws SQLException {
+    private boolean constraintExists(String fkName) throws SQLException {
         String query = "SELECT * FROM pg_catalog.pg_constraint WHERE conname=?";
         return sqlExists(dbConnection, query, fkName);
     }
@@ -218,7 +257,7 @@ public class DatabaseUpdater {
         if (cascadeOnDelete) {
             deleteAction = "ON DELETE CASCADE";
         } else {
-            deleteAction = "ON DELETE NO ACTION";
+            deleteAction = "ON DELETE RESTRICT";
         }
 
         String stmt = "ALTER TABLE " + childTableName + "\n"
@@ -230,14 +269,28 @@ public class DatabaseUpdater {
     
     public void createForeignKeyIfNotExists(String keyName, String childTableName, String childColumnName,
             String parentTableName, String parentColumnName, boolean cascadeOnUpdate, boolean cascadeOnDelete) throws SQLException {
-        if(!foreignKeyExists(keyName))
+        if(!constraintExists(keyName))
             createForeignKey(keyName, childTableName, childColumnName, parentTableName, parentColumnName,
                     cascadeOnUpdate, cascadeOnDelete);
     }
     
-    public void dropForeignKey(String tableName, String fkeyName) throws SQLException{
+    public void dropConstraint(String tableName, String conName) throws SQLException{
         String stmt = "ALTER TABLE " + tableName + "\n"
-                + "DROP CONSTRAINT " + fkeyName;
+                + "DROP CONSTRAINT " + conName;
+        executeUpdate(dbConnection, stmt);
+    }
+    
+    public void createPrimaryKey(String tableName, String keyName, String... columns) throws SQLException {
+        String stmt = "ALTER TABLE " + tableName + " ADD CONSTRAINT " + keyName
+                + " PRIMARY KEY (";
+        boolean first = true;
+        for (String c : columns) {
+            if (!first)
+                stmt += ",";
+            first = false;
+            stmt += c;
+        }
+        stmt += ")";
         executeUpdate(dbConnection, stmt);
     }
     
@@ -289,11 +342,11 @@ public class DatabaseUpdater {
                 "UniversityAgent",
                 "Designer",
                 "Question",
+                "Designer_ExpertInCourses",
             };
             
             String[] joinTables = new String[]{
                 "SUser_Role",
-                "Designer_ExpertInCourses",
                 "Designer_ExpertInCoursesQuestions",
             };
             
@@ -312,8 +365,7 @@ public class DatabaseUpdater {
             
             // Adding version column
             for (String t : normalTables){
-                createColumnIfNotExists(t.toLowerCase(), "version", "integer", false, "0");
-                createColumnIfNotExists(t.toLowerCase() + "_aud", "version", "integer", false, "0");
+                createColumnIfNotExistsWithAud(t.toLowerCase(), "version", "integer", false, "0");
             }
 
 
@@ -322,7 +374,7 @@ public class DatabaseUpdater {
             
             if (!columnExists(tableName, colName)) {
                 
-                createColumn(tableName, colName, "character varying(50)");
+                createColumn(tableName, colName, charVar255);
                 
                 ResultSetWrapper rw = executeQuery(dbConnection, "SELECT educationgroup_id FROM educationgroup");
                 ResultSet r = rw.getResultSet();
@@ -355,7 +407,7 @@ public class DatabaseUpdater {
                 createColumn(tableName, colName, "integer", false, null);
             }
 
-            if (!foreignKeyExists("fkey_sanjeshagent_suser_ref")) {
+            if (!constraintExists("fkey_sanjeshagent_suser_ref")) {
                 createForeignKey("fkey_sanjeshagent_suser_ref", tableName, colName,
                         "suser", "suser_id", false, false);
             }
@@ -376,7 +428,7 @@ public class DatabaseUpdater {
                 createColumn(tableName, colName, "integer", false, null);
             }
 
-            if (!foreignKeyExists("fkey_universityagent_suser_ref")) {
+            if (!constraintExists("fkey_universityagent_suser_ref")) {
                 createForeignKey("fkey_universityagent_suser_ref", tableName, colName,
                         "suser", "suser_id", false, false);
             }
@@ -408,10 +460,9 @@ public class DatabaseUpdater {
             
             createForeignKeyIfNotExists("fkey_designer_suser_ref", "designer", "suser_ref", "suser", "suser_id", false, false);
             
-            createColumnIfNotExists("suser", "isactive", "boolean", false, "true");
-            createColumnIfNotExists("suser_aud", "isactive", "boolean", false, "true");
+            createColumnIfNotExistsWithAud("suser", "isactive", "boolean", false, "true");
             
-            if (dbVersion == null) { // less than v0.5
+            if (dbVersion == null || dbVersion.isLessThan(0, 6)) { // less than v0.5
                 ResultSetWrapper rw = executeQuery(dbConnection,
                         "SELECT suser_id \n"
                         + "FROM suser u \n"
@@ -430,7 +481,84 @@ public class DatabaseUpdater {
                     executeUpdate(dbConnection, "DELETE FROM suser WHERE suser_id=?", id);
                 }
             }
+            
+            // changing length of the topic.name column to 4000
+            tableName = "topic";
+            if( getColumnCharacterMaxLen(tableName, "name") < 4000 ) {
+                changeColumnType(tableName, "name", charVar4000, null);
+            }
+            tableName += "_aud";
+            if( getColumnCharacterMaxLen(tableName, "name") < 4000 ) {
+                changeColumnType(tableName, "name", charVar4000, null);
+            }
+            
+            
+            // adding new column to 'designer' table
+            tableName = "designer";
+            createColumnIfNotExistsWithAud(tableName, "id_number", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "id_issue_location", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "national_code", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "phone_home", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "phone_cell", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "educationfield_ref", "integer", true, null);
+            createColumnIfNotExistsWithAud(tableName, "educationfield_other", charVar500, true, null);
+            createColumnIfNotExistsWithAud(tableName, "last_degree", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "degree_university_ref", "integer", true, null);
+            createColumnIfNotExistsWithAud(tableName, "degree_university_other", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "home_address", charVar4000, true, null);
+            createColumnIfNotExistsWithAud(tableName, "zip_code", charVar255, true, null);
+            
+            createColumnIfNotExistsWithAud(tableName, "work_university_ref", "integer", true, null);
+            createColumnIfNotExistsWithAud(tableName, "work_university_other", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "faculty", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "educationgroup_ref", "integer", true, null);
+            createColumnIfNotExistsWithAud(tableName, "educationgroup_other", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "work_startdate", "date", true, null);
+            createColumnIfNotExistsWithAud(tableName, "phone_work", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "fax_work", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "work_position", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "position_startdate", "date", true, null);
+            createColumnIfNotExistsWithAud(tableName, "position_enddate", "date", true, null);
+            
+            createForeignKeyIfNotExists("fkey_designer_educationfield_ref", tableName, "educationfield_ref",
+                    "educationfield", "educationfield_id", false, false);
 
+            createForeignKeyIfNotExists("fkey_designer_degree_university_ref", tableName, "degree_university_ref",
+                    "university", "university_id", false, false);
+
+            createForeignKeyIfNotExists("fkey_designer_work_university_ref", tableName, "work_university_ref",
+                    "university", "university_id", false, false);
+
+            createForeignKeyIfNotExists("fkey_designer_educationgroup_ref", tableName, "educationgroup_ref",
+                    "educationgroup", "educationgroup_id", false, false);
+
+            tableName = "designer_expertincourses";
+            colName = "designer_expertincourses_id";
+            String keyName = "designer_expertincourses_pkey";
+            if (!columnExists(tableName, colName)) {
+                dropConstraint(tableName, keyName);
+                createColumn(tableName, colName, "serial", true, null);
+                executeUpdate(dbConnection, "UPDATE " + tableName + " SET " + colName +
+                        "=nextval('"+ getSequenceNameForTable(tableName) + "') WHERE "+ colName + " IS NULL");
+                setColumnNotNull(tableName, colName);
+            }
+            if(!constraintExists(keyName))
+                createPrimaryKey(tableName, keyName, colName);
+
+            tableName += "_aud";
+            keyName = "designer_expertincourses_aud_pkey";
+            if (!columnExists(tableName, colName)) {
+                executeUpdate(dbConnection, "DELETE from " + tableName);
+                dropConstraint(tableName, keyName);
+                createColumn(tableName, colName, "integer", false, null);
+            }
+            if(!constraintExists(keyName))
+                createPrimaryKey(tableName, keyName, colName, "rev");
+            
+            tableName = "designer_expertincourses";
+            createColumnIfNotExistsWithAud(tableName, "start_date", "date", true, null);
+            createColumnIfNotExistsWithAud(tableName, "end_date", "date", true, null);
+            
             // Static data
             AddAdminUserIfNotExists();
             AddDefaultRoles();
@@ -445,8 +573,8 @@ public class DatabaseUpdater {
             
             
             int major = 0;
-            int minor = 5;
-            if (dbVersion == null || dbVersion.getMajor() < major || dbVersion.getMinor() < minor) {
+            int minor = 6;
+            if (dbVersion == null || dbVersion.isLessThan(major, minor)) {
                 logInfo("Updating version...");
                 insertDBVersion(major, minor, new Date());
                 logInfo("v" + major + "." + minor);

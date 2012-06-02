@@ -4,10 +4,12 @@
  *
  * @author Abbas
  */
+import dao.CourseDao;
 import dao.DesignerDao;
 import dao.RoleDao;
 import dao.UserDao;
 import model.Designer;
+import model.DesignerExpertInCourse;
 import model.User;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
 
 	@Inject
 	RoleDao roleDao;
+	
+	@Inject
+	CourseDao courseDao;
 	
 	
 	@Override
@@ -55,7 +60,22 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
         super.save(d);
     }
     
-	@Override
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void removeExpertInCourse(List<DesignerExpertInCourse> toRemove) {
+        for (DesignerExpertInCourse dec : toRemove)
+            em.remove(em.merge(dec));
+        toRemove.clear();
+    }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void saveExpertInCourse(DesignerExpertInCourse toSave) {
+        //for (DesignerExpertInCourse dec : toSave)
+            em.merge(toSave);
+    } 
+
+    @Override
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Designer findByUser(int userId) {
 		List<Designer> list =
@@ -74,6 +94,12 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
         return em.createQuery("from Designer where state=:s").
                 setParameter("s", state).getResultList();
     }
-
+    
+    @Override
+    public List<DesignerExpertInCourse> loadExpertInCourses(int designerId) {
+        return em.createNamedQuery("loadDesignerExpertInCourse", DesignerExpertInCourse.class).
+                setParameter("d", designerId).
+                getResultList();
+    }
     
 }

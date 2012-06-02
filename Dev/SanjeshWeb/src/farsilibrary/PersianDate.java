@@ -27,5 +27,10 @@ public class PersianDate {
 		this.month = m;
 		this.day = d;
 	}
+	
+	@Override
+	public String toString() {
+	    return String.format("%1$04d/%2$02d/%3$02d", year, month, day);
+	}
 
 }

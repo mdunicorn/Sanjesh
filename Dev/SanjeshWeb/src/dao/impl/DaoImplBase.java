@@ -103,4 +103,8 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
 //                setParameter("id", id).getSingleResult();
     	return (T)em.find(entityType, id);
     }
+    
+    public void clear() {
+        em.clear();
+    }
 }

@@ -108,5 +108,34 @@ public class Course implements EntityBase, Serializable {
     public String getCodeAndName() {
         return code + " - " + name;
     }
+
+    @Override
+    public boolean equals (Object o) {
+        if (o instanceof Course) {
+            Course c = (Course)o;
+            if (code == null) {
+                if (c.code != null)
+                    return false;
+            } else if (!code.equals(c.code))
+                return false;
+            if (name == null) {
+                if( c.name != null)
+                    return false;
+            } else if (!name.equals(c.name))
+                return false;
+            return true;
+        }
+        return false;            
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        if (name != null)
+            hash = name.hashCode();
+        if (code != null)
+            hash += code.hashCode();
+        return hash;
+    }
     
 }

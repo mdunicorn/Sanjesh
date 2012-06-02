@@ -3,10 +3,6 @@
  */
 package updater;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -20,6 +16,7 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  * The application's main frame.
@@ -456,27 +453,56 @@ public class UpdaterView extends FrameView {
         }
 
         public void logEvent(LogCategory category, String message) {
-            System.err.println(message);
-            txtLog.setText(txtLog.getText() + "\n" + message);
-            txtLog.setCaretPosition(txtLog.getText().length());
+            SwingUtilities.invokeLater(new LogEventRunnable(message));
+        }
+
+        private class LogEventRunnable implements Runnable {
+
+            private String message;
+
+            public LogEventRunnable(String message) {
+                this.message = message;
+            }
+
+            @Override
+            public void run() {
+                System.err.println(message);
+                txtLog.setText(txtLog.getText() + "\n" + message);
+                txtLog.setCaretPosition(txtLog.getText().length());
+            }
         }
 
         public void executingQuery(String query, Object... params) {
-            lastQuery = query;
-            String text = query;
-            if (params.length > 0) {
-                text += "\n Parameters: ";
-                boolean first = true;
-                for (Object o : params) {
-                    if (!first) {
-                        text += ", ";
-                    }
-                    first = false;
-                    text += o.toString();
-                }
+            SwingUtilities.invokeLater(new ExecutingQueryRunnable(query, params));
+        }
+        
+        private class ExecutingQueryRunnable implements Runnable {
+            private String query;
+            private Object[] params;
+            
+            public ExecutingQueryRunnable ( String query, Object[] params) {
+                this.query = query;
+                this.params = params;
             }
-            txtQuery.setText(txtQuery.getText() + "\n" + text);
-            txtQuery.setCaretPosition(txtQuery.getText().length());
+            
+            @Override
+            public void run() {
+                lastQuery = query;
+                String text = query;
+                if (params.length > 0) {
+                    text += "\n Parameters: ";
+                    boolean first = true;
+                    for (Object o : params) {
+                        if (!first) {
+                            text += ", ";
+                        }
+                        first = false;
+                        text += o.toString();
+                    }
+                }
+                txtQuery.setText(txtQuery.getText() + "\n" + text);
+                txtQuery.setCaretPosition(txtQuery.getText().length());
+            }
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

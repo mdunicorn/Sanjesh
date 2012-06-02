@@ -1,11 +1,15 @@
 ﻿package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import dao.CourseDao;
 import dao.DesignerDao;
+import dao.EducationFieldDao;
+import dao.EducationGroupDao;
 import dao.GradeDao;
+import dao.UniversityDao;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -16,7 +20,11 @@ import javax.inject.Inject;
 
 import model.Course;
 import model.Designer;
+import model.DesignerExpertInCourse;
+import model.EducationField;
+import model.EducationGroup;
 import model.Grade;
+import model.University;
 
 /**
  *
@@ -32,9 +40,23 @@ public class DesignerController extends EntityControllerBase<Designer> {
     private GradeDao gradeDao;
     @Inject
     private CourseDao courseDao;
+    @Inject
+    private EducationFieldDao educationFieldDao;
+    @Inject
+    private EducationGroupDao educationGroupDao;
+    @Inject
+    private UniversityDao universityDao;
     
     private List<Grade> gradeList;
     private List<Course> courseList;
+    private List<EducationField> educationFieldList;
+    private List<EducationGroup> educationGroupList;
+    private List<University> universityList;
+    
+    private DesignerExpertInCourse currentDesignerExpertInCourse = null;
+    private List<DesignerExpertInCourse> designerExpertInCoursesToRemove =
+            new ArrayList<DesignerExpertInCourse>();
+    
 	private String passwordCoinfirmation;
 
     @PostConstruct
@@ -50,6 +72,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
     @Override
     public void edit(Designer d){
     	super.edit(d);
+    	d.setExpertInCourses(dao.loadExpertInCourses(d.getId()));
     	updateDetailLists();
 		setPasswordCoinfirmation(d.getUser().getPassword());
     }
@@ -63,7 +86,22 @@ public class DesignerController extends EntityControllerBase<Designer> {
     
     private void updateDetailLists(){
     	gradeList = gradeDao.findAll();
-    	courseList = courseDao.findAll();    	
+    }
+    
+    public void updateUniversityList() {
+        universityList = universityDao.findAll();
+    }
+    
+    public void updateEducationFieldList() {
+        educationFieldList = educationFieldDao.findAll();
+    }
+    
+    public void updateEducationGroupList() {
+        educationGroupList = educationGroupDao.findAll();
+    }
+    
+    public void updateCourseList() {
+        courseList = courseDao.findAll();
     }
     
     public List<Grade> getGradeList(){
@@ -74,31 +112,119 @@ public class DesignerController extends EntityControllerBase<Designer> {
     	return courseList;
     }
     
-    public int getSelectedGradeId(){
-    	if( getToEdit().getGrade() != null)
-    		return getToEdit().getGrade().getId();
-    	return 0;    		
+    public List<EducationGroup> getEducationGroupList() {
+        return educationGroupList;
     }
     
-    public void setSelectedGradeId(int gradeId){
-    	this.getToEdit().setGrade(gradeDao.findById(gradeId));
+    public List<EducationField> getEducationFieldList() {
+        return educationFieldList;
     }
     
-    public Integer[] getSelectedCourseIds(){
-    	Integer[] array = new Integer[getToEdit().getExpertInCourses().size()];
-    	int i = 0;
-    	for (Course c : getToEdit().getExpertInCourses())
-    		array[i++] = c.getId();
-    	return array;
+    public List<University> getUniversityList() {
+        return universityList;
+    }    
+    
+    public Integer getSelectedGradeId(){
+        Grade g = getToEdit().getGrade(); 
+    	if( g == null)
+    	    return null;
+    	return g.getId();
     }
     
-    public void setSelectedCourseIds(Integer[] courseIds){
-    	Designer d = getToEdit();
-    	d.getExpertInCourses().clear();
-    	for (Integer i : courseIds){
-    		d.getExpertInCourses().add(courseDao.findById(i));
-    	}
+    public void setSelectedGradeId(Integer gradeId){
+        if( gradeId == null )
+            getToEdit().setGrade(null);
+        else
+            getToEdit().setGrade(gradeDao.findById(gradeId));
     }
+    
+    public String getCurrentEducationFieldString() {
+        EducationField e = getToEdit().getEducationField();
+        if( e != null )
+            return e.getName();
+        else
+            return getToEdit().getEducationFieldOther();
+    }
+    
+    public void updateSelectedEducationField(EducationField e) {
+        getToEdit().setEducationFieldOther(null);
+        getToEdit().setEducationField(e);
+    }
+    
+    public void educationFieldOtherFilled() {
+        getToEdit().setEducationField(null);
+    }
+
+
+    public String getCurrentDegreeUnivesityString() {
+        University u = getToEdit().getDegreeUniversity();
+        if( u != null )
+            return u.getName();
+        else
+            return getToEdit().getDegreeUniversityOther();
+    }
+    
+    public void updateSelectedDegreeUniversity(University u) {
+        getToEdit().setDegreeUniversityOther(null);
+        getToEdit().setDegreeUniversity(u);
+    }
+    
+    public void degreeUniversityOtherFilled() {
+        getToEdit().setDegreeUniversity(null);
+    }
+    
+    public String getCurrentWorkUnivesityString() {
+        University u = getToEdit().getWorkUniversity();
+        if( u != null )
+            return u.getName();
+        else
+            return getToEdit().getWorkUniversityOther();
+    }
+    
+    public void updateSelectedWorkUniversity(University u) {
+        getToEdit().setWorkUniversityOther(null);
+        getToEdit().setWorkUniversity(u);
+    }
+    
+    public void workUniversityOtherFilled() {
+        getToEdit().setWorkUniversity(null);
+    }
+    
+    public String getCurrentEducationGroupString() {
+        EducationGroup e = getToEdit().getEducationGroup();
+        if( e != null )
+            return e.getName();
+        else
+            return getToEdit().getEducationGroupOther();
+    }
+    
+    public void updateSelectedEducationGroup(EducationGroup e) {
+        getToEdit().setEducationGroupOther(null);
+        getToEdit().setEducationGroup(e);
+    }
+    
+    public void educationGroupOtherFilled() {
+        getToEdit().setEducationGroup(null);
+    }
+
+    
+
+    
+//    public Integer[] getSelectedCourseIds(){
+//    	Integer[] array = new Integer[getToEdit().getExpertInCourses().size()];
+//    	int i = 0;
+//    	for (Course c : getToEdit().getExpertInCourses())
+//    		array[i++] = c.getId();
+//    	return array;
+//    }
+//    
+//    public void setSelectedCourseIds(Integer[] courseIds){
+//    	Designer d = getToEdit();
+//    	d.getExpertInCourses().clear();
+//    	for (Integer i : courseIds){
+//    		d.getExpertInCourses().add(courseDao.findById(i));
+//    	}
+//    }
 
     public Integer[] getSelectedQuestionCourseIds(){
     	Set<Course> courses = getToEdit().getExpertInCoursesQuestions();
@@ -124,9 +250,29 @@ public class DesignerController extends EntityControllerBase<Designer> {
 	public void setPasswordCoinfirmation(String passwordCoinfirmation) {
 		this.passwordCoinfirmation = passwordCoinfirmation;
 	}
+	
+	public void newDesignerExpertInCourse() {
+	    currentDesignerExpertInCourse = new DesignerExpertInCourse();
+	    updateCourseList();
+	}
+	
+	public DesignerExpertInCourse getCurrentDesignerExpertInCourse() {
+	    return currentDesignerExpertInCourse;
+	}
+	
+	public void addCurrentDesignerExpertInCourse() {
+	    getToEdit().getExpertInCourses().add(currentDesignerExpertInCourse);
+	    currentDesignerExpertInCourse.setDesigner(getToEdit());
+	}
+	
+    public void removeExpertInCourse(DesignerExpertInCourse dec) {
+        getToEdit().getExpertInCourses().remove(dec);
+        designerExpertInCoursesToRemove.add(dec);
+    }
+
 
 	@Override
-	public void save() {
+	public boolean beforeSave() {
 		Designer d = this.getToEdit();
 		if (!this.getPasswordCoinfirmation().equals(
 				d.getUser().getPassword())) {
@@ -134,12 +280,17 @@ public class DesignerController extends EntityControllerBase<Designer> {
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"رمز عبور وارد شده مطابق تکرار آن نمیباشد.", "لطفاً با دقت بیشتری رمز و تکرار آن را وارد نمایید."));
-			return;
+			return false;
 		}
-		else{
-			super.save();
-			setPasswordCoinfirmation(null);
-		}
+		return true;
 	}
+	
+    @Override
+	public void afterSave() {
+        for( DesignerExpertInCourse dec : getToEdit().getExpertInCourses()) 
+            dao.saveExpertInCourse(dec);
+        dao.removeExpertInCourse(designerExpertInCoursesToRemove);
+        setPasswordCoinfirmation(null);
+    }
 
 }

@@ -48,7 +48,10 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public void remove() {
         controllerState = ControllerState.AFTER_DELETE;
 		try {
+		    if (!beforeRemove())
+		        return;
 			dao.remove(toDelete);
+			afterRemove();
 			Utils.addFacesInformationMessage(getEntityDisplayTitle(toDelete) + " حذف شد.");
 		} catch (Throwable e) {
 		    controllerState = ControllerState.DELETE_ERROR;
@@ -57,8 +60,11 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 			else
 				throw e;
 		}
-		list = dao.findAll();
+		loadList();
 	}
+	
+	protected boolean beforeRemove() {return true;}
+	protected void afterRemove() {}
 
 	public void edit(T u) {
 		this.toEdit = u;
@@ -73,7 +79,10 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public void save() {
         controllerState = ControllerState.AFTER_SAVE;
 		try {
+            if (!beforeSave())
+                return;
 			dao.save(toEdit);
+			afterSave();
 	        Utils.addFacesInformationMessage(getEntityDisplayTitle(toEdit) + " ذخیره شد.");
 		} catch (Throwable e) {
             controllerState = ControllerState.SAVE_ERROR;
@@ -84,6 +93,9 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 		}
 		showList();
 	}
+	
+	protected boolean beforeSave() {return true;}
+	protected void afterSave() {}
 	
 	public void saveAndNew() {
         controllerState = ControllerState.AFTER_SAVEANDNEW;
@@ -106,6 +118,7 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	}
 	
 	public void loadList() {
+        dao.clear();
 	    list = dao.findAll();
 	}
 

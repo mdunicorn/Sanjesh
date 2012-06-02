@@ -24,4 +24,6 @@ public interface DaoBase<T extends EntityBase> {
     List<T> findAll();
     
     T findById(int id);
+    
+    void clear();
 }

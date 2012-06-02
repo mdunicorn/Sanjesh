@@ -267,3 +267,15 @@ root {
 .ui-icon-seek-first {
 	background-position : -64px -160px;
 }
+
+.ui-tabs .ui-tabs-nav li {
+	float : right;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-list-item {
+	text-align: right;
+}
+
+.calendar {
+	z-index: 10000; /* on top of everything */
+}

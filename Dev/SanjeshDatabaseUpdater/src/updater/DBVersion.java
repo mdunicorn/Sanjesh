@@ -37,4 +37,12 @@ public class DBVersion {
     public void setInsertDate(Date d){
         insertDate = d;
     }
+    
+    public boolean isLessThan( int major, int minor ) {
+        return major < this.major || minor < this.minor;
+    }
+    
+    public boolean isGreaterThan( int major, int minor ) {
+        return major > this.major || minor > this.minor;
+    }
 }

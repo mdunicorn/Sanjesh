@@ -26,7 +26,7 @@ public class PersianDateConverter implements Converter{
 			return null;
 		Date d = (Date)value;
 		PersianDate pd = farsilibrary.PersianDateConverter.ToPersianDate(d);
-		return String.format("%1$04d/%2$02d/%3$02d", pd.year, pd.month, pd.day);
+		return pd.toString();
 	}
 
 }

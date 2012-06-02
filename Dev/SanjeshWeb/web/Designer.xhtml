@@ -23,7 +23,7 @@
 		</ui:define>
 		<ui:define name="content">
 			<h:form>
-			
+
 				<p:growl rendered="#{not designerController.anyErrorMessageQueued}" />
 				
 				<h:panelGroup rendered="#{empty designerController.toEdit}">
@@ -75,8 +75,10 @@
 									action="#{designerController.setToDelete(current)}"
 									oncomplete="dlgRemove.show()" icon="deleteButton"
 									iconPos="right" />
-								<p:commandButton value="تأیید" ajax="false" />
-								<p:commandButton value="عدم تأیید" ajax="false" />
+								<ui:remove>
+									<p:commandButton value="تأیید" ajax="false" />
+									<p:commandButton value="عدم تأیید" ajax="false" />
+								</ui:remove>
 							</h:panelGroup>
 						</p:column>
 						<f:facet name="footer">
@@ -102,95 +104,241 @@
 					
 					<p:messages rendered="#{designerController.anyErrorMessageQueued}" />
 					
-					<p:focus for="txtName" />
-					<h:panelGrid columns="4"
-						columnClasses="editorCol1, editorCol2, editorCol3, editorCol4">
+					<p:tabView>
+					
+						<p:tab title="اطلاعات فردی">
 						
-						<h:outputText value="#{msgs.name}:" />
-						<p:inputText id="txtName"
-							value="#{designerController.toEdit.name}" />
+							<p:focus for="txtName" />
+						
+							<h:panelGrid columns="3">
+																
+								<h:outputText value="#{msgs.name}:" />
+								<p:inputText id="txtName" style="width: 140px;"
+									value="#{designerController.toEdit.name}" />
+								<h:outputText value=""/>
+									
+								<h:outputText value="#{msgs.family}:" />
+								<p:inputText value="#{designerController.toEdit.family}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.birthDate}:" />
+								<p:inputText id="birthDate_input" style="width: 140px;"
+									value="#{designerController.toEdit.birthDate}">
+									<f:converter converterId="persianDateConverter" />
+								</p:inputText>
+								<h:panelGroup>
+									<img src="resources/images/calendarIcon.gif" id="birthDate_btn" style="cursor: pointer;" />
+									<script>
+									Calendar.setup({
+									    inputField: "#{p:component('birthDate_input')}",
+									    button: 'birthDate_btn',
+									    ifFormat: '%Y/%m/%d',
+									    dateType: 'jalali'
+									});
+									</script>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.birthLocation}:" />
+								<p:inputText value="#{designerController.toEdit.birthLocation}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.idNumber}:" />
+								<p:inputText value="#{designerController.toEdit.idNumber}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.idIssueLocation}:" />
+								<p:inputText value="#{designerController.toEdit.idIssueLocation}" style="width: 140px;" />
+								<h:outputText value=""/>
+
+								<h:outputText value="#{msgs.nationalCode}:" />
+								<p:inputText value="#{designerController.toEdit.nationalCode}" style="width: 140px;" />
+								<h:outputText value=""/>
+
+								<h:outputText value="#{msgs.homePhone}:" />
+								<p:inputText value="#{designerController.toEdit.homePhone}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.cellPhone}:" />
+								<p:inputText value="#{designerController.toEdit.cellPhone}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.educationField}:" />
+								<p:inputText id="txtEducationField" readonly="true" value="#{designerController.currentEducationFieldString}" style="width: 140px;"/>
+								<p:commandButton ajax="true" immediate="true" action="#{designerController.updateEducationFieldList()}"
+									update=":#{p:component('dlgEducationFieldId')}" oncomplete="dlgEducationField.show()"
+									value="..."/>
+								
+								<h:outputText value="#{msgs.lastDegree}:" />
+								<p:inputText value="#{designerController.toEdit.lastDegree}" style="width: 140px;" />
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.degreeUniversity}:"/>
+								<p:inputText id="txtDegreeUniversity" readonly="true" value="#{designerController.currentDegreeUnivesityString}" style="width: 140px;"/>
+								<p:commandButton ajax="true" immediate="true" action="#{designerController.updateUniversityList()}"
+									update=":#{p:component('dlgDegreeUniversityId')}" oncomplete="dlgDegreeUnivesity.show()"
+									value="..."/>
+								
+								<h:outputText value="#{msgs.homeAddress}:" />
+								<p:inputText value="#{designerController.toEdit.homeAddress}" style="width: 140px;"/>
+								<h:outputText value=""/>
+								
+								<h:outputText value="#{msgs.zipCode}:" />
+								<p:inputText value="#{designerController.toEdit.zipCode}" style="width: 140px;"/>
+								<h:outputText value=""/>
+
+							</h:panelGrid>
 							
-						<h:outputText value="#{msgs.family}:" />
-						<p:inputText value="#{designerController.toEdit.family}" />
+							
+						</p:tab>
 						
-						<h:outputText value="#{msgs.organizationCode}:" />
-						<p:inputText value="#{designerController.toEdit.organizationCode}" />
+						<p:tab title="اطلاعات شغلی">
+							<h:panelGrid columns="2">
 						
-						<ui:remove>
-							<!--
-					<h:outputText value="#{msgs.university}:" />
-						<h:selectOneMenu>
-							<f:selectItem noSelectionOption="true"
-								itemLabel="#{msgs.pleaseSelectUniversity}" />
-						</h:selectOneMenu>
-					 -->
-						</ui:remove>
-						
-						<h:outputText value="#{msgs.birthDate}:" />
-						<h:panelGroup>
-							<p:inputText id="date_input" style="width: 130px;"
-								value="#{designerController.toEdit.birthDate}">
-								<f:converter converterId="persianDateConverter" />
-							</p:inputText>
-							<img src="resources/images/calendarIcon.gif" id="date_btn" style="cursor: pointer;" />
-							<script>
-							Calendar.setup({
-							    inputField: '#{p:component('date_input')}',
-							    button: 'date_btn',
-							    ifFormat: '%Y/%m/%d',
-							    dateType: 'jalali'
-							});
-							</script>
-						</h:panelGroup>
-						
-						<h:outputText value="#{msgs.birthLocation}:" />
-						<p:inputText value="#{designerController.toEdit.birthLocation}" />
-						
-						<h:outputText value="#{msgs.emailAddress}:" />
-						<p:inputText value="#{designerController.toEdit.emailAddress}" />
-						
-						<ui:remove>
-							<h:outputText value="#{msgs.employmentDate}:" />
-							<p:calendar />
-							<h:outputText value="#{msgs.faculty}:" />
-							<p:inputText />
-							<h:outputText value="#{msgs.educationGroup}:" />
-							<h:selectOneMenu>
-								<f:selectItem noSelectionOption="true"
-									itemLabel="#{msgs.pleaseSelectFaculty}" />
-							</h:selectOneMenu>
-							<h:outputText value="#{msgs.educationField}:" />
-							<h:selectOneMenu>
-								<f:selectItem noSelectionOption="true"
-									itemLabel="#{msgs.pleaseSelectEducationField}" />
-							</h:selectOneMenu>
-						</ui:remove>
-						
-						<h:outputText value="#{msgs.grade}:" />
-						<p:selectOneMenu value="#{designerController.selectedGradeId}">
-							<ui:remove><f:selectItem noSelectionOption="true"
-								itemLabel="#{msgs.pleaseSelectGrade}" /></ui:remove>
-							<f:selectItems value="#{designerController.gradeList}"
-								var="group" itemLabel="#{group.name}" itemValue="#{group.id}" />
-						</p:selectOneMenu>
+								<h:outputText value="#{msgs.workUniversity}:"/>
+								<h:panelGroup>
+									<p:inputText id="txtWorkUniversity" readonly="true" value="#{designerController.currentWorkUnivesityString}" style="width: 140px;"/>
+									<p:commandButton ajax="true" immediate="true" action="#{designerController.updateUniversityList()}"
+										update=":#{p:component('dlgWorkUniversityId')}" oncomplete="dlgWorkUnivesity.show()"
+										value="..."/>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.faculty}:" />
+								<p:inputText value="#{designerController.toEdit.faculty}" style="width: 140px;"/>
+								
+								<h:outputText value="#{msgs.educationGroup}:" />
+								<h:panelGroup>
+									<p:inputText id="txtEducationGroup" readonly="true" value="#{designerController.currentEducationGroupString}" style="width: 140px;"/>
+									<p:commandButton ajax="true" immediate="true" action="#{designerController.updateEducationGroupList()}"
+										update=":#{p:component('dlgEducationGroupId')}" oncomplete="dlgEducationGroup.show()"
+										value="..."/>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.workStartDate}:" />
+								<h:panelGroup>
+									<p:inputText id="workStartDate_input" style="width: 140px;"
+										value="#{designerController.toEdit.workStartDate}">
+										<f:converter converterId="persianDateConverter" />
+									</p:inputText>
+									<img src="resources/images/calendarIcon.gif" id="workStartDate_btn" style="cursor: pointer;" />
+									<script>
+									Calendar.setup({
+									    inputField: "#{p:component('workStartDate_input')}",
+									    button: 'workStartDate_btn',
+									    ifFormat: '%Y/%m/%d',
+									    dateType: 'jalali'
+									});
+									</script>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.organizationCode}:" />
+								<p:inputText value="#{designerController.toEdit.organizationCode}" style="width: 140px;" />
+								
+								<h:outputText value="#{msgs.phone}:" />
+								<p:inputText value="#{designerController.toEdit.workPhone}" style="width: 140px;"/>
 
-						<ui:remove>						
-						<h:outputText />
-						<h:outputText />
-						</ui:remove>
-						
-						<h:outputText value="#{msgs.userName}:" />
-						<p:inputText autocomplete="off"
-							value="#{designerController.toEdit.user.userName}" />
+								<h:outputText value="#{msgs.fax}:" />
+								<p:inputText value="#{designerController.toEdit.workFax}" style="width: 140px;"/>
+								
+								<h:outputText value="#{msgs.workPosition}:" />
+								<p:inputText value="#{designerController.toEdit.workPosition}" style="width: 140px;"/>
+								
+								<h:outputText value="#{msgs.fromDatePosition}:" />
+								<h:panelGroup>
+									<p:inputText id="positionStartDate_input" style="width: 140px;"
+										value="#{designerController.toEdit.positionStartDate}">
+										<f:converter converterId="persianDateConverter" />
+									</p:inputText>
+									<img src="resources/images/calendarIcon.gif" id="positionStartDate_btn" style="cursor: pointer;" />
+									<script>
+									Calendar.setup({
+									    inputField: "#{p:component('positionStartDate_input')}",
+									    button: 'positionStartDate_btn',
+									    ifFormat: '%Y/%m/%d',
+									    dateType: 'jalali'
+									});
+									</script>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.toDatePosition}:" />
+								<h:panelGroup>
+									<p:inputText id="positionEndDate_input" style="width: 140px;"
+										value="#{designerController.toEdit.positionEndDate}">
+										<f:converter converterId="persianDateConverter" />
+									</p:inputText>
+									<img src="resources/images/calendarIcon.gif" id="positionEndDate_btn" style="cursor: pointer;" />
+									<script>
+									Calendar.setup({
+									    inputField: "#{p:component('positionEndDate_input')}",
+									    button: 'positionEndDate_btn',
+									    ifFormat: '%Y/%m/%d',
+									    dateType: 'jalali'
+									});
+									</script>
+								</h:panelGroup>
+								
+								<h:outputText value="#{msgs.grade}:" />
+								<p:selectOneMenu value="#{designerController.selectedGradeId}" style="width: 140px;">
+									<f:selectItem itemLabel="" itemValue="#{null}"/>
+									<f:selectItems value="#{designerController.gradeList}"
+										var="grade" itemLabel="#{grade.name}" itemValue="#{grade.id}" />
+								</p:selectOneMenu>
+								
+								<h:outputText value="#{msgs.expertInCourses}:"/>
+								<h:panelGroup>
+									<h:panelGroup id="panel1">
+									<p:dataTable id="tblDesignerExpertInCourses" value="#{designerController.toEdit.expertInCourses}"
+										var="deCourse">
+										<p:column headerText="درس">
+											#{deCourse.course.toString()}
+										</p:column>
+										<p:column headerText="از تاریخ">
+											#{deCourse.startDateString}
+										</p:column>
+										<p:column headerText="تا تاریخ">
+											#{deCourse.endDateString}
+										</p:column>
+										<p:column>
+											<p:commandButton ajax="true" value="حذف"
+												icon="deleteButton" iconPos="right" immediate="true"
+												action="#{designerController.removeExpertInCourse(deCourse)}"
+												update=":#{p:component('panel1')}"/>
+										</p:column>
+									</p:dataTable>
+									</h:panelGroup>
+									<p:commandButton ajax="true" action="#{designerController.newDesignerExpertInCourse()}"
+										value="جدید" icon="addButton" iconPos="right" immediate="true"
+										update=":#{p:component('dlgDesignerExpertInCourseId')}" oncomplete="dlgDesignerExpertInCourse.show()"/>								
+								</h:panelGroup>
+								
+							</h:panelGrid>
 
-						<h:outputText value="#{msgs.password}:" />
-						<p:password id="txtPassword" feedback="false" minLength="1" autocomplete="off"
-							redisplay="true" value="#{designerController.toEdit.user.password}" />
-	
-						<h:outputText value="#{msgs.confirmPassword}:" />
-						<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off"
-							redisplay="true" value="#{designerController.passwordCoinfirmation}" />
-												
+						</p:tab>
+						
+						<p:tab title="اطلاعات کاربری">
+							<h:panelGrid columns="2">
+							
+								<h:outputText value="#{msgs.emailAddress}:" />
+								<p:inputText value="#{designerController.toEdit.emailAddress}" />
+														
+								<h:outputText value="#{msgs.userName}:" />
+								<p:inputText autocomplete="off"
+									value="#{designerController.toEdit.user.userName}" />
+		
+								<h:outputText value="#{msgs.password}:" />
+								<p:password id="txtPassword" feedback="false" minLength="1" autocomplete="off"
+									redisplay="true" value="#{designerController.toEdit.user.password}" />
+			
+								<h:outputText value="#{msgs.confirmPassword}:" />
+								<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off"
+									redisplay="true" value="#{designerController.passwordCoinfirmation}" />
+
+							</h:panelGrid>
+						</p:tab>
+						
+					</p:tabView>
+					
+						
+<ui:remove>												
 						<h:outputText value="#{msgs.expertInCourses}:" />						
 						<h:panelGroup layout="block" style="overflow: auto; height:200px; border: 1px solid #b0b0b0">
 							<p:selectManyCheckbox layout="pageDirection"
@@ -209,8 +357,7 @@
 									var="course" itemLabel="#{course.toString()}" itemValue="#{course.id}"/>
 							</p:selectManyCheckbox>
 						</h:panelGroup>
-
-					</h:panelGrid>
+</ui:remove>
 					<br />
 					<p:commandButton id="btnSave" value="ذخیره" ajax="false"
 						action="#{designerController.save}" icon="okButton"
@@ -221,6 +368,217 @@
 				</p:fieldset>
 
 			</h:form>
+			
+			<p:dialog id="dlgWorkUniversityId" widgetVar="dlgWorkUnivesity" modal="true">
+			
+				<h:form>
+			
+					<p:dataTable value="#{designerController.universityList}" var="university"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
+						
+						<p:column headerText="کد" filterBy="#{university.code}" sortBy="#{university.code}" filterMatchMode="contains">
+							#{university.code}
+						</p:column>
+						<p:column headerText="نام" filterBy="#{university.name}" sortBy="#{university.name}" filterMatchMode="contains">
+							#{university.name}
+						</p:column>
+						<p:column>
+							<p:commandButton value="انتخاب" immediate="true"
+								action="#{designerController.updateSelectedWorkUniversity(university)}"
+								update=":#{p:component('txtWorkUniversity')}" oncomplete="dlgWorkUnivesity.hide()"/>
+							
+						</p:column>
+					</p:dataTable>
+					
+					<hr/>
+					<h:outputText value="سایر دانشگاه ها:" />
+					<p:inputText value="#{designerController.toEdit.workUniversityOther}"/>
+					<p:commandButton value="تأیید" ajax="true" action="#{designerController.workUniversityOtherFilled()}"
+						update=":#{p:component('txtWorkUniversity')}" oncomplete="dlgWorkUnivesity.hide()" />
+						
+				</h:form>
+				
+			</p:dialog>
+
+			<p:dialog id="dlgDegreeUniversityId" widgetVar="dlgDegreeUnivesity" modal="true">
+			
+				<h:form>
+			
+					<p:dataTable value="#{designerController.universityList}" var="university"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
+						
+						<p:column headerText="کد" filterBy="#{university.code}" sortBy="#{university.code}" filterMatchMode="contains">
+							#{university.code}
+						</p:column>
+						<p:column headerText="نام" filterBy="#{university.name}" sortBy="#{university.name}" filterMatchMode="contains">
+							#{university.name}
+						</p:column>
+						<p:column>
+							<p:commandButton value="انتخاب" immediate="true"
+								action="#{designerController.updateSelectedDegreeUniversity(university)}"
+								update=":#{p:component('txtDegreeUniversity')}" oncomplete="dlgDegreeUnivesity.hide()"/>
+							
+						</p:column>
+					</p:dataTable>
+					
+					<hr/>
+					<h:outputText value="سایر دانشگاه ها:" />
+					<p:inputText value="#{designerController.toEdit.degreeUniversityOther}"/>
+					<p:commandButton value="تأیید" ajax="true" action="#{designerController.degreeUniversityOtherFilled()}"
+						update=":#{p:component('txtDegreeUniversity')}" oncomplete="dlgDegreeUnivesity.hide()" />
+						
+				</h:form>
+				
+			</p:dialog>
+
+			<p:dialog id="dlgEducationFieldId" widgetVar="dlgEducationField" modal="true">
+			
+				<h:form>
+			
+					<p:dataTable value="#{designerController.educationFieldList}" var="efield"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
+						
+						<p:column headerText="گروه تحصیلی" sortBy="#{efield.group.name}"
+							filterBy="#{efield.group.name}" filterMatchMode="contains">
+							#{efield.group.name}
+						</p:column>
+						<p:column headerText="کد" sortBy="#{efield.code}"
+							filterBy="#{efield.code}" filterMatchMode="contains">
+							#{efield.code}
+						</p:column>
+						<p:column headerText="نام" sortBy="#{efield.name}"
+							filterBy="#{efield.name}" filterMatchMode="contains">
+							#{efield.name}
+						</p:column>
+						<p:column>
+							<p:commandButton value="انتخاب" immediate="true"
+								action="#{designerController.updateSelectedEducationField(efield)}"
+								update=":#{p:component('txtEducationField')}" oncomplete="dlgEducationField.hide()"/>
+							
+						</p:column>
+					</p:dataTable>
+					
+					<hr/>
+					<h:outputText value="سایر :" />
+					<p:inputText value="#{designerController.toEdit.educationFieldOther}"/>
+					<p:commandButton value="تأیید" ajax="true" action="#{designerController.educationFieldOtherFilled()}"
+						update=":#{p:component('txtEducationField')}" oncomplete="dlgEducationField.hide()" />
+						
+				</h:form>
+				
+			</p:dialog>
+
+			<p:dialog id="dlgEducationGroupId" widgetVar="dlgEducationGroup" modal="true">
+			
+				<h:form>
+			
+					<p:dataTable value="#{designerController.educationGroupList}" var="egroup"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
+						
+						<p:column headerText="کد" sortBy="#{egroup.code}"
+							filterBy="#{egroup.code}" filterMatchMode="contains">
+							#{egroup.code}
+						</p:column>
+						<p:column headerText="نام" sortBy="#{egroup.name}"
+							filterBy="#{egroup.name}" filterMatchMode="contains">
+							#{egroup.name}
+						</p:column>
+						<p:column>
+							<p:commandButton value="انتخاب" immediate="true"
+								action="#{designerController.updateSelectedEducationGroup(egroup)}"
+								update=":#{p:component('txtEducationGroup')}" oncomplete="dlgEducationGroup.hide()"/>
+							
+						</p:column>
+					</p:dataTable>
+					
+					<hr/>
+					<h:outputText value="سایر :" />
+					<p:inputText value="#{designerController.toEdit.educationGroupOther}"/>
+					<p:commandButton value="تأیید" ajax="true" action="#{designerController.educationGroupOtherFilled()}"
+						update=":#{p:component('txtEducationGroup')}" oncomplete="dlgEducationGroup.hide()" />
+						
+				</h:form>
+				
+			</p:dialog>
+			
+			<p:dialog header="انتخاب درس" id="dlgDesignerExpertInCourseId" widgetVar="dlgDesignerExpertInCourse" modal="true">
+			
+				<h:form>
+					<br/>
+					<h:outputText value="سابقه تدریس: از "/>
+					<p:inputText id="courseStartDate_input" style="width: 70px;"
+						value="#{designerController.currentDesignerExpertInCourse.startDate}">
+						<f:converter converterId="persianDateConverter" />
+					</p:inputText>
+					<img src="resources/images/calendarIcon.gif" id="courseStartDate_btn" style="cursor: pointer;" />
+					<h:outputText value=" تا "/>
+					<p:inputText id="courseEndDate_input" style="width: 70px;"
+						value="#{designerController.currentDesignerExpertInCourse.endDate}">
+						<f:converter converterId="persianDateConverter" />
+					</p:inputText>
+					<img src="resources/images/calendarIcon.gif" id="courseEndDate_btn" style="cursor: pointer;" />
+					
+					<script>
+					Calendar.setup({
+					    inputField: '#{p:component("courseStartDate_input")}',
+					    button: 'courseStartDate_btn',
+					    ifFormat: '%Y/%m/%d',
+					    dateType: 'jalali'
+					});
+					</script>
+					<script>
+					Calendar.setup({
+					    inputField: "#{p:component('courseEndDate_input')}",
+					    button: 'courseEndDate_btn',
+					    ifFormat: '%Y/%m/%d',
+					    dateType: 'jalali'
+					});
+					</script>
+	
+					<p:dataTable value="#{designerController.courseList}" var="course"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}"
+						rowIndexVar="rowi" rowKey="#{course.id}" selectionMode="single" selection="#{designerController.currentDesignerExpertInCourse.course}">
+
+						<p:column headerText="ردیف">#{rowi+1}</p:column>
+						<p:column headerText="رشته" sortBy="#{course.field.name}"
+							filterBy="#{course.field.name}" filterMatchMode="contains">
+							#{course.field.name}
+						</p:column>
+						<p:column headerText="کد" sortBy="#{course.code}" filterBy="#{course.code}"
+							filterMatchMode="contains">
+							#{course.code}
+						</p:column>
+						<p:column headerText="نام" sortBy="#{course.name}" filterBy="#{course.name}"
+							filterMatchMode="contains">
+							#{course.name}
+						</p:column>
+						
+					</p:dataTable>
+					<hr/>
+	
+					<p:commandButton ajax="true" value="تأیید"
+						action="#{designerController.addCurrentDesignerExpertInCourse()}"
+						update=":#{p:component('tblDesignerExpertInCourses')}"
+						oncomplete="dlgDesignerExpertInCourse.hide()"  icon="okButton"
+						iconPos="right"/>
+					<p:commandButton ajax="true" value="لغو" immediate="true"
+						icon="cancelButton" iconPos="right"
+						onclick="dlgDesignerExpertInCourse.hide()"/>
+					
+				</h:form>
+			</p:dialog>
+			
+			
 		</ui:define>
 
 	</ui:composition>
