@@ -162,6 +162,10 @@
 								<p:inputText value="#{designerController.toEdit.cellPhone}" style="width: 140px;" />
 								<h:outputText value=""/>
 								
+								<h:outputText value="#{msgs.emailAddress}:" />
+								<p:inputText value="#{designerController.toEdit.emailAddress}" style="width: 140px;" />
+								<h:outputText value=""/>
+														
 								<h:outputText value="#{msgs.educationField}:" />
 								<p:inputText id="txtEducationField" readonly="true" value="#{designerController.currentEducationFieldString}" style="width: 140px;"/>
 								<p:commandButton ajax="true" immediate="true" action="#{designerController.updateEducationFieldList()}"
@@ -317,9 +321,6 @@
 						<p:tab title="اطلاعات کاربری">
 							<h:panelGrid columns="2">
 							
-								<h:outputText value="#{msgs.emailAddress}:" />
-								<p:inputText value="#{designerController.toEdit.emailAddress}" />
-														
 								<h:outputText value="#{msgs.userName}:" />
 								<p:inputText autocomplete="off"
 									value="#{designerController.toEdit.user.userName}" />
