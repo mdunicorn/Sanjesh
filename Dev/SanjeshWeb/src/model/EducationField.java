@@ -105,4 +105,8 @@ public class EducationField implements EntityBase, Serializable {
     public String toString(){
         return name;
     }
+    
+    public String getCodeAndName() {
+        return code + " - " + name;
+    }
 }

@@ -205,11 +205,11 @@
 								<h:outputText value="#{msgs.faculty}:" />
 								<p:inputText value="#{designerController.toEdit.faculty}" style="width: 140px;"/>
 								
-								<h:outputText value="#{msgs.educationGroup}:" />
+								<h:outputText value="#{msgs.workEducationField}:" />
 								<h:panelGroup>
-									<p:inputText id="txtEducationGroup" readonly="true" value="#{designerController.currentEducationGroupString}" style="width: 140px;"/>
-									<p:commandButton ajax="true" immediate="true" action="#{designerController.updateEducationGroupList()}"
-										update=":#{p:component('dlgEducationGroupId')}" oncomplete="dlgEducationGroup.show()"
+									<p:inputText id="txtWorkEducationField" readonly="true" value="#{designerController.currentWorkEducationFieldString}" style="width: 140px;"/>
+									<p:commandButton ajax="true" immediate="true" action="#{designerController.updateEducationFieldList()}"
+										update=":#{p:component('dlgWorkEducationFieldId')}" oncomplete="dlgWorkEducationField.show()"
 										value="..."/>
 								</h:panelGroup>
 								
@@ -474,36 +474,36 @@
 				
 			</p:dialog>
 
-			<p:dialog id="dlgEducationGroupId" widgetVar="dlgEducationGroup" modal="true">
+			<p:dialog id="dlgWorkEducationFieldId" widgetVar="dlgWorkEducationField" modal="true">
 			
 				<h:form>
 			
-					<p:dataTable value="#{designerController.educationGroupList}" var="egroup"
+					<p:dataTable value="#{designerController.educationFieldList}" var="ef"
 						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						currentPageReportTemplate="صفحه {currentPage} از {totalPages}">
 						
-						<p:column headerText="کد" sortBy="#{egroup.code}"
-							filterBy="#{egroup.code}" filterMatchMode="contains">
-							#{egroup.code}
+						<p:column headerText="کد" sortBy="#{ef.code}"
+							filterBy="#{ef.code}" filterMatchMode="contains">
+							#{ef.code}
 						</p:column>
-						<p:column headerText="نام" sortBy="#{egroup.name}"
-							filterBy="#{egroup.name}" filterMatchMode="contains">
-							#{egroup.name}
+						<p:column headerText="نام" sortBy="#{ef.name}"
+							filterBy="#{ef.name}" filterMatchMode="contains">
+							#{ef.name}
 						</p:column>
 						<p:column>
 							<p:commandButton value="انتخاب" immediate="true"
-								action="#{designerController.updateSelectedEducationGroup(egroup)}"
-								update=":#{p:component('txtEducationGroup')}" oncomplete="dlgEducationGroup.hide()"/>
+								action="#{designerController.updateSelectedWorkEducationField(ef)}"
+								update=":#{p:component('txtWorkEducationField')}" oncomplete="dlgWorkEducationField.hide()"/>
 							
 						</p:column>
 					</p:dataTable>
 					
 					<hr/>
 					<h:outputText value="سایر :" />
-					<p:inputText value="#{designerController.toEdit.educationGroupOther}"/>
-					<p:commandButton value="تأیید" ajax="true" action="#{designerController.educationGroupOtherFilled()}"
-						update=":#{p:component('txtEducationGroup')}" oncomplete="dlgEducationGroup.hide()" />
+					<p:inputText value="#{designerController.toEdit.workEducationFieldOther}"/>
+					<p:commandButton value="تأیید" ajax="true" action="#{designerController.workEducationFieldOtherFilled()}"
+						update=":#{p:component('txtWorkEducationField')}" oncomplete="dlgWorkEducationField.hide()" />
 						
 				</h:form>
 				

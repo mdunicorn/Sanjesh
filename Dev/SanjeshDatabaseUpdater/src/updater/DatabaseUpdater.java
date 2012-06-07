@@ -199,6 +199,21 @@ public class DatabaseUpdater {
         createColumnIfNotExists(tableName + "_aud", columnName, type, nullable, defaultExpression);
     }
     
+    private void dropColumn(String tableName, String columnName) throws SQLException {
+        String sql = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName;
+        executeUpdate(dbConnection, sql);
+    }
+    
+    private void dropColumnIfExists(String tableName, String columnName) throws SQLException {
+        if (columnExists(tableName, columnName))
+            dropColumn(tableName, columnName);
+    }
+    
+    private void dropColumnIfExistsWithAud(String tableName, String columnName) throws SQLException {
+        dropColumnIfExists(tableName, columnName);
+        dropColumnIfExists(tableName + "_aud", columnName);
+    }
+    
     private void setColumnNotNull(String tableName, String columnName) throws SQLException{
         executeUpdate(dbConnection, "ALTER TABLE " + tableName + " ALTER COLUMN " + columnName + " SET NOT NULL");
     }
@@ -278,6 +293,11 @@ public class DatabaseUpdater {
         String stmt = "ALTER TABLE " + tableName + "\n"
                 + "DROP CONSTRAINT " + conName;
         executeUpdate(dbConnection, stmt);
+    }
+    
+    public void dropConstraintIfExists(String tableName, String conName) throws SQLException {
+        if (constraintExists(conName))
+            dropConstraint(tableName, conName);
     }
     
     public void createPrimaryKey(String tableName, String keyName, String... columns) throws SQLException {
@@ -492,9 +512,14 @@ public class DatabaseUpdater {
                 changeColumnType(tableName, "name", charVar4000, null);
             }
             
+            tableName = "designer";
+            
+            // column is not required
+            dropColumnIfExistsWithAud(tableName, "educationgroup_ref");
+            dropColumnIfExistsWithAud(tableName, "educationgroup_other");
+            dropConstraintIfExists(tableName, "fkey_designer_educationgroup_ref");
             
             // adding new column to 'designer' table
-            tableName = "designer";
             createColumnIfNotExistsWithAud(tableName, "id_number", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "id_issue_location", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "national_code", charVar255, true, null);
@@ -511,8 +536,8 @@ public class DatabaseUpdater {
             createColumnIfNotExistsWithAud(tableName, "work_university_ref", "integer", true, null);
             createColumnIfNotExistsWithAud(tableName, "work_university_other", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "faculty", charVar255, true, null);
-            createColumnIfNotExistsWithAud(tableName, "educationgroup_ref", "integer", true, null);
-            createColumnIfNotExistsWithAud(tableName, "educationgroup_other", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "work_educationfield_ref", "integer", true, null);
+            createColumnIfNotExistsWithAud(tableName, "work_educationfield_other", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "work_startdate", "date", true, null);
             createColumnIfNotExistsWithAud(tableName, "phone_work", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "fax_work", charVar255, true, null);
@@ -529,8 +554,8 @@ public class DatabaseUpdater {
             createForeignKeyIfNotExists("fkey_designer_work_university_ref", tableName, "work_university_ref",
                     "university", "university_id", false, false);
 
-            createForeignKeyIfNotExists("fkey_designer_educationgroup_ref", tableName, "educationgroup_ref",
-                    "educationgroup", "educationgroup_id", false, false);
+            createForeignKeyIfNotExists("fkey_designer_work_educationfield_ref", tableName, "work_educationfield_ref",
+                    "educationfield", "educationfield_id", false, false);
 
             tableName = "designer_expertincourses";
             colName = "designer_expertincourses_id";
@@ -573,7 +598,7 @@ public class DatabaseUpdater {
             
             
             int major = 0;
-            int minor = 6;
+            int minor = 7;
             if (dbVersion == null || dbVersion.isLessThan(major, minor)) {
                 logInfo("Updating version...");
                 insertDBVersion(major, minor, new Date());

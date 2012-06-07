@@ -39,10 +39,10 @@ public class DBVersion {
     }
     
     public boolean isLessThan( int major, int minor ) {
-        return major < this.major || minor < this.minor;
+        return this.major < major || this.minor < minor;
     }
     
     public boolean isGreaterThan( int major, int minor ) {
-        return major > this.major || minor > this.minor;
+        return this.major > major || this.minor > minor;
     }
 }

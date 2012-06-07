@@ -141,11 +141,11 @@ public class Designer implements EntityBase, Person, Serializable {
     private String faculty;
     
     @ManyToOne
-    @JoinColumn(name="educationgroup_ref")
-    private EducationGroup educationGroup;
+    @JoinColumn(name="work_educationfield_ref")
+    private EducationField workEducationField;
     
-    @Column(name="educationgroup_other")
-    private String educationGroupOther;
+    @Column(name="work_educationfield_other")
+    private String workEducationFieldOther;
     
     @Column(name="work_startdate")
     @Temporal(TemporalType.DATE)
@@ -404,20 +404,20 @@ public class Designer implements EntityBase, Person, Serializable {
         this.faculty = faculty;
     }
 
-    public EducationGroup getEducationGroup() {
-        return educationGroup;
+    public EducationField getWorkEducationField() {
+        return workEducationField;
     }
 
-    public void setEducationGroup(EducationGroup educationGroup) {
-        this.educationGroup = educationGroup;
+    public void setWorkEducationField(EducationField f) {
+        this.workEducationField = f;
     }
 
-    public String getEducationGroupOther() {
-        return educationGroupOther;
+    public String getWorkEducationFieldOther() {
+        return workEducationFieldOther;
     }
 
-    public void setEducationGroupOther(String educationGroupOther) {
-        this.educationGroupOther = educationGroupOther;
+    public void setWorkEducationFieldOther(String educationGroupOther) {
+        this.workEducationFieldOther = educationGroupOther;
     }
 
     public Date getWorkStartDate() {

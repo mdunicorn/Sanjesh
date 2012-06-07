@@ -80,6 +80,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
     @Override
     public void createNew(){
     	super.createNew();
+    	getToEdit().setExpertInCourses(new ArrayList<DesignerExpertInCourse>());
     	updateDetailLists();
     	setPasswordCoinfirmation(null);
     }
@@ -190,21 +191,21 @@ public class DesignerController extends EntityControllerBase<Designer> {
         getToEdit().setWorkUniversity(null);
     }
     
-    public String getCurrentEducationGroupString() {
-        EducationGroup e = getToEdit().getEducationGroup();
+    public String getCurrentWorkEducationFieldString() {
+        EducationField e = getToEdit().getWorkEducationField();
         if( e != null )
-            return e.getName();
+            return e.getCodeAndName();
         else
-            return getToEdit().getEducationGroupOther();
+            return getToEdit().getWorkEducationFieldOther();
     }
     
-    public void updateSelectedEducationGroup(EducationGroup e) {
-        getToEdit().setEducationGroupOther(null);
-        getToEdit().setEducationGroup(e);
+    public void updateSelectedWorkEducationField(EducationField e) {
+        getToEdit().setWorkEducationFieldOther(null);
+        getToEdit().setWorkEducationField(e);
     }
     
-    public void educationGroupOtherFilled() {
-        getToEdit().setEducationGroup(null);
+    public void workEducationFieldOtherFilled() {
+        getToEdit().setWorkEducationField(null);
     }
 
     
@@ -272,7 +273,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
 
 
 	@Override
-	public boolean beforeSave() {
+	protected boolean beforeSave() {
 		Designer d = this.getToEdit();
 		if (!this.getPasswordCoinfirmation().equals(
 				d.getUser().getPassword())) {
@@ -286,7 +287,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
 	}
 	
     @Override
-	public void afterSave() {
+    protected void afterSave() {
         for( DesignerExpertInCourse dec : getToEdit().getExpertInCourses()) 
             dao.saveExpertInCourse(dec);
         dao.removeExpertInCourse(designerExpertInCoursesToRemove);
