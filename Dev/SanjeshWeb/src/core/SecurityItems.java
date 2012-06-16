@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class SecurityItems {
 	public final static SecurityItem DesignerDelete = new SecurityItem("Delete", "حذف");
 	public final static SecurityItem DesignerAccept = new SecurityItem("Accept", "تأیید/رد");
 	public final static SecurityItem Designer = new SecurityItem("Designer", "طراح",
-		DesignerNew, DesignerEdit, DesignerDelete);
+		DesignerNew, DesignerEdit, DesignerDelete, DesignerAccept);
 
 	public final static SecurityItem UsersRoot = new SecurityItem("UsersRoot", "کاربران",
 		SanjeshAgent, UniversityAgent, Designer);
@@ -85,27 +86,35 @@ public class SecurityItems {
 	static {
 		RoleAccessKeys = new HashMap<Integer, List<String>>();
 
-		RoleAccessKeys.put(Role.QUESTION_EXPERT_ROLE_ID, new ArrayList<String>());
-		RoleAccessKeys.get(Role.QUESTION_EXPERT_ROLE_ID).add(SecurityItems.QuestionRoot.getFullKey());
-		RoleAccessKeys.get(Role.QUESTION_EXPERT_ROLE_ID).addAll(getAllKeys(SecurityItems.Question));
+		addAccessKeysToRole(
+		        Role.QUESTION_EXPERT_ROLE_ID,
+		            SecurityItems.QuestionRoot.getFullKey(),
+		            getAllKeys(SecurityItems.Question));
 
-		RoleAccessKeys.put(Role.DESIGNER_EXPERT_ROLE_ID, new ArrayList<String>());
-		RoleAccessKeys.get(Role.DESIGNER_EXPERT_ROLE_ID).add(SecurityItems.UsersRoot.getFullKey());
-		RoleAccessKeys.get(Role.DESIGNER_EXPERT_ROLE_ID).addAll(getAllKeys(SecurityItems.Designer));
+		addAccessKeysToRole(
+		        Role.DESIGNER_EXPERT_ROLE_ID,
+		            SecurityItems.UsersRoot.getFullKey(),
+		            getAllKeys(SecurityItems.Designer));
+		
 
 		// RoleAccessKeys.put(Role.ARBITER_EXPERT_ROLE_ID,
 		// getAllKeys(SecurityItems.)
 
-		RoleAccessKeys.put(Role.DATA_EXPERT_ROLE_ID, getAllKeys(SecurityItems.BasicDataRoot));
+		addAccessKeysToRole(
+		        Role.DATA_EXPERT_ROLE_ID,
+		            getAllKeys(SecurityItems.BasicDataRoot));
 
-		RoleAccessKeys.put(Role.UNIVERSITY_AGENT_ROLE_ID, new ArrayList<String>());
-		RoleAccessKeys.get(Role.UNIVERSITY_AGENT_ROLE_ID).add(SecurityItems.UsersRoot.getFullKey());
-		RoleAccessKeys.get(Role.UNIVERSITY_AGENT_ROLE_ID).addAll(getAllKeys(SecurityItems.Designer));
+		addAccessKeysToRole(
+		        Role.UNIVERSITY_AGENT_ROLE_ID,
+		            SecurityItems.UsersRoot.getFullKey(),
+		            getAllKeys(SecurityItems.Designer)).
+		        remove(SecurityItems.DesignerAccept.getFullKey());
 
-		RoleAccessKeys.put(Role.DESIGNER_ROLE_ID, new ArrayList<String>());
-		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).add(SecurityItems.QuestionRoot.getFullKey());
-		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).addAll(getAllKeys(SecurityItems.Question));
-		RoleAccessKeys.get(Role.DESIGNER_ROLE_ID).remove(SecurityItems.QuestionAccept.getFullKey());
+		addAccessKeysToRole(
+		        Role.DESIGNER_ROLE_ID,
+		            SecurityItems.QuestionRoot.getFullKey(),
+		            getAllKeys(SecurityItems.Question)).
+		        remove(SecurityItems.QuestionAccept.getFullKey());
 	}
 
 	private static List<String> getAllKeys(SecurityItem si) {
@@ -119,4 +128,34 @@ public class SecurityItems {
 		for (SecurityItem si : securityItem.getChildren())
 			getAllKeys(si, keys);
 	}
+	
+    private static List<String> getRoleKeyList(int roleId) {
+        List<String> keyList = RoleAccessKeys.get(roleId);
+	    if (null == keyList) {
+	        keyList = new ArrayList<String>();
+	        RoleAccessKeys.put(roleId, keyList);
+	    }
+        return keyList;
+    }
+	
+    @SuppressWarnings("unused")
+    private static List<String> addAccessKeysToRole(int roleId, String... keys) {
+        List<String> keyList = getRoleKeyList(roleId);
+        keyList.addAll(Arrays.asList(keys));
+        return keyList;
+    }
+
+    private static List<String> addAccessKeysToRole(int roleId, List<String> keys) {
+        List<String> keyList = getRoleKeyList(roleId);
+        keyList.addAll(keys);
+        return keyList;
+    }
+    
+    private static List<String> addAccessKeysToRole(int roleId, String key, List<String> keys) {
+	    List<String> keyList = getRoleKeyList(roleId);
+	    keyList.add(key);
+	    keyList.addAll(keys);
+	    return keyList;
+	}
+
 }

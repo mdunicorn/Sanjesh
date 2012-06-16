@@ -75,10 +75,12 @@
 									action="#{designerController.setToDelete(current)}"
 									oncomplete="dlgRemove.show()" icon="deleteButton"
 									iconPos="right" />
-								<ui:remove>
-									<p:commandButton value="تأیید" ajax="false" />
-									<p:commandButton value="عدم تأیید" ajax="false" />
-								</ui:remove>
+								<p:commandButton value="تأیید" ajax="false"
+									rendered="#{designerController.shouldAcceptButtonBeVisibleForDesinger(current)}"
+									action="#{designerController.accpetDesigner(current)}" />
+								<p:commandButton value="عدم تأیید" ajax="false"
+									rendered="#{designerController.shouldRejectButtonBeVisibleForDesinger(current)}"
+									action="#{designerController.rejectDesigner(current)}" />
 							</h:panelGroup>
 						</p:column>
 						<f:facet name="footer">

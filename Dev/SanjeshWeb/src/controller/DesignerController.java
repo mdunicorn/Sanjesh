@@ -18,12 +18,17 @@ import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import core.SecurityItems;
+import core.SecurityService;
+import core.Utils;
+
 import model.Course;
 import model.Designer;
 import model.DesignerExpertInCourse;
 import model.EducationField;
 import model.EducationGroup;
 import model.Grade;
+import model.RegisterState;
 import model.University;
 
 /**
@@ -298,5 +303,28 @@ public class DesignerController extends EntityControllerBase<Designer> {
         dao.removeExpertInCourse(designerExpertInCoursesToRemove);
         setPasswordCoinfirmation(null);
     }
+    
+    public boolean hasAccessToAcceptDesigner() {
+        return SecurityService.hasPermission(SecurityItems.DesignerAccept);
+    }
+    
+    public boolean shouldAcceptButtonBeVisibleForDesinger (Designer d) {
+        return hasAccessToAcceptDesigner() && d.getState() != RegisterState.ACCEPTED;
+    }
+    
+    public boolean shouldRejectButtonBeVisibleForDesinger (Designer d) {
+        return hasAccessToAcceptDesigner() && d.getState() != RegisterState.REJECTED;
+    }
+    
+    public void accpetDesigner (Designer d) {
+        d.setState(RegisterState.ACCEPTED);
+        dao.save(d);
+        Utils.addFacesInformationMessage("'" + d.toString() + "' تأیید شد.");
+    }
 
+    public void rejectDesigner (Designer d) {
+        d.setState(RegisterState.REJECTED);
+        dao.save(d);
+        Utils.addFacesInformationMessage("عدم تأیید '" + d.toString() + "' ثبت شد.");
+    }
 }

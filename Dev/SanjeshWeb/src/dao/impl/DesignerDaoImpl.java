@@ -46,7 +46,7 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void save(Designer d) {
         if( d.getState() == RegisterState.NONE)
-            d.setState(RegisterState.REGISTERED);
+            d.setState(RegisterState.ACCEPTED);
         
 		User user = d.getUser();
 		user.setFullName(d.getFullName());

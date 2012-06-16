@@ -1,6 +1,8 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SecurityItem {
 	
@@ -61,4 +63,16 @@ public class SecurityItem {
 		}
 		return si;
 	}
+
+    public List<String> getAllKeys() {
+        ArrayList<String> keys = new ArrayList<String>();
+        getAllKeys(this, keys);
+        return keys;
+    }
+
+    private static void getAllKeys(SecurityItem securityItem, List<String> keys) {
+        keys.add(securityItem.getFullKey());
+        for (SecurityItem si : securityItem.getChildren())
+            getAllKeys(si, keys);
+    }
 }
