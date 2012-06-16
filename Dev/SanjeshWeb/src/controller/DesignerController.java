@@ -11,10 +11,10 @@ import dao.EducationGroupDao;
 import dao.GradeDao;
 import dao.UniversityDao;
 
-import javax.faces.application.FacesMessage;
+//import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
+//import javax.faces.context.FacesContext;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -275,6 +275,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
 	@Override
 	protected boolean beforeSave() {
 		Designer d = this.getToEdit();
+		/*
 		if (!this.getPasswordCoinfirmation().equals(
 				d.getUser().getPassword())) {
 			FacesContext.getCurrentInstance().addMessage(
@@ -282,7 +283,11 @@ public class DesignerController extends EntityControllerBase<Designer> {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"رمز عبور وارد شده مطابق تکرار آن نمیباشد.", "لطفاً با دقت بیشتری رمز و تکرار آن را وارد نمایید."));
 			return false;
-		}
+		}*/
+		
+		d.getUser().setUserName(d.getEmailAddress());
+		d.getUser().setPassword(d.getNationalCode());
+		
 		return true;
 	}
 	

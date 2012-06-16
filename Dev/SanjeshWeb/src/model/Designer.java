@@ -58,6 +58,7 @@ public class Designer implements EntityBase, Person, Serializable {
     private String family;
     
     @Column(name="national_code")
+    @NotBlank(message="لطفاً کد ملی را وارد نمایید.")
     private String nationalCode;
     
     private String organizationCode;

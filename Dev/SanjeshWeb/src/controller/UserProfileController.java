@@ -66,7 +66,7 @@ public class UserProfileController {
 			relatedPerson = universityAgentDao.refresh((UniversityAgent) relatedPerson);
 		} else if (relatedPerson instanceof SanjeshAgent) {
 			relatedPerson = sanjeshAgentDao.refresh((SanjeshAgent) relatedPerson);
-		}		
+		}
 	}
 
 //	public LoginBean getLoginBean() {

@@ -318,8 +318,14 @@
 
 						</p:tab>
 						
-						<p:tab title="اطلاعات کاربری">
-							<h:panelGrid columns="2">
+						<p:tab title="اطلاعات کاربری" >
+							
+							نام کاربری طراح همان آدرس ایمیل طراح بوده و رمز ورود نیر کد ملی طراح میباشد.
+							<br/>
+							طراح میتواند بعد از ورود به سامانه، با زدن دکمه «تنظیمات» رمز ورود خود را تغییر دهد.
+							
+							
+							<h:panelGrid columns="2" rendered="false">
 							
 								<h:outputText value="#{msgs.userName}:" />
 								<p:inputText autocomplete="off"

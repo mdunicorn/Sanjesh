@@ -20,7 +20,7 @@
 	<p:messages />
 	
 	<h:panelGroup rendered="#{!userProfileController.editUserName and !userProfileController.editPassword}">
-		<p:commandButton value="تغییر نام و نام کاربری" ajax="false" action="#{userProfileController.setEditUserName()}" style="font-weight: bold; font-size:12px !important; width: 250px; padding: 10px; margin: 10px" />
+		<p:commandButton value="تغییر نام" ajax="false" action="#{userProfileController.setEditUserName()}" style="font-weight: bold; font-size:12px !important; width: 250px; padding: 10px; margin: 10px" />
 		<br />
 		<p:commandButton value="تغییر رمز ورود" ajax="false" action="#{userProfileController.setEditPassword()}" style="font-weight: bold; font-size:12px !important; width: 250px; padding: 10px; margin: 10px"/>
 	</h:panelGroup>
@@ -29,9 +29,11 @@
 	
 	<p:fieldset>
 		<h:panelGrid columns="2" cellpadding="10">
-			<h:outputLabel for="txtUserName" value="نام کاربری:" />
-			<p:inputText id="txtUserName" value="#{userProfileController.currentUser.userName}"/>
-
+			<ui:remove>
+				<h:outputLabel for="txtUserName" value="نام کاربری:" />
+				<p:inputText id="txtUserName" value="#{userProfileController.currentUser.userName}"/>
+			</ui:remove>
+			
 			<c:set scope="request" var="hasRelatedPerson" value="#{not empty userProfileController.relatedPerson}"/>
 
 			<h:outputLabel for="txtUserFullName" value="نام کامل:" rendered="#{not hasRelatedPerson}"/>
