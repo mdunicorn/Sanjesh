@@ -20,7 +20,7 @@ public class Utils {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> T findExceptionInChain(Throwable t, Class<? extends Throwable> type) {
-		while (t != null && !t.getClass().isAssignableFrom(type)) {
+		while (t != null && !type.isAssignableFrom(t.getClass())) {
 			t = t.getCause();
 		}
 		return (T) t;

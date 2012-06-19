@@ -316,15 +316,29 @@ public class DesignerController extends EntityControllerBase<Designer> {
         return hasAccessToAcceptDesigner() && d.getState() != RegisterState.REJECTED;
     }
     
-    public void accpetDesigner (Designer d) {
-        d.setState(RegisterState.ACCEPTED);
-        dao.save(d);
-        Utils.addFacesInformationMessage("'" + d.toString() + "' تأیید شد.");
+    public void accpetDesigner(Designer d) {
+        try {
+            d.setState(RegisterState.ACCEPTED);
+            dao.save(d);
+            Utils.addFacesInformationMessage("'" + d.toString() + "' تأیید شد.");
+        } catch (Throwable e) {
+            if (Utils.handleBeanException(e))
+                return;
+            else
+                throw e;
+        }
     }
 
-    public void rejectDesigner (Designer d) {
-        d.setState(RegisterState.REJECTED);
-        dao.save(d);
-        Utils.addFacesInformationMessage("عدم تأیید '" + d.toString() + "' ثبت شد.");
+    public void rejectDesigner(Designer d) {
+        try {
+            d.setState(RegisterState.REJECTED);
+            dao.save(d);
+            Utils.addFacesInformationMessage("عدم تأیید '" + d.toString() + "' ثبت شد.");
+        } catch (Throwable e) {
+            if (Utils.handleBeanException(e))
+                return;
+            else
+                throw e;
+        }
     }
 }
