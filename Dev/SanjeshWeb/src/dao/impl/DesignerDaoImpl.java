@@ -102,4 +102,19 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
                 getResultList();
     }
     
+    @SuppressWarnings("unchecked")
+    public List<Designer> loadDesignersCreatedByUser(int userId) {
+        String cmd =
+                "SELECT d.* FROM "
+                + "  designer d "
+                + "  LEFT JOIN designer_aud da ON d.designer_id=da.designer_id "
+                + "  LEFT JOIN revinfo ri ON da.rev=ri.rev "
+                + "WHERE "
+                + "  da.revtype=0 AND ri.suser=?";
+        
+        return em.createNativeQuery(cmd, Designer.class).
+                setParameter(1, userId).
+                getResultList();
+    }
+
 }

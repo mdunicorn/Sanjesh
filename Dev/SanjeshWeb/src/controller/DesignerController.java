@@ -348,4 +348,15 @@ public class DesignerController extends EntityControllerBase<Designer> {
                 throw e;
         }
     }
+    
+    @Override
+    public void loadList() {
+        if (SecurityService.hasPermission(SecurityItems.DesignerViewAll))
+            super.loadList();
+        else {
+            dao.clear();
+            int currentUserId = SecurityService.getLoginBean().getCurrentUser().getId();
+            setList(dao.loadDesignersCreatedByUser(currentUserId));
+        }
+    }
 }

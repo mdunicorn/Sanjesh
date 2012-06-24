@@ -36,6 +36,10 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public List<T> getList() {
 		return list;
 	}
+	
+	protected void setList(List<T> list) {
+	    this.list = list;
+	}
 
 	public T getToEdit() {
 		return toEdit;

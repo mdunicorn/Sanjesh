@@ -65,8 +65,9 @@ public class SecurityItems {
 	public final static SecurityItem DesignerEdit = new SecurityItem("Edit", "ویرایش");
 	public final static SecurityItem DesignerDelete = new SecurityItem("Delete", "حذف");
 	public final static SecurityItem DesignerAccept = new SecurityItem("Accept", "تأیید/رد");
+	public final static SecurityItem DesignerViewAll = new SecurityItem("ViewAll", "مشاهده همه موارد");
 	public final static SecurityItem Designer = new SecurityItem("Designer", "طراح",
-		DesignerNew, DesignerEdit, DesignerDelete, DesignerAccept);
+		DesignerNew, DesignerEdit, DesignerDelete, DesignerAccept, DesignerViewAll);
 
 	public final static SecurityItem UsersRoot = new SecurityItem("UsersRoot", "کاربران",
 		SanjeshAgent, UniversityAgent, Designer);
@@ -109,6 +110,7 @@ public class SecurityItems {
 		            SecurityItems.UsersRoot.getFullKey(),
 		            getAllKeys(SecurityItems.Designer)).
 		        remove(SecurityItems.DesignerAccept.getFullKey());
+		getRoleKeyList(Role.UNIVERSITY_AGENT_ROLE_ID).remove(SecurityItems.DesignerViewAll.getFullKey());
 
 		addAccessKeysToRole(
 		        Role.DESIGNER_ROLE_ID,

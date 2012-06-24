@@ -17,4 +17,5 @@ public interface DesignerDao extends DaoBase<Designer>{
     List<Designer> findByState(RegisterState state);
     Designer findByUser(int userId);
     List<DesignerExpertInCourse> loadExpertInCourses(int designerId);
+    List<Designer> loadDesignersCreatedByUser(int userId);
 }

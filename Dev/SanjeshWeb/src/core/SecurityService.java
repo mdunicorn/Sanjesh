@@ -18,7 +18,7 @@ public class SecurityService {
 	 public static LoginBean getLoginBean() {
 		 LoginBean lc = (LoginBean) Utils.findBean("loginBean");
 		 if( lc == null )
-			 throw new RuntimeException("Login controller could not be retrieved.");
+			 throw new RuntimeException("Login bean could not be retrieved.");
 		 return lc;
 	 }
 
