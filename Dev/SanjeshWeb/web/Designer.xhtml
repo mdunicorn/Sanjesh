@@ -316,6 +316,28 @@
 										update=":#{p:component('dlgDesignerExpertInCourseId')}" oncomplete="dlgDesignerExpertInCourse.show()"/>								
 								</h:panelGroup>
 								
+								<h:outputText value="#{msgs.expertInCoursesQuestions}:" escape="false" />
+								<h:panelGroup>
+									<h:panelGroup id="panel2">
+										<p:dataTable id="tblDesignerExpertInCoursesQuestions" value="#{designerController.toEdit.expertInCoursesQuestionsList}"
+											var="course">
+											<p:column headerText="درس">
+												#{course.toString()}
+											</p:column>
+											<p:column>
+												<p:commandButton ajax="true" value="حذف"
+													icon="deleteButton" iconPos="right" immediate="true"
+													action="#{designerController.removeExpertInCourseQuestion(course)}"
+													update=":#{p:component('panel2')}"/>
+											</p:column>
+										</p:dataTable>
+										<p:commandButton ajax="true" action="#{designerController.updateCourseList()}"
+											value="جدید" icon="addButton" iconPos="right" immediate="true"
+											update=":#{p:component('dlgDesignerExpertInCourseQuestionsId')}" oncomplete="dlgDesignerExpertInCourseQuestions.show()"/>								
+									</h:panelGroup>
+									
+								</h:panelGroup>
+								
 							</h:panelGrid>
 
 						</p:tab>
@@ -587,7 +609,53 @@
 				</h:form>
 			</p:dialog>
 			
+			<p:dialog header="انتخاب درس" id="dlgDesignerExpertInCourseQuestionsId" widgetVar="dlgDesignerExpertInCourseQuestions" modal="true">
 			
+				<h:form>
+					<br/>
+	
+					<p:dataTable value="#{designerController.courseList}" var="course"
+						paginator="true" rows="5" rowsPerPageTemplate="5,10,15,20,30,50,100"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="صفحه {currentPage} از {totalPages}"
+						rowIndexVar="rowi" rowKey="#{course.id}">
+
+						<p:column headerText="ردیف">#{rowi+1}</p:column>
+						<p:column headerText="رشته" sortBy="#{course.field.name}"
+							filterBy="#{course.field.name}" filterMatchMode="contains">
+							#{course.field.name}
+						</p:column>
+						<p:column headerText="کد" sortBy="#{course.code}" filterBy="#{course.code}"
+							filterMatchMode="contains">
+							#{course.code}
+						</p:column>
+						<p:column headerText="نام" sortBy="#{course.name}" filterBy="#{course.name}"
+							filterMatchMode="contains">
+							#{course.name}
+						</p:column>
+						
+						<p:column>
+							<p:commandButton value="انتخاب" immediate="true"
+								action="#{designerController.addExpertInCourseQuestion(course)}"
+								update=":#{p:component('tblDesignerExpertInCoursesQuestions')}" oncomplete="dlgDesignerExpertInCourseQuestions.hide()"/>
+							
+						</p:column>
+
+					</p:dataTable>
+					<hr/>
+	
+					<p:commandButton ajax="true" value="تأیید"
+						action="#{designerController.addCurrentDesignerExpertInCourse()}"
+						update=":#{p:component('tblDesignerExpertInCourses')}"
+						oncomplete="dlgDesignerExpertInCourse.hide()"  icon="okButton"
+						iconPos="right"/>
+					<p:commandButton ajax="true" value="لغو" immediate="true"
+						icon="cancelButton" iconPos="right"
+						onclick="dlgDesignerExpertInCourse.hide()"/>
+					
+				</h:form>
+			</p:dialog>
+
 		</ui:define>
 
 	</ui:composition>

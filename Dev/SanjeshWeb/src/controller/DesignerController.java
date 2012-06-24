@@ -275,7 +275,14 @@ public class DesignerController extends EntityControllerBase<Designer> {
         getToEdit().getExpertInCourses().remove(dec);
         designerExpertInCoursesToRemove.add(dec);
     }
+    
+    public void removeExpertInCourseQuestion(Course c) {
+        getToEdit().getExpertInCoursesQuestions().remove(c);
+    }
 
+    public void addExpertInCourseQuestion(Course c) {
+        getToEdit().getExpertInCoursesQuestions().add(c);
+    }
 
 	@Override
 	protected boolean beforeSave() {

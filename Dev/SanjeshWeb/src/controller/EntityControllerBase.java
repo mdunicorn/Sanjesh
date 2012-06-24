@@ -100,7 +100,10 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public void saveAndNew() {
         controllerState = ControllerState.AFTER_SAVEANDNEW;
 	    try {
+            if (!beforeSave())
+                return;
 	        dao.save(toEdit);
+            afterSave();
 	        Utils.addFacesInformationMessage(getEntityDisplayTitle(toEdit) + " ذخیره شد.");
 	        this.toEdit = dao.newEntity();
         } catch (Throwable e) {

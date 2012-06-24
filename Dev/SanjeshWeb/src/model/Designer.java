@@ -3,6 +3,7 @@
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -279,6 +280,14 @@ public class Designer implements EntityBase, Person, Serializable {
 		if (expertInCoursesQuestions == null)
 			expertInCoursesQuestions = new HashSet<Course>();
 		return expertInCoursesQuestions;
+	}
+	
+	public List<Course> getExpertInCoursesQuestionsList() {
+	    ArrayList<Course> list = new ArrayList<Course>();
+	    for( Course c : getExpertInCoursesQuestions()) {
+	        list.add(c);
+	    }
+	    return list;
 	}
 
 	public void setExpertInCoursesQuestions(Set<Course> expertInCoursesQuestions) {

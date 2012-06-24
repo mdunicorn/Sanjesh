@@ -27,7 +27,7 @@ public class DesignerExpertInCourse implements EntityBase {
     @Column(name="designer_expertincourses_id")
     private int id;
     
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {})
     @JoinColumn(name = "designer_ref")
     private Designer designer;
 
