@@ -38,9 +38,15 @@ public class LoginBean {
     }
     
     public String doLogin(String userName, String password, String returnUrl) {
-    	
+    	userDao.clear();
     	User user = userDao.findByUserName(userName);
     	if( user != null && user.getPassword().equals(password)){
+    	    
+    	    if (!user.isActive()) {
+    	        Utils.addFacesErrorMessage("کاربر شما غیر فعال میباشد. برای اطلاعات بیشتر با مدیر سیستم تماس بگیرید.");
+    	        return null;
+    	    }
+    	    
             currentUser = user;
             userName = null;
             password = null;

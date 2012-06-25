@@ -328,6 +328,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
     public void accpetDesigner(Designer d) {
         try {
             d.setState(RegisterState.ACCEPTED);
+            d.getUser().setActive(true);
             dao.save(d);
             Utils.addFacesInformationMessage("'" + d.toString() + "' تأیید شد.");
         } catch (Throwable e) {
@@ -342,6 +343,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
     public void rejectDesigner(Designer d) {
         try {
             d.setState(RegisterState.REJECTED);
+            d.getUser().setActive(false);
             dao.save(d);
             Utils.addFacesInformationMessage("عدم تأیید '" + d.toString() + "' ثبت شد.");
         } catch (Throwable e) {

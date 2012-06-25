@@ -56,7 +56,7 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
 			user.getRoles().add(roleDao.getDesignerRole());
 		}
 
-        // The save (merge) operation will cascade to user and roles.
+        // The save (merge) operation will cascade to user and its roles collection.
         super.save(d);
     }
     
