@@ -42,7 +42,7 @@ public class Topic implements EntityBase, Serializable {
     @Column(nullable = false)
     private String name;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "course_ref", nullable=false)
     @NotNull(message="لطفاً درس را انتخاب نمایید.")
     private Course course;

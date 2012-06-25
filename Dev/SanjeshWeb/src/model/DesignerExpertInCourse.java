@@ -111,7 +111,9 @@ public class DesignerExpertInCourse implements EntityBase {
     
     @Override
     public boolean equals(Object o) {
-        if( o instanceof DesignerExpertInCourse) {
+        if (this == o)
+            return true;
+        if (o instanceof DesignerExpertInCourse) {
             DesignerExpertInCourse d = (DesignerExpertInCourse)o;
             if( designer == null) {
                 if( d.designer != null)

@@ -49,7 +49,7 @@ public class User implements EntityBase, Serializable {
     @NotNull
     private boolean isActive;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "suser_ref"), inverseJoinColumns = @JoinColumn(name = "role_ref"))
     private Set<Role> roles;
 
@@ -115,6 +115,8 @@ public class User implements EntityBase, Serializable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o)
+            return true;
         if (o instanceof User) {
             return ((User) o).userName.equals(this.userName);
         }

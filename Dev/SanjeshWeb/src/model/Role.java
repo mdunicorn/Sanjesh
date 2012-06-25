@@ -82,6 +82,8 @@ public class Role implements EntityBase, Serializable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o)
+            return true;
         if (o instanceof Role) {
             return ((Role) o).name.equals(this.name);
         }

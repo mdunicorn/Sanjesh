@@ -58,7 +58,10 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     	if(!validateSave(e, errorMessages)){
     		throw new ValidationException(StringUtils.join(errorMessages, "\n"));
     	}
-        em.merge(e);
+    	if (e.getId() == 0)
+    	    em.persist(e);
+    	else
+    	    em.merge(e);
     }
 
     @Override
@@ -83,7 +86,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
 
     @Override
     public T refresh(T entity) {
-    	entity = em.merge(entity);
+        entity = findById(entity.getId());
     	em.refresh(entity);
     	return entity;
     }
@@ -104,6 +107,7 @@ public abstract class DaoImplBase<T extends EntityBase> implements DaoBase<T> {
     	return (T)em.find(entityType, id);
     }
     
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void clear() {
         em.clear();
     }

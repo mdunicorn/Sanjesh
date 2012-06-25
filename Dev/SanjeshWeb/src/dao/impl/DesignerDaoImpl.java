@@ -72,6 +72,9 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void saveExpertInCourse(DesignerExpertInCourse toSave) {
         //for (DesignerExpertInCourse dec : toSave)
+        if (toSave.getId() == 0)
+            em.persist(toSave);
+        else
             em.merge(toSave);
     } 
 

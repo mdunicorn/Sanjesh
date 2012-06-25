@@ -72,16 +72,16 @@ public class Designer implements EntityBase, Person, Serializable {
     @Email(message="لطفاً آدرس ایمیل را به درستی وارد نمایید.")
     private String emailAddress;
     
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH },
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH },
 			fetch = FetchType.EAGER)
 	@JoinColumn(name = "grade_ref")
 	private Grade grade;
 
 	//@OneToMany(mappedBy="designer", fetch = FetchType.EAGER)
 	@Transient
-	private List<DesignerExpertInCourse> expertInCourses;    
+	private List<DesignerExpertInCourse> expertInCourses;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH },
 			fetch = FetchType.EAGER)
 	@JoinTable(
 			name="designer_expertincoursesquestions",
@@ -516,6 +516,8 @@ public class Designer implements EntityBase, Person, Serializable {
     
     @Override
     public boolean equals(Object o) {
+        if (this == o)
+            return true;
         if (null != o && o instanceof Designer) {
             Designer d = (Designer)o;
             if (null == family) {

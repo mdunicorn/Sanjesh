@@ -298,7 +298,9 @@ public class DesignerController extends EntityControllerBase<Designer> {
 		}*/
 		
 		d.getUser().setUserName(d.getEmailAddress());
+		//if (d.getId() == 0) { // if new entity
 		d.getUser().setPassword(d.getNationalCode());
+		//}
 		
 		return true;
 	}
@@ -334,6 +336,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
             else
                 throw e;
         }
+        showList();
     }
 
     public void rejectDesigner(Designer d) {
@@ -347,6 +350,7 @@ public class DesignerController extends EntityControllerBase<Designer> {
             else
                 throw e;
         }
+        showList();
     }
     
     @Override

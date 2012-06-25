@@ -42,7 +42,7 @@ public class EducationField implements EntityBase, Serializable {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "educationgroup_ref", nullable = false)
     @NotNull(message="لطفاً گروه تحصیلی را انتخاب نمایید.")
     private EducationGroup group;

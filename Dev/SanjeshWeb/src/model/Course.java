@@ -41,7 +41,7 @@ public class Course implements EntityBase, Serializable {
     @Column(nullable = false)
     private String name;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "educationfield_ref", nullable = false)
     @NotNull(message="یک رشته انتخاب نمایید.")
     private EducationField field;
@@ -111,6 +111,8 @@ public class Course implements EntityBase, Serializable {
 
     @Override
     public boolean equals (Object o) {
+        if (this == o)
+            return true;
         if (o instanceof Course) {
             Course c = (Course)o;
             if (code == null) {

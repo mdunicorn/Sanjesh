@@ -37,12 +37,12 @@ public class Question implements EntityBase, Serializable {
     @Column(name="question_id")
     private int id;
 	
-    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "designer_ref", nullable = false)
     @NotNull
 	private Designer designer;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "course_ref", nullable = false)
     @NotNull
     private Course course;
