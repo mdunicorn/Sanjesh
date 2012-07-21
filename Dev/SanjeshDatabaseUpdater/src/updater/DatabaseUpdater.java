@@ -584,6 +584,13 @@ public class DatabaseUpdater {
             createColumnIfNotExistsWithAud(tableName, "start_date", "date", true, null);
             createColumnIfNotExistsWithAud(tableName, "end_date", "date", true, null);
             
+            tableName = "question";
+            createColumnIfNotExistsWithAud(tableName, "question_image_filename", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "answer_image_filename", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "incorrect_option1_image_filename", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "incorrect_option2_image_filename", charVar255, true, null);
+            createColumnIfNotExistsWithAud(tableName, "incorrect_option3_image_filename", charVar255, true, null);
+            
             // Static data
             AddAdminUserIfNotExists();
             AddDefaultRoles();
@@ -598,7 +605,7 @@ public class DatabaseUpdater {
             
             
             int major = 0;
-            int minor = 7;
+            int minor = 8;
             if (dbVersion == null || dbVersion.isLessThan(major, minor)) {
                 logInfo("Updating version...");
                 insertDBVersion(major, minor, new Date());

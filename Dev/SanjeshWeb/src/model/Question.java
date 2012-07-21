@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -39,12 +40,12 @@ public class Question implements EntityBase, Serializable {
 	
     @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "designer_ref", nullable = false)
-    @NotNull
+    @NotNull(message="لطفاً طراح سؤال را تعیین کنید.")
 	private Designer designer;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "course_ref", nullable = false)
-    @NotNull
+    @NotNull(message="لطفاً درس را انتخاب کنید.")
     private Course course;
 
     @NotBlank(message="لطفاً متن سوال را وارد نمایید.")
@@ -52,14 +53,17 @@ public class Question implements EntityBase, Serializable {
     private String questionText;
     @Column(name="question_image")
     private byte[] questionImage;
+    @Column(name="question_image_filename")
+    private String questionImageFilename;
     
     @NotNull
     private boolean taught;
 
-    @NotNull
+    @NotNull(message="لطفاً زمان پاسخگویی سؤال را وارد نمایید.")
+    @Min(value=1, message="لطفاً زمان پاسخگویی سؤال را بر حسب  ثانیه(بزرگتر از 0) وارد نمایید.")
     private int answerTime;
 
-    @NotNull
+    @NotNull(message="لطفاً درجه سختی سؤال را انتخاب نمایید.")
     private QuestionLevel questionLevel;
     
     @Column(name="answer_text")
@@ -68,23 +72,35 @@ public class Question implements EntityBase, Serializable {
     @Column(name="answer_image")
     private byte[] answerImage;
     
+    @Column(name="answer_image_filename")
+    private String answerImageFilename;
+    
     @Column(name="incorrect_option1_text")
     private String incorrectOption1Text;
 
     @Column(name="incorrect_option1_image")
     private byte[] incorrectOption1Image;
+    
+    @Column(name="incorrect_option1_image_filename")
+    private String incorrectOption1ImageFilename;
 
     @Column(name="incorrect_option2_text")
     private String incorrectOption2Text;
 
     @Column(name="incorrect_option2_image")
     private byte[] incorrectOption2Image;
+    
+    @Column(name="incorrect_option2_image_filename")
+    private String incorrectOption2ImageFilename;
 
     @Column(name="incorrect_option3_text")
     private String incorrectOption3Text;
 
     @Column(name="incorrect_option3_image")
     private byte[] incorrectOption3Image;
+    
+    @Column(name="incorrect_option3_image_filename")
+    private String incorrectOption3ImageFilename;
     
     @Temporal(TemporalType.DATE)
     private Date designDate;
@@ -93,6 +109,7 @@ public class Question implements EntityBase, Serializable {
 
     @Version
     private int version;
+    
 
     public Question(){
     	registerState = RegisterState.NONE;
@@ -141,7 +158,17 @@ public class Question implements EntityBase, Serializable {
 
     public void setQuestionImage(byte[] questionImage) {
         this.questionImage = questionImage;
+    }    
+
+    public String getQuestionImageFilename() {
+        return questionImageFilename;
     }
+
+
+    public void setQuestionImageFilename(String questionImageFilename) {
+        this.questionImageFilename = questionImageFilename;
+    }
+
 
     public int getAnswerTime() {
         return answerTime;
@@ -183,6 +210,16 @@ public class Question implements EntityBase, Serializable {
         this.answerImage = answerImage;
     }
 
+    public String getAnswerImageFilename() {
+        return answerImageFilename;
+    }
+
+
+    public void setAnswerImageFilename(String answerImageFilename) {
+        this.answerImageFilename = answerImageFilename;
+    }
+
+
     public String getIncorrectOption1Text() {
         return incorrectOption1Text;
     }
@@ -198,6 +235,16 @@ public class Question implements EntityBase, Serializable {
     public void setIncorrectOption1Image(byte[] incorrectOption1Image) {
         this.incorrectOption1Image = incorrectOption1Image;
     }
+
+    public String getIncorrectOption1ImageFilename() {
+        return incorrectOption1ImageFilename;
+    }
+
+
+    public void setIncorrectOption1ImageFilename(String incorrectOption1ImageFilename) {
+        this.incorrectOption1ImageFilename = incorrectOption1ImageFilename;
+    }
+
 
     public String getIncorrectOption2Text() {
         return incorrectOption2Text;
@@ -215,6 +262,16 @@ public class Question implements EntityBase, Serializable {
         this.incorrectOption2Image = incorrectOption2Image;
     }
 
+    public String getIncorrectOption2ImageFilename() {
+        return incorrectOption2ImageFilename;
+    }
+
+
+    public void setIncorrectOption2ImageFilename(String incorrectOption2ImageFilename) {
+        this.incorrectOption2ImageFilename = incorrectOption2ImageFilename;
+    }
+
+
     public String getIncorrectOption3Text() {
         return incorrectOption3Text;
     }
@@ -230,6 +287,16 @@ public class Question implements EntityBase, Serializable {
     public void setIncorrectOption3Image(byte[] incorrectOption3Image) {
         this.incorrectOption3Image = incorrectOption3Image;
     }
+
+    public String getIncorrectOption3ImageFilename() {
+        return incorrectOption3ImageFilename;
+    }
+
+
+    public void setIncorrectOption3ImageFilename(String incorrectOption3ImageFilename) {
+        this.incorrectOption3ImageFilename = incorrectOption3ImageFilename;
+    }
+
 
     public Date getDesignDate() {
         return designDate;

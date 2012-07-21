@@ -3,6 +3,7 @@ package core;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.OptimisticLockException;
+import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +48,17 @@ public class Utils {
 	public static boolean handleBeanException(Throwable e) {
 		ValidationException vx = Utils.findExceptionInChain(e, ValidationException.class);
 		if( vx != null ){
-			Utils.addFacesErrorMessage(vx.getMessage());
+		    if (vx instanceof javax.validation.ConstraintViolationException){
+		        javax.validation.ConstraintViolationException cvx =
+		                (javax.validation.ConstraintViolationException)vx;
+		        for (ConstraintViolation<?> v : cvx.getConstraintViolations()) {
+		            Utils.addFacesErrorMessage(v.getMessage());
+		        }
+		        
+		    }
+		    else {
+		        Utils.addFacesErrorMessage(vx.getMessage());
+		    }
 			return true;
 		}
 		ConstraintViolationException cvx = Utils.findExceptionInChain(e, ConstraintViolationException.class);

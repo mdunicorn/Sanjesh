@@ -82,7 +82,7 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Designer findByUser(int userId) {
 		List<Designer> list =
-				em.createQuery("select u from Designer d where d.user.id=?1", Designer.class).
+				em.createQuery("select d from Designer d where d.user.id=?1", Designer.class).
 				setParameter(1, userId).getResultList();
 		if( list.size() == 0)
 			return null;
@@ -99,6 +99,7 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
     }
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<DesignerExpertInCourse> loadExpertInCourses(int designerId) {
         return em.createNamedQuery("loadDesignerExpertInCourse", DesignerExpertInCourse.class).
                 setParameter("d", designerId).
@@ -106,6 +107,7 @@ public class DesignerDaoImpl extends DaoImplBase<Designer> implements DesignerDa
     }
     
     @SuppressWarnings("unchecked")
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Designer> loadDesignersCreatedByUser(int userId) {
         String cmd =
                 "SELECT d.* FROM "

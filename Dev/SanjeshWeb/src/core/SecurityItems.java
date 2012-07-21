@@ -76,8 +76,9 @@ public class SecurityItems {
 	public final static SecurityItem QuestionEdit = new SecurityItem("Edit", "ویرایش");
 	public final static SecurityItem QuestionDelete = new SecurityItem("Delete", "حذف");
 	public final static SecurityItem QuestionAccept = new SecurityItem("Accept", "تأیید/رد");
-	public final static SecurityItem Question = new SecurityItem("Question", "سؤال", QuestionNew,
-		QuestionEdit, QuestionDelete);
+	public final static SecurityItem QuestionViewAll = new SecurityItem("ViewAll", "مشاهده همه موارد");
+	public final static SecurityItem Question = new SecurityItem("Question", "سؤال",
+	        QuestionNew, QuestionEdit, QuestionDelete, QuestionAccept, QuestionViewAll);
 
 	public final static SecurityItem QuestionRoot = new SecurityItem("QuestionRoot", "سؤال",
 		Question);
@@ -117,6 +118,7 @@ public class SecurityItems {
 		            SecurityItems.QuestionRoot.getFullKey(),
 		            getAllKeys(SecurityItems.Question)).
 		        remove(SecurityItems.QuestionAccept.getFullKey());
+		getRoleKeyList(Role.DESIGNER_ROLE_ID).remove(SecurityItems.QuestionViewAll.getFullKey());
 	}
 
 	private static List<String> getAllKeys(SecurityItem si) {

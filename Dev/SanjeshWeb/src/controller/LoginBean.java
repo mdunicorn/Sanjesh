@@ -8,8 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import core.Utils;
 
+import dao.DesignerDao;
+import dao.SanjeshAgentDao;
+import dao.UniversityAgentDao;
 import dao.UserDao;
 
+import model.Person;
 import model.User;
 
 @ManagedBean
@@ -18,10 +22,23 @@ public class LoginBean {
 
 	@Inject
 	private UserDao userDao;
+    @Inject
+    private SanjeshAgentDao sanjeshAgentDao;
+    @Inject
+    private UniversityAgentDao universityAgentDao;
+    @Inject
+    private DesignerDao designerDao;
 	
 	private User currentUser;
 
 	public LoginBean() {
+	}
+	
+	public static LoginBean getInstance() {
+        LoginBean lc = (LoginBean) Utils.findBean("loginBean");
+        if( lc == null )
+            throw new RuntimeException("Login bean could not be retrieved.");
+        return lc;
 	}
 	
     public boolean isLoggedIn() {
@@ -69,4 +86,14 @@ public class LoginBean {
         }
         return null;
     }
+
+    public Person getRelatedPerson() {
+        Person p = sanjeshAgentDao.findByUser(currentUser.getId());
+        if (p == null)
+            p = universityAgentDao.findByUser(currentUser.getId());
+        if( p == null )
+            p = designerDao.findByUser(currentUser.getId());
+        return p;
+    }
+
 }

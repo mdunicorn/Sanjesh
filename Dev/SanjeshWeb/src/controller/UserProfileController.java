@@ -12,10 +12,12 @@ import javax.validation.ValidationException;
 
 import core.NotLoggedInException;
 import core.Utils;
+import dao.DesignerDao;
 import dao.SanjeshAgentDao;
 import dao.UniversityAgentDao;
 import dao.UserDao;
 
+import model.Designer;
 import model.Person;
 import model.SanjeshAgent;
 import model.UniversityAgent;
@@ -34,8 +36,8 @@ public class UserProfileController {
 	private SanjeshAgentDao sanjeshAgentDao;
 	@Inject
 	private UniversityAgentDao universityAgentDao;
-	// @Inject
-	// private DesignerDao designerDao;
+	@Inject
+	private DesignerDao designerDao;
 	@Inject
 	private UserDao userDao;
 
@@ -50,23 +52,16 @@ public class UserProfileController {
 			throw new NotLoggedInException();
 		}
 		currentUser = loginBean.reloadCurrentUser();
-		loadRelatedPerson();
-	}
-
-	private void loadRelatedPerson() {
-		relatedPerson = sanjeshAgentDao.findByUser(currentUser.getId());
-		if (relatedPerson == null)
-			relatedPerson = universityAgentDao.findByUser(currentUser.getId());
-		// if( relatedPerson == null )
-		// relatedPerson = designerDao.find
+		relatedPerson = loginBean.getRelatedPerson();
 	}
 	
 	private void refreshRelatedPerson(){
-		if (relatedPerson instanceof UniversityAgent) {
+		if (relatedPerson instanceof UniversityAgent)
 			relatedPerson = universityAgentDao.refresh((UniversityAgent) relatedPerson);
-		} else if (relatedPerson instanceof SanjeshAgent) {
+		else if (relatedPerson instanceof SanjeshAgent)
 			relatedPerson = sanjeshAgentDao.refresh((SanjeshAgent) relatedPerson);
-		}
+		else if (relatedPerson instanceof Designer)
+		    relatedPerson = designerDao.refresh((Designer)relatedPerson);
 	}
 
 //	public LoginBean getLoginBean() {

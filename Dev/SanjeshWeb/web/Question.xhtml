@@ -5,7 +5,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="title">
         سوالات
@@ -25,8 +26,12 @@
 					<f:facet name="header">
 						<h:outputText value="لیست سوالات" />
 					</f:facet>
+					<p:column headerText="درس" sortBy="#{current.course.toString()}"
+						filterBy="#{current.course.toString()}" filterMatchMode="contains">
+						#{current.course.toString()}
+					</p:column>
 					<p:column headerText="سوال">
-						<h:outputText value="#{current.questionText}" />
+						<h:outputText value="#{current.questionText}" escape="false" />
 					</p:column>
 					<p:column headerText="عملیات">
 						<h:panelGroup>
@@ -61,43 +66,131 @@
 			<p:fieldset legend="اطلاعات سؤال"
 				rendered="#{not empty questionController.toEdit}">
 				
+				<script>
+					$(window).bind("load", function() {
+						$("iframe").each(function(idx, frame)
+							{
+								frame.contentDocument.body.style.fontFamily = 'Tahoma';
+								frame.contentDocument.body.style.direction = 'rtl';
+							});
+						//$("body").css('font-family', 'Tahoma').css('direction', 'rtl');
+					});
+				</script>						
+
+
 				<p:messages rendered="#{questionController.anyErrorMessageQueued}" />
 				
 				<p:focus />
 				<h:panelGrid columns="2" cellpadding="10">
+				
+					<h:outputText value="طراح سؤال : *" id="designers" rendered="#{questionController.designerFieldVisible}"/>
+					<p:selectOneMenu value="#{questionController.selectedDesignerId}"
+						rendered="#{questionController.designerFieldVisible}" >
+						<f:selectItem itemDisabled="true" itemLabel="لطفاً طراح سؤال را انتخاب کنید" itemValue="0"/>
+						<f:selectItems value="#{questionController.designerList}" var="designer"
+							itemLabel="#{designer.toString()}" itemValue="#{designer.id}" />
+						<f:ajax render="courses" listener="#{questionController.updateCourseList}" />
+						<p:blockUI block="courses" trigger="designers"/>
+					</p:selectOneMenu>
+					
+					<h:outputText value="درس : *" />
+					<h:panelGroup>
+						<p:selectOneMenu id="courses" value="#{questionController.selectedCourseId}">
+							<f:selectItem itemDisabled="true" itemLabel="#{questionController.courseNoSelectItemText}"
+								itemValue="0"/>
+							<f:selectItems value="#{questionController.courseList}" var="course"
+								itemLabel="#{course.toString()}" itemValue="#{course.id}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+
 					<h:outputText value="متن سوال : *" />
 					<p:editor value="#{questionController.toEdit.questionText}"
-						width="600" />
+						width="600"/>
+						
 					<h:outputText value="تصویر سوال : *" />
-					<p:fileUpload
-						fileUploadListener="#{questionController.uploadQuestionPic}"
-						allowTypes="*.jpg;*.png;*.bmp;*.gif"
-						description="Images (*.jpg;*.png;*.bmp;*.gif)" />
+					<h:panelGroup>
+						<p:graphicImage value="#{questionImageLoaderBean.questionImageContent}" >
+							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+						</p:graphicImage>
+						
+						<br/>
+						<h:outputText value="#{questionController.toEdit.questionImageFilename}"/>
+						<br />
+						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadQuestionImage.show()"/>
+					</h:panelGroup>
+						
 					<h:outputText value="متن جواب صحیح  : " />
 					<p:editor value="#{questionController.toEdit.answerText}"
 						width="600" />
+						
 					<h:outputText value="تصویر جواب صحیح  : " />
-					<p:fileUpload
-						fileUploadListener="#{questionController.uploadAnswerPic}" />
+					<h:panelGroup>
+						<p:graphicImage value="#{questionImageLoaderBean.answerImageContent}" >
+							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+						</p:graphicImage>
+						
+						<br/>
+						<h:outputText value="#{questionController.toEdit.answerImageFilename}"/>
+						<br />
+						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadAnswerImage.show()"/>
+					</h:panelGroup>
+
 					<h:outputText value="متن جواب نادرست اول : " />
 					<p:editor value="#{questionController.toEdit.incorrectOption1Text}"
 						width="600" />
+
 					<h:outputText value="تصویر جواب نادرست اول : " />
-					<p:fileUpload
-						fileUploadListener="#{questionController.uploadIncorrectOption1Pic}" />
+					<h:panelGroup>
+						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption1ImageContent}" id="imgAnswer">
+							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+						</p:graphicImage>
+						
+						<br/>
+						<h:outputText value="#{questionController.toEdit.incorrectOption1ImageFilename}"/>
+						<br />
+						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption1Image.show()"/>
+					</h:panelGroup>
+
 					<h:outputText value="متن جواب نادرست دوم  : " />
 					<p:editor value="#{questionController.toEdit.incorrectOption2Text}"
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست دوم  : " />
-					<p:fileUpload
-						fileUploadListener="#{questionController.uploadIncorrectOption2Pic}" />
+					<h:panelGroup>
+						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
+							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+						</p:graphicImage>
+						
+						<br/>
+						<h:outputText value="#{questionController.toEdit.incorrectOption2ImageFilename}"/>
+						<br />
+						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption2Image.show()"/>
+					</h:panelGroup>
+
 					<h:outputText value="متن جواب نادرست سوم : " />
 					<p:editor value="#{questionController.toEdit.incorrectOption3Text}"
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست سوم : " />
-					<p:fileUpload
-						fileUploadListener="#{questionController.uploadIncorrectOption3Pic}" />
-					<h:outputText value="زمان لازم برای پاسخ به سوال : " />
+					<h:panelGroup>
+						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
+							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+						</p:graphicImage>
+						
+						<br/>
+						<h:outputText value="#{questionController.toEdit.incorrectOption3ImageFilename}"/>
+						<br />
+						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption3Image.show()"/>
+					</h:panelGroup>
+						
+					<h:outputText value="درجه سختی سؤال : *" />
+					<p:selectOneMenu value="#{questionController.questionLevel}">
+						<f:selectItem itemLabel="نا مشخص" itemValue="0" itemDisabled="true"/>
+						<f:selectItem itemLabel="ساده" itemValue="5"/>
+						<f:selectItem itemLabel="متوسط" itemValue="10"/>
+						<f:selectItem itemLabel="خوب" itemValue="15"/>
+						<f:selectItem itemLabel="مشکل" itemValue="20"/>						
+					</p:selectOneMenu>
+					
+					<h:outputText value="زمان لازم برای پاسخ به سوال (ثانیه): *" />
 					<p:inputText value="#{questionController.toEdit.answerTime}" />
 				</h:panelGrid>
 				<p:commandButton value="ذخیره" ajax="false"
@@ -108,6 +201,51 @@
 			</p:fieldset>
 
 		</h:form>
+		
+		<p:dialog header="انتخاب تصویر سؤال" widgetVar="dlgUploadQuestionImage" modal="true" width="800" height="200">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{questionController.uploadQuestionPic}"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="dlgUploadQuestionImage.hide()" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="انتخاب تصویر جواب" widgetVar="dlgUploadAnswerImage" modal="true"  width="800" height="200">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{questionController.uploadAnswerPic}"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="dlgUploadAnswerImage.hide()" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="انتخاب تصویر گزینه نادرست 1" widgetVar="dlgUploadIncorrectOption1Image" modal="true" width="800" height="200">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption1Pic}"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="dlgUploadIncorrectOption1Image.hide()" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="انتخاب تصویر گزینه نادرست 2" widgetVar="dlgUploadIncorrectOption2Image" modal="true" width="800" height="200">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption2Pic}"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="dlgUploadIncorrectOption2Image.hide()" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="انتخاب تصویر گزینه نادرست 3" widgetVar="dlgUploadIncorrectOption3Image" modal="true" width="800" height="200">
+			<h:form enctype="multipart/form-data">
+				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption3Pic}"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					oncomplete="dlgUploadIncorrectOption3Image.hide()" />
+			</h:form>
+		</p:dialog>
 	</ui:define>
 
 </ui:composition>
