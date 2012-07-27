@@ -10,6 +10,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class Utils {
+    
+    private static class CharacterReplacement
+    {
+        public char source, destination;
+        
+        public CharacterReplacement(char source, char destination) {
+            this.source = source;
+            this.destination = destination;
+        }
+    }
+    
+    private static CharacterReplacement[] replacements = {
+            new CharacterReplacement('\u064A','\u06CC'),
+            new CharacterReplacement('\u0643', '\u06A9')
+    };
+
 
 	@SuppressWarnings("unchecked")
 	public static <T> T findBean(String beanName) {
@@ -92,6 +108,14 @@ public class Utils {
         }
 
 		return false;
+	}
+	
+	public static String replaceCharacters(String text) {
+	    if (text == null)
+	        return text;
+	    for (CharacterReplacement cr : replacements)
+	        text = text.replace(cr.source, cr.destination);
+	    return text;
 	}
 
 }
