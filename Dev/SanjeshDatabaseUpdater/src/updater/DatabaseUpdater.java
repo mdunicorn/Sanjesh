@@ -591,6 +591,26 @@ public class DatabaseUpdater {
             createColumnIfNotExistsWithAud(tableName, "incorrect_option2_image_filename", charVar255, true, null);
             createColumnIfNotExistsWithAud(tableName, "incorrect_option3_image_filename", charVar255, true, null);
             
+            // Function to fix farsi characters
+            executeUpdate(dbConnection,
+                    "CREATE OR REPLACE FUNCTION fixPersianChars() RETURNS void AS $$\n"
+                    + "DECLARE\n"
+                    + "  r RECORD;\n"
+                    + "BEGIN\n"
+                    + "FOR r IN\n"
+                    + "	SELECT table_name, column_name\n"
+                    + "	FROM information_schema.columns\n"
+                    + "	WHERE table_schema='public' AND data_type='character varying'\n"
+                    + "LOOP\n"
+                    + "	--INSERT INTO inserts VALUES('UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\u064A'', ''\u06CC''), ''\u0643'', ''\u06A9'')');\n"
+                    + "	EXECUTE 'UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\u064A'', ''\u06CC''), ''\u0643'', ''\u06A9'')';\n"
+                    + "END LOOP;\n"
+                    + "END;\n"
+                    + "$$ LANGUAGE plpgsql;");
+            
+            executeQuery(dbConnection, "select fixPersianChars()");
+            logInfo("Farsi charater fixed.");
+            
             // Static data
             AddAdminUserIfNotExists();
             AddDefaultRoles();
@@ -605,7 +625,7 @@ public class DatabaseUpdater {
             
             
             int major = 0;
-            int minor = 8;
+            int minor = 9;
             if (dbVersion == null || dbVersion.isLessThan(major, minor)) {
                 logInfo("Updating version...");
                 insertDBVersion(major, minor, new Date());
