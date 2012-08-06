@@ -58,13 +58,16 @@ public class QuestionController extends EntityControllerBase<Question> {
     @Override
     public void createNew() {
         super.createNew();
-        designerFieldVisible = toEdit.getDesigner() == null;
+        designerFieldVisible =
+                toEdit.getDesigner() == null ||
+                SecurityService.hasPermission(SecurityItems.QuestionViewAll);
         loadDetailLists();
     }
     
     @Override
     public void edit(Question q) {
         super.edit(q);
+        designerFieldVisible = SecurityService.hasPermission(SecurityItems.QuestionViewAll);
         loadDetailLists();
     }
 
