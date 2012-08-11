@@ -642,16 +642,6 @@
 						</p:column>
 
 					</p:dataTable>
-					<hr/>
-	
-					<p:commandButton ajax="true" value="تأیید"
-						action="#{designerController.addCurrentDesignerExpertInCourse()}"
-						update=":#{p:component('tblDesignerExpertInCourses')}"
-						oncomplete="dlgDesignerExpertInCourse.hide()"  icon="okButton"
-						iconPos="right"/>
-					<p:commandButton ajax="true" value="لغو" immediate="true"
-						icon="cancelButton" iconPos="right"
-						onclick="dlgDesignerExpertInCourse.hide()"/>
 					
 				</h:form>
 			</p:dialog>
