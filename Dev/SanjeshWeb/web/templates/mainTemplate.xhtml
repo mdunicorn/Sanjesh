@@ -22,25 +22,27 @@
 	
 
 	<div id="top" class="top">
-		<img src="#{request.contextPath}/resources/images/icon.png" />
-		<img src="#{request.contextPath}/resources/images/title.png" />
-	<div style="float: left">
-	<h:form rendered="#{loginBean.loggedIn}" style="font-size:8pt">
-		<h:outputLink value="userprofile.xhtml" style="color:mediumblue">تنظیمات</h:outputLink>
-		<span style="color: #A3A3A3">|</span>
-		<h:outputText value="#{loginBean.currentUser.fullName}" />
-		<span style="color: #A3A3A3">|</span>
-		<p:commandLink ajax="false" action="#{loginBean.doLogout()}" accesskey="x">
-			<p:graphicImage value="/resources/images/signOut.png" alt="خروج" title="خروج"
-				style="cursor: pointer; vertical-align: middle;" />
-		</p:commandLink>
-		<ui:remove>
-		<!--
-			<p:commandLink value="خروج" ajax="false" style="color:mediumblue"
-				action="#{loginBean.doLogout()}" />  -->
-		</ui:remove>
-	</h:form>
-	</div>
+		<a href="/">
+			<img src="#{request.contextPath}/resources/images/icon.png" />
+			<img src="#{request.contextPath}/resources/images/title.png" />
+		</a>
+		<div style="float: left">
+		<h:form rendered="#{loginBean.loggedIn}" style="font-size:8pt">
+			<h:outputLink value="userprofile.xhtml" style="color:mediumblue">تنظیمات</h:outputLink>
+			<span style="color: #A3A3A3">|</span>
+			<h:outputText value="#{loginBean.currentUser.fullName}" />
+			<span style="color: #A3A3A3">|</span>
+			<p:commandLink ajax="false" action="#{loginBean.doLogout()}" accesskey="x">
+				<p:graphicImage value="/resources/images/signOut.png" alt="خروج" title="خروج"
+					style="cursor: pointer; vertical-align: middle;" />
+			</p:commandLink>
+			<ui:remove>
+			<!--
+				<p:commandLink value="خروج" ajax="false" style="color:mediumblue"
+					action="#{loginBean.doLogout()}" />  -->
+			</ui:remove>
+		</h:form>
+		</div>
 	</div>
 	<ui:insert name="content1">Content</ui:insert>
 
