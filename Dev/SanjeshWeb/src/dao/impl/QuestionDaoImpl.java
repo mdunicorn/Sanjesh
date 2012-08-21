@@ -92,4 +92,12 @@ public class QuestionDaoImpl extends DaoImplBase<Question> implements QuestionDa
                 setParameter(1, userId).
                 getResultList();
     }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Question> findByEducatoinGroup(int egroupId) {
+        return em.createQuery(
+                "select q from Question q where q.course.field.group.id=?1",
+                Question.class).setParameter(1, egroupId).getResultList();
+    }
 }

@@ -48,9 +48,6 @@ public class SanjeshAgentDaoImpl extends DaoImplBase<SanjeshAgent> implements Sa
 		{
 			Set<Role> roles = user.getRoles();
 			
-			for( Role r : roles)
-				System.out.println(r.getName());
-			
 			if (sa.isArbiterExpert())
 				roles.add(roleDao.getArbiterExpertRole());
 			else

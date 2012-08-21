@@ -54,6 +54,14 @@ public class MenuController {
 		return SecurityService.hasPermission(SecurityItems.Designer);
 	}
 	
+    public boolean getHasAccessToArbiter(){
+        return SecurityService.hasPermission(SecurityItems.Arbiter);
+    }
+    
+    public boolean getHasAccessToUsers() {
+        return false;
+    }
+	
 	public boolean getHasAccessToQuestionRoot(){
 		return SecurityService.hasPermission(SecurityItems.QuestionRoot);
 	}
@@ -62,6 +70,9 @@ public class MenuController {
 		return SecurityService.hasPermission(SecurityItems.Question);
 	}
 	
+	public boolean getHasAccessToQuestionEvaluation() {
+	    return SecurityService.hasPermission(SecurityItems.QuestionEvaluation);
+	}
 	
 
 }

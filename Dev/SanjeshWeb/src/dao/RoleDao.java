@@ -9,4 +9,5 @@ public interface RoleDao extends DaoBase<Role> {
 	Role getDataExpertRole();
 	Role getUniversityAgentRole();
 	Role getDesignerRole();
+	Role getArbiterRole();
 }

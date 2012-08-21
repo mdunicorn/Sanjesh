@@ -241,6 +241,16 @@ root {
     background: url('../images/designer.png') !important;
 }
 
+.menuItemArbiterIcon
+{
+	background: url('../images/auction-hammer-icon.png') !important;
+}
+
+.menuItemQuestionIcon
+{
+	background: url('../images/questionMarkIcon16.png') !important;
+}
+
 .calendarButtonIcon
 {
 	background-image: url('../images/calendarIcon.gif') !important;

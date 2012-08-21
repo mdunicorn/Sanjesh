@@ -4,6 +4,8 @@
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -109,6 +112,9 @@ public class Question implements EntityBase, Serializable {
 
     @Version
     private int version;
+    
+    @OneToMany(mappedBy="question", fetch=FetchType.EAGER)
+    private List<QuestionEvaluation> evaluations;
     
 
     public Question(){
@@ -320,6 +326,10 @@ public class Question implements EntityBase, Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+    
+    public List<QuestionEvaluation> getEvaluation() {
+        return evaluations;
     }
 
     

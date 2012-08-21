@@ -95,6 +95,9 @@ public class Utils {
 			else if( StringUtils.containsIgnoreCase(msg, "fkey_designer_grade")){
 				addFacesErrorMessage("امکان حذف رتبه علمی وجود ندارد. این مورد در تعریف طراح استفاده شده است.");
 			}
+			else if( StringUtils.containsIgnoreCase(msg, "fkey_question_evaluation_question_ref")) {
+			    addFacesErrorMessage("امکان حذف سؤال وجود ندارد زیرا این سؤال ارزیابی شده است. برای حذف سؤال ابتدا باید ارزیابی سؤال را حذف کنید.");
+			}
 			else{ // not handled
 				return false;
 			}

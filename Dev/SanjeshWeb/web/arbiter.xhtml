@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition
+	template="/templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:define name="title">
+		<h:outputText value="داوران" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+		
+			<p:growl rendered="#{not arbiterController.anyErrorMessageQueued}" />
+
+			<h:panelGroup rendered="#{empty arbiterController.toEdit}">
+
+				<p:messages rendered="#{arbiterController.anyErrorMessageQueued}" />
+		
+				<p:dataTable value="#{arbiterController.list}" var="current"
+					emptyMessage="هیچ داوری تعریف نشده است."
+					style="font-family: Tahoma; font-size:10pt">
+					<f:facet name="header">
+						<h:outputText value="لیست داوران" />
+					</f:facet>
+					<p:column headerText="#{msgs.name}" sortBy="#{current.name}"
+						filterBy="#{current.name}" filterMatchMode="contains">
+						#{current.name}
+					</p:column>
+					<p:column headerText="#{msgs.family}" sortBy="#{current.family}"
+						filterBy="#{current.family}" filterMatchMode="contains">
+						#{current.family}
+					</p:column>
+					<p:column headerText="#{msgs.emailAddress}" sortBy="#{current.emailAddress}"
+						filterBy="#{current.emailAddress}" filterMatchMode="contains">
+						#{current.emailAddress}
+					</p:column>
+					<p:column headerText="گروه تحصیلی" sortBy="#{current.educationGroup.name}"
+						filterBy="#{current.educationGroup.name}" filterMatchMode="contains">
+						#{current.educationGroup.name}
+					</p:column>
+					<p:column headerText="علمیات">
+						<h:panelGroup>
+							<p:commandButton value="ویرایش" ajax="false"
+								action="#{arbiterController.edit(current)}"
+								icon="editButton" iconPos="right" />
+							<p:commandButton value="حذف" ajax="true"
+								action="#{arbiterController.setToDelete(current)}"
+								oncomplete="dlgRemove.show()" icon="deleteButton"
+								iconPos="right" />
+						</h:panelGroup>
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton ajax="false" value="تعریف داور" style=""
+							action="#{arbiterController.createNew()}" icon="addButton"
+							iconPos="right" />
+					</f:facet>
+				</p:dataTable>
+
+				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+					header="حذف داور"
+					message="آیا از حذف داور اطمینان دارید؟" position="center"
+					modal="true">
+					<p:commandButton value="بله" ajax="false"
+						action="#{arbiterController.remove()}" icon="okButton"
+						iconPos="right" />
+					<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+						style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+				</p:confirmDialog>
+
+			</h:panelGroup>
+
+			<p:fieldset legend="اطلاعات داور"
+				rendered="#{not empty arbiterController.toEdit}">
+				
+				<p:messages rendered="#{arbiterController.anyErrorMessageQueued}" />
+				
+				<p:focus for="txtName" />
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<h:outputText value="#{msgs.name}" />
+					<p:inputText id="txtName" value="#{arbiterController.toEdit.name}" />
+					
+					<h:outputText value="#{msgs.family}: *" />
+					<p:inputText id="txtFamily" value="#{arbiterController.toEdit.family}" />
+					
+					<h:outputText value="#{msgs.emailAddress}:" />
+					<p:inputText value="#{arbiterController.toEdit.emailAddress}" />
+
+					<h:outputText value="#{msgs.nationalCode}:" />
+					<p:inputText value="#{arbiterController.toEdit.nationalCode}" />
+
+					<h:outputText value="#{msgs.educationGroup}: *" />
+					<p:selectOneMenu
+						value="#{arbiterController.selectedGroupId}">
+						<f:selectItem itemLabel="لطفاً گروه تحصیلی را انتخاب نمایید." itemValue="0" itemDisabled="true"/>
+						<f:selectItems value="#{arbiterController.educationGroups}"
+							var="group" itemLabel="#{group.name}" itemValue="#{group.id}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="#{msgs.userName}:" />
+					<p:inputText autocomplete="off"
+						value="#{arbiterController.toEdit.user.userName}" />
+
+					<h:outputText value="#{msgs.password}:" />
+					<p:password id="txtPassword" feedback="false" minLength="1" autocomplete="off"
+						redisplay="true" value="#{arbiterController.toEdit.user.password}" />
+
+					<h:outputText value="#{msgs.confirmPassword}:" />
+					<p:password id="txtConfirmPassword" feedback="false" minLength="1" autocomplete="off"
+						redisplay="true" value="#{arbiterController.passwordCoinfirmation}" />
+	
+				</h:panelGrid>
+				
+				<br />
+				<p:commandButton value="ذخیره" ajax="false" action="#{arbiterController.save}"
+					icon="okButton" iconPos="right" />
+				<p:commandButton value="لغو" ajax="false" immediate="true"
+					action="#{arbiterController.showList()}" icon="cancelButton" iconPos="right" />
+				
+			</p:fieldset>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -25,6 +25,7 @@ public class Role implements EntityBase, Serializable {
     public static final int DATA_EXPERT_ROLE_ID = 4;
     public static final int UNIVERSITY_AGENT_ROLE_ID = 10;
     public static final int DESIGNER_ROLE_ID = 11;
+    public static final int ARBITER_ROLE_ID = 12;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

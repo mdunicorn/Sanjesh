@@ -49,4 +49,9 @@ public class RoleDaoImpl extends DaoImplBase<Role> implements RoleDao {
 	public Role getDesignerRole() {
 		return getSystemRole(Role.DESIGNER_ROLE_ID);
 	}
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Role getArbiterRole() {
+        return getSystemRole(Role.ARBITER_ROLE_ID);
+    }
 }

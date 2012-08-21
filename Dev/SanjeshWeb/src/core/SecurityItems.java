@@ -68,9 +68,15 @@ public class SecurityItems {
 	public final static SecurityItem DesignerViewAll = new SecurityItem("ViewAll", "مشاهده همه موارد");
 	public final static SecurityItem Designer = new SecurityItem("Designer", "طراح",
 		DesignerNew, DesignerEdit, DesignerDelete, DesignerAccept, DesignerViewAll);
+	
+	public final static SecurityItem ArbiterNew = new SecurityItem("New", "جدید");
+    public final static SecurityItem ArbiterEdit = new SecurityItem("Edit", "ویرایش");
+    public final static SecurityItem ArbiterDelete = new SecurityItem("Delete", "حذف");
+    public final static SecurityItem Arbiter = new SecurityItem("Arbiter", "داور",
+            ArbiterNew, ArbiterEdit, ArbiterDelete);
 
 	public final static SecurityItem UsersRoot = new SecurityItem("UsersRoot", "کاربران",
-		SanjeshAgent, UniversityAgent, Designer);
+		SanjeshAgent, UniversityAgent, Designer, Arbiter);
 
 	public final static SecurityItem QuestionNew = new SecurityItem("New", "جدید");
 	public final static SecurityItem QuestionEdit = new SecurityItem("Edit", "ویرایش");
@@ -80,10 +86,19 @@ public class SecurityItems {
 	public final static SecurityItem Question = new SecurityItem("Question", "سؤال",
 	        QuestionNew, QuestionEdit, QuestionDelete, QuestionAccept, QuestionViewAll);
 
-	public final static SecurityItem QuestionRoot = new SecurityItem("QuestionRoot", "سؤال",
-		Question);
+	public final static SecurityItem QuestionEvaluationNew = new SecurityItem("New", "جدید");
+	public final static SecurityItem QuestionEvaluationEdit = new SecurityItem("Edit", "ویرایش");
+    public final static SecurityItem QuestionEvaluationDelete = new SecurityItem("Delete", "حذف");
+    public final static SecurityItem QuestionEvaluationViewAll = new SecurityItem("ViewAll", "مشاهده همه");
+	public final static SecurityItem QuestionEvaluation = new SecurityItem(
+	        "QuestionEvaluation", "ارزیابی سؤال", QuestionEvaluationNew, QuestionEvaluationEdit,
+	        QuestionEvaluationViewAll, QuestionEvaluationDelete);
 
-	public final static HashMap<Integer, List<String>> RoleAccessKeys;
+    public final static SecurityItem QuestionRoot = new SecurityItem("QuestionRoot", "سؤال",
+            Question, QuestionEvaluation);
+        
+
+    public final static HashMap<Integer, List<String>> RoleAccessKeys;
 
 	static {
 		RoleAccessKeys = new HashMap<Integer, List<String>>();
@@ -99,8 +114,9 @@ public class SecurityItems {
 		            getAllKeys(SecurityItems.Designer));
 		
 
-		// RoleAccessKeys.put(Role.ARBITER_EXPERT_ROLE_ID,
-		// getAllKeys(SecurityItems.)
+		addAccessKeysToRole(
+		        Role.ARBITER_EXPERT_ROLE_ID,
+		            getAllKeys(SecurityItems.Arbiter));		        
 
 		addAccessKeysToRole(
 		        Role.DATA_EXPERT_ROLE_ID,
@@ -119,6 +135,15 @@ public class SecurityItems {
 		            getAllKeys(SecurityItems.Question)).
 		        remove(SecurityItems.QuestionAccept.getFullKey());
 		getRoleKeyList(Role.DESIGNER_ROLE_ID).remove(SecurityItems.QuestionViewAll.getFullKey());
+		
+		addAccessKeysToRole(
+		        Role.ARBITER_ROLE_ID,
+		            SecurityItems.QuestionRoot.getFullKey(),
+		            SecurityItems.Question.getFullKey());
+        addAccessKeysToRole(
+                Role.ARBITER_ROLE_ID,
+		            getAllKeys(SecurityItems.QuestionEvaluation)).
+		        remove(SecurityItems.QuestionEvaluationViewAll.getFullKey());
 	}
 
 	private static List<String> getAllKeys(SecurityItem si) {
@@ -142,7 +167,6 @@ public class SecurityItems {
         return keyList;
     }
 	
-    @SuppressWarnings("unused")
     private static List<String> addAccessKeysToRole(int roleId, String... keys) {
         List<String> keyList = getRoleKeyList(roleId);
         keyList.addAll(Arrays.asList(keys));

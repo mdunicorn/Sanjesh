@@ -16,4 +16,5 @@ public interface QuestionDao extends DaoBase<Question>{
     byte[] getIncorrectOption2Image(int questionId);
     byte[] getIncorrectOption3Image(int questionId);
     List<Question> loadQuestionsCreatedByUser(int userId);
+    List<Question> findByEducatoinGroup(int egroupId);
 }

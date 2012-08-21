@@ -7,6 +7,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{questionController.toViewQuestionId}" />
+		<f:event type="preRenderView" listener="#{questionController.initViewParams}" />
+	</f:metadata>
 
 	<ui:define name="title">
         سوالات
@@ -16,43 +20,51 @@
 
 			<p:growl rendered="#{not questionController.anyErrorMessageQueued}" />
 
-			<h:panelGroup rendered="#{empty questionController.toEdit}">
+			<h:panelGroup rendered="#{empty questionController.toEdit and empty questionController.toView}">
 
 				<p:messages rendered="#{questionController.anyErrorMessageQueued}" />
 
 				<p:dataTable value="#{questionController.list}" var="current"
-					emptyMessage="هیچ سوالی تعریف نشده است."
+					emptyMessage="هیچ سؤالی تعریف نشده است."
 					style="font-family: Tahoma; font-size:10pt">
 					<f:facet name="header">
-						<h:outputText value="لیست سوالات" />
+						<h:outputText value="لیست سؤالات" />
 					</f:facet>
+					<p:column headerText="طراح" rendered="#{questionController.hasAccessToViewAllQuestions()}"
+						sortBy="#{current.designer.fullName}" filterBy="#{current.designer.fullName}" filterMatchMode="contains">
+						#{current.designer.fullName}
+					</p:column>
 					<p:column headerText="درس" sortBy="#{current.course.toString()}"
 						filterBy="#{current.course.toString()}" filterMatchMode="contains">
 						#{current.course.toString()}
 					</p:column>
-					<p:column headerText="سوال">
+					<p:column headerText="سؤال" filterBy="#{current.questionText}" filterMatchMode="contains">
 						<h:outputText value="#{current.questionText}" escape="false" />
 					</p:column>
 					<p:column headerText="عملیات">
 						<h:panelGroup>
 							<p:commandButton value="ویرایش" ajax="false"
+								rendered="#{questionController.hasAccessToEditQuestion}"
 								action="#{questionController.edit(current)}" icon="editButton"
 								iconPos="right" />
 							<p:commandButton value="حذف" ajax="true"
+								rendered="#{questionController.hasAccessToDeleteQuestion}"
 								action="#{questionController.setToDelete(current)}"
 								oncomplete="dlgRemove.show()" icon="deleteButton"
 								iconPos="right" />
+							<p:commandButton value="#{questionController.getEvaluateButtonText(current)}" ajax="false"
+								action="#{questionController.view(current)}"/>
 						</h:panelGroup>
 					</p:column>
 					<f:facet name="footer">
-						<p:commandButton ajax="false" value="تعریف سوال" style=""
+						<p:commandButton ajax="false" value="تعریف سؤال" style=""
 							action="#{questionController.createNew()}" icon="addButton"
 							iconPos="right" />
 					</f:facet>
 				</p:dataTable>
 
 				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
-					header="حذف سوال" message="آیا از حذف سوال اطمینان دارید؟"
+					header="حذف سؤال" message="آیا از حذف سؤال اطمینان دارید؟"
 					position="center" modal="true">
 					<p:commandButton value="بله" ajax="false"
 						action="#{questionController.remove()}" icon="okButton"
@@ -83,15 +95,19 @@
 				<p:focus />
 				<h:panelGrid columns="2" cellpadding="10">
 				
-					<h:outputText value="طراح سؤال : *" id="designers" rendered="#{questionController.designerFieldVisible}"/>
+					<h:outputText value="طراح سؤال : *" id="designers"
+						rendered="#{questionController.designerFieldVisible}"/>
 					<p:selectOneMenu value="#{questionController.selectedDesignerId}"
-						rendered="#{questionController.designerFieldVisible}" >
+						rendered="#{questionController.shouldRenderDesignerSelector}" >
 						<f:selectItem itemDisabled="true" itemLabel="لطفاً طراح سؤال را انتخاب کنید" itemValue="0"/>
 						<f:selectItems value="#{questionController.designerList}" var="designer"
 							itemLabel="#{designer.toString()}" itemValue="#{designer.id}" />
 						<f:ajax render="courses" listener="#{questionController.updateCourseList}" />
 						<p:blockUI block="courses" trigger="designers"/>
-					</p:selectOneMenu>
+					</p:selectOneMenu>					
+					<h:outputLabel
+						value="#{questionController.toEdit.designer.toString()}"
+						rendered="#{questionController.shouldRenderDesignerLable}"/>
 					
 					<h:outputText value="درس : *" />
 					<h:panelGroup>
@@ -107,7 +123,7 @@
 					<p:editor value="#{questionController.toEdit.questionText}"
 						width="600"/>
 						
-					<h:outputText value="تصویر سوال : *" />
+					<h:outputText value="تصویر سوال :" />
 					<h:panelGroup>
 						<p:graphicImage value="#{questionImageLoaderBean.questionImageContent}" >
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
@@ -194,10 +210,10 @@
 					<p:inputText value="#{questionController.toEdit.answerTime}" />
 				</h:panelGrid>
 				<p:commandButton value="ذخیره" ajax="false"
-					action="#{questionController.save}" icon="okButton" iconPos="right" />
+					action="#{questionController.save}" icon="okButton" iconPos="right" style="margin: 5px;"/>
 				<p:commandButton value="لغو" ajax="false" immediate="true"
 					action="#{questionController.showList()}" icon="cancelButton"
-					iconPos="right" />
+					iconPos="right" style="margin: 5px;"/>
 			</p:fieldset>
 
 		</h:form>
@@ -246,6 +262,122 @@
 					oncomplete="dlgUploadIncorrectOption3Image.hide()" />
 			</h:form>
 		</p:dialog>
+		
+		<p:accordionPanel rendered="#{not empty questionController.toView}"
+			multiple="true" dynamic="true">
+			<p:tab title="سؤال">
+				<h:panelGrid columns="2">
+					<h:outputText value="طراح: "/>
+					<h:outputText value="#{questionController.toView.designer.fullName}" />
+					<h:outputText value="درس: "/>
+					<h:outputText value="#{questionController.toView.course.toString()}" />
+					<h:outputText value="متن سؤال: "/>
+					<h:outputText value="#{questionController.toView.questionText}" escape="false" />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="تصویر سؤال">
+				<p:graphicImage value="#{questionImageLoaderBean.questionImageContent}">
+					<f:param name="questionId" value="#{questionController.toView.id}"/>
+				</p:graphicImage>
+				<br />
+				<span style="font-size: 8pt;">#{questionController.toView.questionImageFilename}</span>
+			</p:tab>
+			<p:tab title="جواب سؤال">
+				<h:outputText value="#{questionController.toView.answerText}" escape="false" />
+				<br />
+				<p:graphicImage value="#{questionImageLoaderBean.answerImageContent}">
+					<f:param name="questionId" value="#{questionController.toView.id}"/>
+				</p:graphicImage>
+				<br />
+				<span style="font-size: 8pt;">#{questionController.toView.answerImageFilename}</span>
+			</p:tab>
+			<p:tab title="گزینه نادرست اول">
+				<h:outputText value="#{questionController.toView.incorrectOption1Text}" escape="false"/>
+				<br />
+				<p:graphicImage value="#{questionImageLoaderBean.incorrectOption1ImageContent}">
+					<f:param name="questionId" value="#{questionController.toView.id}"/>
+				</p:graphicImage>
+				<br />
+				<span style="font-size: 8pt;">#{questionController.toView.incorrectOption1ImageFilename}</span>
+			</p:tab>
+			<p:tab title="گزینه نادرست دوم">
+				<h:outputText value="#{questionController.toView.incorrectOption2Text}" escape="false" />
+				<br />
+				<p:graphicImage value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
+					<f:param name="questionId" value="#{questionController.toView.id}"/>
+				</p:graphicImage>
+				<br />
+				<span style="font-size: 8pt;">#{questionController.toView.incorrectOption2ImageFilename}</span>
+			</p:tab>
+			<p:tab title="گزینه نادرست سوم">
+				<h:outputText value="#{questionController.toView.incorrectOption3Text}" escape="false" />
+				<br />
+				<p:graphicImage value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
+					<f:param name="questionId" value="#{questionController.toView.id}"/>
+				</p:graphicImage>
+				<br />
+				<span style="font-size: 8pt;">#{questionController.toView.incorrectOption3ImageFilename}</span>
+			</p:tab>
+		</p:accordionPanel>
+		<br />
+		<h:panelGroup rendered="#{not empty questionController.toView and not questionController.hasAccessToEvaluateQuestion}">
+			<p:button value="بازگشت" outcome="Question.xhtml" style="margin: 5px;"/>
+		</h:panelGroup>
+		<p:fieldset rendered="#{not empty questionController.toView and questionController.hasAccessToEvaluateQuestion}"
+			legend="ارزیابی">
+			
+			<h:form>
+
+				<p:growl rendered="#{not questionController.anyErrorMessageQueued}" />
+				<p:messages rendered="#{questionController.anyErrorMessageQueued}" />
+				
+				<script>
+					$(window).bind("load", function() {
+						$("iframe").each(function(idx, frame)
+							{
+								frame.contentDocument.body.style.fontFamily = 'Tahoma';
+								frame.contentDocument.body.style.direction = 'rtl';
+							});
+						//$("body").css('font-family', 'Tahoma').css('direction', 'rtl');
+					});
+				</script>						
+				
+	
+				<h:panelGrid columns="2" cellpadding="10">
+				
+					<h:outputText value="داور: *" rendered="#{questionController.showArbiterInEvaluation()}" />
+					<p:selectOneMenu value="#{questionController.selectedArbiterId}"
+						rendered="#{questionController.showArbiterInEvaluation()}">
+						<f:selectItems value="#{questionController.arbiterList}" var="arbiter"
+							itemLabel="#{arbiter.fullName}" itemValue="#{arbiter.id}" />
+					</p:selectOneMenu>
+				
+					<h:outputText value="نتیجه: " />
+					<p:selectOneMenu value="#{questionController.evaluation.result}">
+						<f:selectItems value="#{questionController.evaluationResultList}" var="eres"
+							itemLabel="#{eres.name}" itemValue="#{eres}"/>
+					</p:selectOneMenu>
+					
+					<h:outputText value="علت: " />
+					<p:editor value="#{questionController.evaluation.reason}"/>
+					
+					<h:outputText value="زمان لازم برای پاسخ گویی (ثانیه): " />
+					<p:spinner value="#{questionController.evaluation.answerTime}" min="0" />
+					
+					<h:outputText value="توضیحات بیشتر: " />
+					<p:editor value="#{questionController.evaluation.comments}"/>
+					
+				</h:panelGrid>
+				<br />
+				<h:panelGroup>
+					<p:commandButton value="ثبت ارزیابی" action="#{questionController.saveEvaluation()}"
+						ajax="false" icon="okButton" iconPos="right" style="margin: 5px;"/>
+					<p:button value="لغو" outcome="Question" icon="cancelButton" iconPos="right" style="margin: 5px;"/>
+				</h:panelGroup>
+			
+			</h:form>
+			
+		</p:fieldset>
 	</ui:define>
 
 </ui:composition>

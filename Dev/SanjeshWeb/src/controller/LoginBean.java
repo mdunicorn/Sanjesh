@@ -2,12 +2,15 @@ package controller;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
 import core.Utils;
 
+import dao.ArbiterDao;
 import dao.DesignerDao;
 import dao.SanjeshAgentDao;
 import dao.UniversityAgentDao;
@@ -28,6 +31,8 @@ public class LoginBean {
     private UniversityAgentDao universityAgentDao;
     @Inject
     private DesignerDao designerDao;
+    @Inject
+    private ArbiterDao arbiterDao;
 	
 	private User currentUser;
 
@@ -82,6 +87,8 @@ public class LoginBean {
     public String doLogout() {
         if (currentUser != null) {
             currentUser = null;
+            ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false))
+                    .invalidate();
             return "/login.xhtml?faces-redirect=true";
         }
         return null;
@@ -91,8 +98,10 @@ public class LoginBean {
         Person p = sanjeshAgentDao.findByUser(currentUser.getId());
         if (p == null)
             p = universityAgentDao.findByUser(currentUser.getId());
-        if( p == null )
+        if (p == null)
             p = designerDao.findByUser(currentUser.getId());
+        if (p == null)
+            p = arbiterDao.findByUser(currentUser.getId());
         return p;
     }
 

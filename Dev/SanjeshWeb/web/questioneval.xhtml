@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="title">
+        ارزیابی سؤالات
+    </ui:define>
+	<ui:define name="content">
+		<h:form>
+
+			<p:growl rendered="#{not questionEvaluationController.anyErrorMessageQueued}" />
+
+			<h:panelGroup rendered="#{empty questionEvaluationController.toEdit}">
+
+				<p:messages rendered="#{questionEvaluationController.anyErrorMessageQueued}" />
+			
+				<p:dataTable value="#{questionEvaluationController.list}" var="current"
+					emptyMessage="هیچ سؤالی ارزیابی نشده است."
+					style="font-family: Tahoma; font-size:10pt">
+					<f:facet name="header">
+						<h:outputText value="ارزیابی های انجام شده" />
+					</f:facet>
+					<p:column headerText="طراح سؤال" sortBy="#{current.question.designer.fullName}"
+						filterBy="#{current.question.designer.fullName}" filterMatchMode="contains">
+						#{current.question.designer.fullName}
+					</p:column>
+					<p:column headerText="درس" sortBy="#{current.question.course.toString()}"
+						filterBy="#{current.question.course.toString()}" filterMatchMode="contains">
+						#{current.question.course.toString()}
+					</p:column>
+					<p:column headerText="متن سؤال" sortBy="#{current.question.questionText}"
+						filterBy="#{current.question.questionText}" filterMatchMode="contains">
+						<h:outputText value="#{current.question.questionText}" escape="false"/>
+					</p:column>
+					<p:column headerText="نتیجه ارزیابی" sortBy="#{current.result.name}"
+						filterBy="#{current.result.name}" filterMatchMode="contains">
+						#{current.result.name}
+					</p:column>
+					<p:column headerText="عملیات">
+						<h:panelGroup>
+							<p:button value="ویرایش" ajax="false"
+								rendered="#{questionEvaluationController.hasAccessToEditQuestionEvaluation}"
+								outcome="/Question.xhtml?id=#{current.question.id}" icon="editButton"
+								iconPos="right" />
+							<p:commandButton value="حذف" ajax="true"
+								rendered="#{questionEvaluationController.hasAccessToDeleteQuestionEvaluation}"
+								action="#{questionEvaluationController.setToDelete(current)}"
+								oncomplete="dlgRemove.show()" icon="deleteButton"
+								iconPos="right" />
+						</h:panelGroup>
+					</p:column>
+					<f:facet name="footer">
+						برای ارزیابی سؤال، به 
+						<h:link value="لیست سؤالات" outcome="/Question.xhtml"/>						
+						رفته و روی دکمه ارزیابی کلیک کنید.
+					</f:facet>
+					
+				</p:dataTable>
+
+				<p:confirmDialog widgetVar="dlgRemove" severity="alert"
+					header="حذف ارزیابی" message="آیا از حذف ارزیابی اطمینان دارید؟"
+					position="center" modal="true">
+					<p:commandButton value="بله" ajax="false"
+						action="#{questionEvaluationController.remove()}" icon="okButton"
+						iconPos="right" />
+					<p:commandButton value="خیر" onclick="dlgRemove.hide()"
+						style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+				</p:confirmDialog>
+				
+			</h:panelGroup>
+			
+		</h:form>
+	
+	</ui:define>
+</ui:composition>

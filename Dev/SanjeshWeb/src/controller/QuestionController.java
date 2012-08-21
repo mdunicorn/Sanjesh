@@ -2,24 +2,32 @@
 
 import java.util.List;
 
+import dao.ArbiterDao;
 import dao.CourseDao;
 import dao.DesignerDao;
 import dao.QuestionDao;
+import dao.QuestionEvaluationDao;
+
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import model.Arbiter;
 import model.Course;
 import model.Designer;
+import model.Person;
 import model.Question;
+import model.QuestionEvaluation;
 import model.QuestionLevel;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import core.SecurityItems;
 import core.SecurityService;
+import core.Utils;
 
 /**
  * 
@@ -35,6 +43,10 @@ public class QuestionController extends EntityControllerBase<Question> {
 	private DesignerDao designerDao;
 	@Inject
 	private CourseDao courseDao;
+	@Inject
+	private QuestionEvaluationDao questionEvaluationDao;
+    @Inject
+    private ArbiterDao arbiterDao;
 
     private UploadedFile questionImage;
     private UploadedFile answerImage;
@@ -42,8 +54,15 @@ public class QuestionController extends EntityControllerBase<Question> {
     private UploadedFile incorrectOption2Image;
     private UploadedFile incorrectOption3Image;
     private boolean designerFieldVisible;
+    private boolean designerFieldEditable = false;
     private List<Designer> designerList;
     private List<Course> courseList;
+    
+    private Question toView = null;
+    private int toViewQuestionId = 0;
+    private QuestionEvaluation evaluation;
+    private Arbiter currentArbiter = null;
+    private List<Arbiter> arbiterList;
 
 	@PostConstruct
 	public void init() {
@@ -59,27 +78,72 @@ public class QuestionController extends EntityControllerBase<Question> {
     public void createNew() {
         super.createNew();
         designerFieldVisible =
-                toEdit.getDesigner() == null ||
-                SecurityService.hasPermission(SecurityItems.QuestionViewAll);
+                toEdit.getDesigner() == null || hasAccessToViewAllQuestions();
+        designerFieldEditable = true;
         loadDetailLists();
     }
+    
     
     @Override
     public void edit(Question q) {
         super.edit(q);
-        designerFieldVisible = SecurityService.hasPermission(SecurityItems.QuestionViewAll);
+        designerFieldVisible = hasAccessToViewAllQuestions();
+        designerFieldEditable = false;
         loadDetailLists();
+    }
+    
+    public void view(Question q) {
+        if (q == null) {
+            Utils.addFacesInformationMessage("سؤال مشخص شده یافت نشد.");
+            return;
+        }
+        toView = q;
+        Person p = SecurityService.getLoginBean().getRelatedPerson(); 
+        if (p instanceof Arbiter)
+            currentArbiter = (Arbiter)p;
+        else
+        {
+            currentArbiter = null;
+            arbiterList = arbiterDao.findByEducationGroup(q.getCourse().getField().getGroup().getId());
+        }
+        if (getHasAccessToEvaluateQuestion()) {
+            List<QuestionEvaluation> evals = questionEvaluationDao.findByQuestion(q.getId());
+            if (evals.size() == 0) {
+                evaluation = questionEvaluationDao.newEntity();
+                evaluation.setQuestion(q);
+                if (currentArbiter != null)
+                    evaluation.setArbiter(currentArbiter);
+            } else {
+                evaluation = evals.get(0);
+            }
+        }
     }
 
     @Override
     public void loadList() {
-        if (SecurityService.hasPermission(SecurityItems.QuestionViewAll))
+        if (hasAccessToViewAllQuestions())
             super.loadList();
         else {
             dao.clear();
-            int currentUserId = SecurityService.getLoginBean().getCurrentUser().getId();
-            setList(dao.loadQuestionsCreatedByUser(currentUserId));
+            LoginBean lb = SecurityService.getLoginBean();
+            Person p = lb.getRelatedPerson();
+            if (p instanceof Arbiter) {
+                setList(dao.findByEducatoinGroup(((Arbiter)p).getEducationGroup().getId()));
+            } else {
+                int currentUserId = lb.getCurrentUser().getId();
+                setList(dao.loadQuestionsCreatedByUser(currentUserId));
+            }
         }
+    }
+    
+    @Override
+    public void showList() {
+        super.showList();
+        toView = null;
+    }
+    
+    public boolean hasAccessToViewAllQuestions() {
+        return SecurityService.hasPermission(SecurityItems.QuestionViewAll);
     }
     
     public List<Designer> getDesignerList() {
@@ -106,7 +170,7 @@ public class QuestionController extends EntityControllerBase<Question> {
         loadCourseList();
         loadDesignerList();
     }
-        
+
 	public int getSelectedDesignerId() {
 		Designer d = getToEdit().getDesigner();
 		if (d != null)
@@ -213,6 +277,18 @@ public class QuestionController extends EntityControllerBase<Question> {
         return designerFieldVisible;
     }
     
+    public boolean isDesignerFieldEditable() {
+        return designerFieldEditable;
+    }
+    
+    public boolean getShouldRenderDesignerSelector() {
+        return designerFieldVisible && designerFieldEditable;
+    }
+    
+    public boolean getShouldRenderDesignerLable() {
+        return designerFieldVisible && !designerFieldEditable;
+    }
+    
     public boolean isDesignerSelected() {
         return this.toEdit.getDesigner() != null;
     }
@@ -237,5 +313,95 @@ public class QuestionController extends EntityControllerBase<Question> {
     
     public void updateCourseList(AjaxBehaviorEvent event) {
         loadCourseList();
+    }
+    
+    public boolean getHasAccessToEditQuestion() {
+        return SecurityService.hasPermission(SecurityItems.QuestionEdit);
+    }
+
+    public boolean getHasAccessToDeleteQuestion() {
+        return SecurityService.hasPermission(SecurityItems.QuestionDelete);
+    }
+    
+    public boolean getHasAccessToEvaluateQuestion() {
+        return SecurityService.hasPermission(SecurityItems.QuestionEvaluationNew);
+    }
+        
+    public Question getToView() {
+        return toView;
+    }
+    
+    public int getToViewQuestionId() {
+        return toViewQuestionId;
+    }
+    
+    public void setToViewQuestionId(int id) { 
+        toViewQuestionId = id;
+    }
+    
+    public void initViewParams() {
+        if (!FacesContext.getCurrentInstance().isPostback() && toViewQuestionId > 0) {
+            view(dao.findById(toViewQuestionId));
+        }
+    }
+    
+    public QuestionEvaluation getEvaluation() {
+        return evaluation;
+    }
+    
+    public QuestionEvaluation.EvaluationResult[] getEvaluationResultList() {
+        return QuestionEvaluation.EvaluationResult.values();
+    }
+    
+    public void saveEvaluation() {
+        try {
+            questionEvaluationDao.save(evaluation);
+            Utils.addFacesInformationMessage("ارزیابی ثبت شد.");
+        } catch (Throwable e) {
+            if (Utils.handleBeanException(e))
+                return;
+            else
+                throw e;
+        }
+        showList();
+    }
+    
+    public boolean showArbiterInEvaluation() {
+        return currentArbiter == null;
+    }
+    
+    public List<Arbiter> getArbiterList() {
+        return arbiterList;
+    }
+    
+    public int getSelectedArbiterId() {
+        if (evaluation == null || evaluation.getArbiter() == null)
+            return 0;
+        return evaluation.getArbiter().getId();
+    }
+    
+    public void setSelectedArbiterId (int id) {
+        if (evaluation != null) {
+            if (id == 0)
+                evaluation.setArbiter(null);
+            else
+                evaluation.setArbiter(arbiterDao.findById(id));
+        }            
+    }
+    
+    public String getEvaluateButtonText(Question q) {
+        if (getHasAccessToEvaluateQuestion())
+        {
+            if (questionHasEvaluation(q))
+                return "مشاهده ارزیابی";
+            else
+                return "ارزیابی";
+        } else {
+            return "مشاهده";
+        }
+    }
+    
+    public boolean questionHasEvaluation(Question q) {
+        return q.getEvaluation() != null && q.getEvaluation().size() > 0;
     }
 }

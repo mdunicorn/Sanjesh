@@ -43,17 +43,18 @@
 						<p:menuitem value="طراحان سؤال" url="/Designer.xhtml"
 							rendered="#{menuController.hasAccessToDesigner}"
 							icon="menuItemIcon menuItemDesignerIcon" />
-						<p:menuitem value="داوران سؤال" url="/Arbiter.xhtml"
-							rendered="#{menuController.hasAccessToSanjeshAgent}"
-							icon="menuItemIcon " />
+						<p:menuitem value="داوران سؤال" url="/arbiter.xhtml"
+							rendered="#{menuController.hasAccessToArbiter}"
+							icon="menuItemIcon menuItemArbiterIcon" />
 						<p:menuitem value="مدیریت کاربران و دسترسی ها" url="/AccessPermission.xhtml" 
-							rendered="#{menuController.hasAccessToSanjeshAgent}" />
+							rendered="#{menuController.hasAccessToUsers}" />
 					</p:submenu>
 					<p:submenu label="سؤال" rendered="#{menuController.hasAccessToQuestionRoot}">
 						<p:menuitem value="سؤالات" url="/Question.xhtml"
-							rendered="#{menuController.hasAccessToQuestion}" />
-						<p:menuitem value="گردش سؤال" url="/QuestionFlow.xhtml"
-							rendered="#{menuController.hasAccessToQuestion}" />
+							rendered="#{menuController.hasAccessToQuestion}"
+							icon="menuItemIcon menuItemQuestionIcon" />
+						<p:menuitem value="ارزیابی های انجام شده" url="/questioneval.xhtml"
+							rendered="#{menuController.hasAccessToQuestionEvaluation}" />
 					</p:submenu>
 					<p:submenu label="گزارشات">
 

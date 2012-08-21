@@ -27,14 +27,16 @@ public class SecurityFilter implements Filter {
 
 	private static String[] securedPages = new String[]
 		{
+	        "/arbiter.xhtml",
 			"/Course.xhtml",
 			"/Designer.xhtml",
 			"/DesignerRegistration.xhtml",
 			"/EducationField.xhtml",
 			"/EducationGroup.xhtml",
 			"/Grade.xhtml",
-			"/Home.xhtml",
+			"/home.xhtml",
 			"/Question.xhtml",
+			"/questioneval.xhtml",
 			"/SanjeshAgent.xhtml",
 			"/Topic.xhtml",
 			"/University.xhtml",
@@ -46,6 +48,10 @@ public class SecurityFilter implements Filter {
 	
 	static{
 		pageSecurityItems = new HashMap<String, List<SecurityItem>>();
+		
+		pageSecurityItems.put("/arbiter.xhtml",
+		    Arrays.asList(SecurityItems.Arbiter));
+		
 		pageSecurityItems.put("/Course.xhtml",
 			Arrays.asList(SecurityItems.Course));
 
@@ -64,7 +70,10 @@ public class SecurityFilter implements Filter {
 		pageSecurityItems.put("/Question.xhtml",
 			Arrays.asList(SecurityItems.Question));
 		
-		pageSecurityItems.put("/SanjeshAgent.xhtml",
+        pageSecurityItems.put("/questioneval.xhtml",
+                Arrays.asList(SecurityItems.QuestionEvaluation));
+
+        pageSecurityItems.put("/SanjeshAgent.xhtml",
 			Arrays.asList(SecurityItems.SanjeshAgent));
 		
 		pageSecurityItems.put("/Topic.xhtml",

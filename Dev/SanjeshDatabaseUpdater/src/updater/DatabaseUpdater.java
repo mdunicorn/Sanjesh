@@ -363,6 +363,8 @@ public class DatabaseUpdater {
                 "Designer",
                 "Question",
                 "Designer_ExpertInCourses",
+                "Arbiter",
+                "Question_Evaluation"
             };
             
             String[] joinTables = new String[]{
@@ -602,8 +604,8 @@ public class DatabaseUpdater {
                     + "	FROM information_schema.columns\n"
                     + "	WHERE table_schema='public' AND data_type='character varying'\n"
                     + "LOOP\n"
-                    + "	--INSERT INTO inserts VALUES('UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\u064A'', ''\u06CC''), ''\u0643'', ''\u06A9'')');\n"
-                    + "	EXECUTE 'UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\u064A'', ''\u06CC''), ''\u0643'', ''\u06A9'')';\n"
+                    + "	--INSERT INTO inserts VALUES('UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\\u064A'', ''\\u06CC''), ''\\u0643'', ''\\u06A9'')');\n"
+                    + "	EXECUTE 'UPDATE '  || quote_ident(r.table_name) || ' SET '|| quote_ident(r.column_name) || '=replace(replace(' || quote_ident(r.column_name) || E', ''\\u064A'', ''\\u06CC''), ''\\u0643'', ''\\u06A9'')';\n"
                     + "END LOOP;\n"
                     + "END;\n"
                     + "$$ LANGUAGE plpgsql;");
@@ -613,6 +615,8 @@ public class DatabaseUpdater {
             
             // Static data
             AddAdminUserIfNotExists();
+            if (dbVersion == null || dbVersion.isLessThan(0,5))
+                removeInvalidRoles();
             AddDefaultRoles();
             
 //            colName = "modifier_suser_ref";
@@ -625,7 +629,7 @@ public class DatabaseUpdater {
             
             
             int major = 0;
-            int minor = 9;
+            int minor = 10;
             if (dbVersion == null || dbVersion.isLessThan(major, minor)) {
                 logInfo("Updating version...");
                 insertDBVersion(major, minor, new Date());
@@ -643,8 +647,8 @@ public class DatabaseUpdater {
         return true;
     }
     
-    private void AddDefaultRoles() throws SQLException {
-        
+    private void removeInvalidRoles() throws SQLException {
+
         String invalidRoles[] = new String[] // with id 1, 2, 3
         {
             "نماینده سازمان سنجش",
@@ -656,6 +660,10 @@ public class DatabaseUpdater {
             RemoveRoleIfExists(i+1, invalidRoles[i]);
         }
 
+    }
+    
+    private void AddDefaultRoles() throws SQLException {
+        
         String role = "کارشناس سؤال (سازمان سنجش)";
         AddRoleIfNotExists(1, role);
         role = "کارشناس طراح (سازمان سنجش)";
@@ -669,6 +677,8 @@ public class DatabaseUpdater {
         AddRoleIfNotExists(10, role);
         role = "طراح سؤال";
         AddRoleIfNotExists(11, role);
+        role = "داور سؤال";
+        AddRoleIfNotExists(12, role);
 
         if (getLastId("role") < 100) {
             setLastId("role", 100); // reserve space for all the possible roles
