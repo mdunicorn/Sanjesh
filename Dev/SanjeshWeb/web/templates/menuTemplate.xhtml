@@ -56,8 +56,10 @@
 						<p:menuitem value="ارزیابی های انجام شده" url="/questioneval.xhtml"
 							rendered="#{menuController.hasAccessToQuestionEvaluation}" />
 					</p:submenu>
-					<p:submenu label="گزارشات">
-
+					<p:submenu label="گزارشات" rendered="#{menuController.hasAccessToReportsRoot}">
+						<p:menuitem value="گزارش جدول سؤالات" url="/reports/questionssimple.xhtml" rendered="false"/>
+						<p:menuitem value="تمام سؤالات" url="/reports/allquestions.xhtml"
+							rendered="#{menuController.hasAccessToAllQeustionsReport}"/>
 					</p:submenu>
 				</p:menu>
 			</div>

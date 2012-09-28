@@ -4,6 +4,7 @@
  *
  * @author Abbas
  */
+import java.util.HashMap;
 import java.util.List;
 
 import dao.QuestionDao;
@@ -15,6 +16,7 @@ import model.QuestionLevel;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.persistence.TypedQuery;
 
 import controller.LoginBean;
 
@@ -99,5 +101,43 @@ public class QuestionDaoImpl extends DaoImplBase<Question> implements QuestionDa
         return em.createQuery(
                 "select q from Question q where q.course.field.group.id=?1",
                 Question.class).setParameter(1, egroupId).getResultList();
+    }
+
+    @Override
+    public List<Question> findByDesigner(int designerId) {
+        return em.createQuery(
+                "select q from Question q where q.designer.id=?1",
+                Question.class).setParameter(1, designerId).getResultList();
+    }
+
+    @Override
+    public List<Question> findByDesignerAndCourse(Integer designerId, Integer courseId) {
+        String query = "select q from Question q";
+        String where = "";
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        if (designerId > 0) {
+            where = addANDCriteria(where, "designer.id=:d");
+            params.put("d", designerId);
+        }
+        if (courseId > 0) {
+            where = addANDCriteria(where, "course.id=:c");
+            params.put("c", courseId);
+        }
+        if (!where.isEmpty()) {
+            query = query + " where " + where;
+        }
+        
+        TypedQuery<Question> tq = em.createQuery(query, Question.class);
+        for (String k : params.keySet()) {
+            tq.setParameter(k, params.get(k));
+        }
+        return tq.getResultList();
+    }
+    
+    private String addANDCriteria(String where, String criteria) {
+        if (where != null && !where.isEmpty())
+            return where + " AND " + criteria;
+        else
+            return criteria;
     }
 }

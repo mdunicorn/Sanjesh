@@ -42,6 +42,8 @@ public class SecurityFilter implements Filter {
 			"/University.xhtml",
 			"/UniversityAgent.xhtml",
 			"/userprofile.xhtml",
+			"/reports/allquestions.xhtml",
+			"/reports/questionssimple.xhtml",
 		};
 	
 	private static Map<String, List<SecurityItem>> pageSecurityItems;
@@ -83,7 +85,13 @@ public class SecurityFilter implements Filter {
 			Arrays.asList(SecurityItems.University));
 		
 		pageSecurityItems.put("/UniversityAgent.xhtml",
-			Arrays.asList(SecurityItems.UniversityAgent));		
+			Arrays.asList(SecurityItems.UniversityAgent));
+		
+		pageSecurityItems.put("/reports/allquestions.xhtml",
+		        Arrays.asList(SecurityItems.AllQuestionsReport));
+
+		pageSecurityItems.put("/reports/questionssimple.xhtml",
+                Arrays.asList(SecurityItems.AllQuestionsReport));
 	}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

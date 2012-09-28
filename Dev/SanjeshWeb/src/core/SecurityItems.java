@@ -96,6 +96,12 @@ public class SecurityItems {
 
     public final static SecurityItem QuestionRoot = new SecurityItem("QuestionRoot", "سؤال",
             Question, QuestionEvaluation);
+    
+    public final static SecurityItem AllQuestionsReport = new SecurityItem(
+            "AllQuestions", "تمام سؤالات");
+    
+    public final static SecurityItem ReportsRoot = new SecurityItem(
+            "ReportsRoot", "گزارشات", AllQuestionsReport );
         
 
     public final static HashMap<Integer, List<String>> RoleAccessKeys;

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+	template="../templates/menuTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">
+		<h:outputText value="گزارش سؤالات" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+			<h:panelGroup rendered="#{not questionsReportController.isShowingReport}">
+				<p:fieldset legend="گزینش اطلاعات گزارش">
+					<h:panelGrid columns="2" cellpadding="10">
+					
+						<h:outputText value="طراح: " />
+						<p:selectOneMenu value="#{questionsReportController.designerId}">
+							<f:selectItem itemLabel="همه طراحان" itemValue="0"/>
+							<f:selectItems value="#{questionsReportController.designersList}"
+								var="d" itemLabel="#{d.fullName}" itemValue="#{d.id}" />
+						</p:selectOneMenu>
+						
+						<h:outputText value="درس: " />
+						<p:selectOneMenu value="#{questionsReportController.courseId}">
+							<f:selectItem itemLabel="همه دروس" itemValue="0"/>
+							<f:selectItems value="#{questionsReportController.coursesList}"
+								var="c" itemLabel="#{c.toString()}" itemValue="#{c.id}" />
+						</p:selectOneMenu>
+						
+					</h:panelGrid>
+					
+					<ui:remove>
+					<!-- 
+						<p:commandButton value="نمایش گزارش به صورت PDF" ajax="false" rendered="false">
+							<p:fileDownload value="#{questionsReportController.createPdf()}" contentDisposition="inline" />
+						</p:commandButton>
+						<p:commandButton value="ذخیره گزارش به صورت XML" ajax="false" rendered="false">
+							<p:fileDownload value="#{questionsReportController.createXml()}" />
+						</p:commandButton>
+					 -->
+					</ui:remove>
+					<p:commandButton value="دریافت فایل Excel" ajax="false" >
+						<p:fileDownload value="#{questionsReportController.createExcel()}"/>
+					</p:commandButton>
+				</p:fieldset>
+			</h:panelGroup>
+			
+			<h:panelGroup rendered="#{not questionsReportController.isShowingReport}">
+				
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

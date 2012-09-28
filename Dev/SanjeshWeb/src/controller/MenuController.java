@@ -74,5 +74,11 @@ public class MenuController {
 	    return SecurityService.hasPermission(SecurityItems.QuestionEvaluation);
 	}
 	
-
+	public boolean getHasAccessToReportsRoot() {
+	    return SecurityService.hasPermission(SecurityItems.ReportsRoot);
+	}
+	
+	public boolean getHasAccessToAllQeustionsReport() {
+	    return SecurityService.hasPermission(SecurityItems.AllQuestionsReport);
+	}
 }

@@ -4,3 +4,6 @@ Dev/SanjeshDatabaseUpdater/build
 Docs/files/dan.txt
 Docs/files/dan.csv
 Docs/~$Davar.docx
+Dev/SanjeshWeb/web/WEB-INF/reports/questions.xls
+Dev/SanjeshWeb/web/WEB-INF/reports/questions.pdf
+Dev/SanjeshWeb/web/WEB-INF/reports/questions.jasper
