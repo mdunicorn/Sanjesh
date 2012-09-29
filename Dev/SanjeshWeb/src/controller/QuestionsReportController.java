@@ -10,9 +10,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-//import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 //import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 //import net.sf.jasperreports.engine.JRException;
 //import net.sf.jasperreports.engine.JasperCompileManager;
@@ -62,7 +64,6 @@ public class QuestionsReportController {
     private int designerId = 0;
     private int courseId = 0;
 //    private String reportsPath;
-    private boolean isShowingReport = false;
 
     @PostConstruct
     public void init() {
@@ -107,12 +108,8 @@ public class QuestionsReportController {
     public void setCourseId(int id) {
         courseId = id;
     }
-
-    public boolean getIsShowingReport() {
-        return isShowingReport;
-    }
     
-    private List<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questionDao.findByDesignerAndCourse(designerId, courseId);
     }
 
@@ -241,7 +238,9 @@ public class QuestionsReportController {
         return doc.body().text();
     }
 
-    public void showReport() {
-        isShowingReport = true;        
+    public void showReport() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest)ec.getRequest()).getContextPath() +
+                "/reports/showqreport.xhtml?designerId=" + designerId + "&courseId=" + courseId);
     }
 }

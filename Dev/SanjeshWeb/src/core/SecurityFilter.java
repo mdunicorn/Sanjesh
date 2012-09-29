@@ -43,7 +43,8 @@ public class SecurityFilter implements Filter {
 			"/UniversityAgent.xhtml",
 			"/userprofile.xhtml",
 			"/reports/allquestions.xhtml",
-			"/reports/questionssimple.xhtml",
+            "/reports/questionssimple.xhtml",
+            "/reports/showqreport.xhtml",
 		};
 	
 	private static Map<String, List<SecurityItem>> pageSecurityItems;
@@ -90,7 +91,10 @@ public class SecurityFilter implements Filter {
 		pageSecurityItems.put("/reports/allquestions.xhtml",
 		        Arrays.asList(SecurityItems.AllQuestionsReport));
 
-		pageSecurityItems.put("/reports/questionssimple.xhtml",
+        pageSecurityItems.put("/reports/questionssimple.xhtml",
+                Arrays.asList(SecurityItems.AllQuestionsReport));
+
+        pageSecurityItems.put("/reports/showqreport.xhtml",
                 Arrays.asList(SecurityItems.AllQuestionsReport));
 	}
 	

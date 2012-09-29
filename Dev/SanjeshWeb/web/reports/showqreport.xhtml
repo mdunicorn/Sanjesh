@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" type="image/vnd.microsoft.icon" /> 
+		<link rel="icon" href="#{request.contextPath}/favicon.ico" type="image/vnd.microsoft.icon" />
+		<title>نمایش گزارش</title>
+		<style type="text/css">
+			td {
+				border: 1px black solid;
+			}
+		</style>
+	</h:head>
+	<f:metadata>
+		<f:viewParam name="designerId" value="#{questionsReportController.designerId}" />
+		<f:viewParam name="courseId" value="#{questionsReportController.courseId}" />
+	</f:metadata>
+	
+	<h:body style="font-family: Tahoma; font-size: 10pt; direction: rtl; ">
+	
+	<ui:repeat value="#{questionsReportController.questions}" var="q" >
+		<table cellpadding="10" style="border: 2px black solid; width: 1000px; border-collapse:collapse;">
+			<tr>
+				<td width="100px">
+					<h:outputText value="سؤال" style="font-weight: bold;" />
+				</td>
+				<td>
+					<h:outputText value="#{q.questionText}" escape="false"/>
+					<br />
+					<p:graphicImage value="#{questionImageLoaderBean.questionImageContent}" >
+						<f:param name="questionId" value="#{q.id}"/>
+						<f:param name="nodefault" value="true" />
+					</p:graphicImage>			
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h:outputText value="گزینه صحیح" style="font-weight: bold;" />
+				</td>
+				<td>
+					<h:outputText value="#{q.answerText}" escape="false" />
+					<br />
+					<p:graphicImage value="#{questionImageLoaderBean.answerImageContent}" >
+						<f:param name="questionId" value="#{q.id}"/>
+						<f:param name="nodefault" value="true" />
+					</p:graphicImage>
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="3">
+					<h:outputText value="گزینه های نادرست" style="font-weight: bold;" />
+				</td>
+				<td>
+					<h:outputText value="#{q.incorrectOption1Text}" escape="false" />
+					<br />			
+					<p:graphicImage value="#{questionImageLoaderBean.incorrectOption1ImageContent}" >
+						<f:param name="questionId" value="#{q.id}"/>
+						<f:param name="nodefault" value="true" />
+					</p:graphicImage>				
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h:outputText value="#{q.incorrectOption2Text}" escape="false" />
+					<br />
+					<p:graphicImage value="#{questionImageLoaderBean.incorrectOption2ImageContent}" >
+						<f:param name="questionId" value="#{q.id}"/>
+						<f:param name="nodefault" value="true" />
+					</p:graphicImage>			
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h:outputText value="#{q.incorrectOption3Text}" escape="false" />
+					<br />
+					<p:graphicImage value="#{questionImageLoaderBean.incorrectOption3ImageContent}" >
+						<f:param name="questionId" value="#{q.id}"/>
+						<f:param name="nodefault" value="true" />
+					</p:graphicImage>
+				</td>
+			</tr>
+		</table>
+		<br />
+		<br />
+	</ui:repeat>
+
+	</h:body>
+</html>

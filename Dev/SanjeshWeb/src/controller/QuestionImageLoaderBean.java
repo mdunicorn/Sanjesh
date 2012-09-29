@@ -25,6 +25,13 @@ public class QuestionImageLoaderBean {
         return sc;
     }
     
+    private static StreamedContent getEmptyStreamedContentImage() {
+        //String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        String path = "/resources/images/spacer.gif";
+        StreamedContent sc = new DefaultStreamedContent(FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(path), "image/gif");
+        return sc;
+    }    
+    
     private static Integer getQuestionIdRequestParameter() {
         String id = FacesContext.getCurrentInstance().getExternalContext().
                 getRequestParameterMap().get("questionId");
@@ -34,9 +41,22 @@ public class QuestionImageLoaderBean {
         return Integer.parseInt(id);
     }
     
+    private static boolean getShowDefaultImage() {
+        String str = FacesContext.getCurrentInstance().getExternalContext().
+                getRequestParameterMap().get("nodefault");
+        if (str == null || str.isEmpty())
+            return true;
+        return false;
+    }
+    
     private static StreamedContent getStreamedContent(byte[] bytes) {
         if (bytes == null || bytes.length == 0)
-            return getDefaultStreamedContentImage();
+        {
+            if (getShowDefaultImage())
+                return getDefaultStreamedContentImage();
+            else
+                return getEmptyStreamedContentImage();
+        }
         return new DefaultStreamedContent(new ByteArrayInputStream(bytes), "image");        
     }
     
