@@ -2,9 +2,8 @@ package controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-//import java.io.File;
 import java.io.IOException;
-//import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,16 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-//import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
-//import net.sf.jasperreports.engine.JRException;
-//import net.sf.jasperreports.engine.JasperCompileManager;
-//import net.sf.jasperreports.engine.JasperExportManager;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -63,14 +53,12 @@ public class QuestionsReportController {
     private List<Course> courseList;
     private int designerId = 0;
     private int courseId = 0;
-//    private String reportsPath;
+    private boolean showDesigner = false, showCourse = false, showEvaluation = false, showOtherInfo = false;
+    private HashMap<Integer, QuestionEvaluation> loadedEvalueations =
+            new HashMap<Integer, QuestionEvaluation>();
 
     @PostConstruct
     public void init() {
-//        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance()
-//                .getExternalContext().getContext();
-//        reportsPath = File.separator + "WEB-INF" + File.separator + "reports";
-//        reportsPath = servletContext.getRealPath(reportsPath) + File.separator;
     }
 
     public void loadDesigners() {
@@ -109,29 +97,42 @@ public class QuestionsReportController {
         courseId = id;
     }
     
+    public boolean getShowDesigner() {
+        return showDesigner;
+    }
+    
+    public void setShowDesigner (boolean showDesigner) {
+        this.showDesigner = showDesigner;
+    }
+    
+    public boolean getShowCourse() {
+        return showCourse;
+    }
+
+    public void setShowCourse(boolean showCourse) {
+        this.showCourse = showCourse;
+    }
+
+    public boolean getShowEvaluation() {
+        return showEvaluation;
+    }
+
+    public void setShowEvaluation(boolean showEvaluation) {
+        this.showEvaluation = showEvaluation;
+    }
+
+    public boolean getShowOtherInfo() {
+        return showOtherInfo;
+    }
+
+    public void setShowOtherInfo(boolean showOtherInfo) {
+        this.showOtherInfo = showOtherInfo;
+    }
+
     public List<Question> getQuestions() {
         return questionDao.findByDesignerAndCourse(designerId, courseId);
     }
 
-//    private JasperPrint createReportPrint() throws JRException {
-//        List<Question> data = getQuestions();
-//        String file = reportsPath + "questions.jrxml";
-//        JasperReport jasperReport = JasperCompileManager.compileReport(file);
-//        return JasperFillManager.fillReport(
-//                jasperReport, new HashMap<String,Object>(), new JRBeanCollectionDataSource(data));
-//    }
-//
-//    public StreamedContent createPdf() throws JRException {
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        JasperExportManager.exportReportToPdfStream(createReportPrint(), outputStream);
-//        return new DefaultStreamedContent(new ByteArrayInputStream(outputStream.toByteArray()));
-//    }
-//    
-//    public StreamedContent createXml() throws JRException {
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        JasperExportManager.exportReportToXmlStream(createReportPrint(), outputStream);
-//        return new DefaultStreamedContent(new ByteArrayInputStream(outputStream.toByteArray()));
-//    }
     
     public StreamedContent createExcel() throws IOException {
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -241,6 +242,22 @@ public class QuestionsReportController {
     public void showReport() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest)ec.getRequest()).getContextPath() +
-                "/reports/showqreport.xhtml?designerId=" + designerId + "&courseId=" + courseId);
+                "/reports/showqreport.xhtml?designerId=" + designerId +
+                "&courseId=" + courseId + "&showDesigner=" + showDesigner +
+                "&showCourse=" + showCourse + "&showEvaluation=" + showEvaluation +
+                "&showOtherInfo=" + showOtherInfo);
+    }
+    
+    public QuestionEvaluation getEvaluation(int questionId) {
+        if (loadedEvalueations.containsKey(questionId))
+            return loadedEvalueations.get(questionId);
+
+        List<QuestionEvaluation> qes = qEvalDao.findByQuestion(questionId);
+        if (qes.size() > 0) {
+            QuestionEvaluation qe = qes.get(0);
+            loadedEvalueations.put(questionId, qe);
+            return qe;
+        }
+        return null;        
     }
 }

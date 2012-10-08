@@ -19,12 +19,39 @@
 	<f:metadata>
 		<f:viewParam name="designerId" value="#{questionsReportController.designerId}" />
 		<f:viewParam name="courseId" value="#{questionsReportController.courseId}" />
+		<f:viewParam name="showDesigner" value="#{questionsReportController.showDesigner}" />
+		<f:viewParam name="showCourse" value="#{questionsReportController.showCourse}" />
+		<f:viewParam name="showOtherInfo" value="#{questionsReportController.showOtherInfo}" />
+		<f:viewParam name="showEvaluation" value="#{questionsReportController.showEvaluation}" />
 	</f:metadata>
 	
 	<h:body style="font-family: Tahoma; font-size: 10pt; direction: rtl; ">
 	
 	<ui:repeat value="#{questionsReportController.questions}" var="q" >
-		<table cellpadding="10" style="border: 2px black solid; width: 1000px; border-collapse:collapse;">
+		<h:panelGroup rendered="#{questionsReportController.showCourse or questionsReportController.showDesigner}">
+		<table cellpadding="10" style="border: 2px black solid; width: 1000px; border-collapse: collapse;">
+			<tr>
+				<h:panelGroup rendered="#{questionsReportController.showCourse}">
+					<td width="100px">
+						<h:outputText value="درس" style="font-weight: bold;"/>
+					</td>
+					<td width="#{questionsReportController.showDesigner ? 356 : 855}px">
+						<h:outputText value="#{q.course.toString()}" />
+					</td>
+				</h:panelGroup>					
+				<h:panelGroup rendered="#{questionsReportController.showDesigner}">
+					<td width="100px">
+						<h:outputText value="طراح" style="font-weight: bold;"/>
+					</td>
+					<td width="#{questionsReportController.showCourse ? 357 : 855}px">
+						<h:outputText value="#{q.designer.toString()}" />
+						<h:outputText value=" - رشته #{q.designer.educationField.toString()}" rendered="#{not empty q.designer.educationField}"/>
+					</td>
+				</h:panelGroup>					
+			</tr>
+		</table>
+		</h:panelGroup>
+		<table cellpadding="10" style="border: 2px black solid; min-width:1000px; border-collapse: collapse;">
 			<tr>
 				<td width="100px">
 					<h:outputText value="سؤال" style="font-weight: bold;" />
@@ -84,6 +111,48 @@
 					</p:graphicImage>
 				</td>
 			</tr>
+			<h:panelGroup rendered="#{questionsReportController.showOtherInfo}">
+				<tr>
+					<td colspan="2">
+						<h:outputText value="درجه سختی سؤال:" style="font-weight: bold;" />
+						<p:spacer width="10" height="1"/>
+						<h:outputText value="#{q.questionLevel.name}" />
+						<p:spacer width="40" height="1"/>
+						<h:outputText value="زمان لازم برای پاسخ به سوال:" style="font-weight: bold;" />
+						<p:spacer width="10" height="1"/>
+						<h:outputText value="#{q.answerTime}" />
+						<h:outputText value=" ثانیه" />
+					</td>
+				</tr>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{questionsReportController.showEvaluation}">
+				<tr>
+					<td style="border-top-width: 2px;">
+						<h:outputText value="نتیجه ارزیابی" style="font-weight: bold;" />
+					</td>
+					<td style="border-top-width: 2px;">
+						<h:outputText value="#{questionsReportController.getEvaluation(q.id).result.name}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="علت" style="font-weight: bold;" />
+					</td>
+					<td>
+						<h:outputText escape="false"
+							value="#{questionsReportController.getEvaluation(q.id).reason}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="توضیحات بیشتر" style="font-weight: bold;" />
+					</td>
+					<td>
+						<h:outputText escape="false"
+							value="#{questionsReportController.getEvaluation(q.id).comments}" />
+					</td>
+				</tr>
+			</h:panelGroup>
 		</table>
 		<br />
 		<br />

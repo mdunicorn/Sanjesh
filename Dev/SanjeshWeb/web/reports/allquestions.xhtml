@@ -42,14 +42,47 @@
 						</p:commandButton>
 					 -->
 					</ui:remove>
-					<p:commandButton value="دریافت فایل Excel" ajax="false" >
-						<p:fileDownload value="#{questionsReportController.createExcel()}"/>
-					</p:commandButton>
-
-					<p:commandButton value="نمایش گزارش" ajax="false" >
-						<p:fileDownload value="#{questionsReportController.showReport()}"/>
-					</p:commandButton>
 				</p:fieldset>
+				<p:fieldset legend="نحوه نمایش">
+					<br />
+					<h:outputText value="(تنظیمات این قسمت تنها در نمایش گزارش تأثیر گذار هستند)"/>
+					<br />
+					<br />
+					<p:selectBooleanCheckbox id="chkShowCourse"
+						value="#{questionsReportController.showCourse}" />
+					<h:outputLabel value="نمایش درس" for="chkShowCourse" />
+					<br />
+					
+					<p:selectBooleanCheckbox id="chkShowDesigner"
+						value="#{questionsReportController.showDesigner}"/>
+					<h:outputLabel value="نمایش طراح" for="chkShowDesigner" />
+
+					<br />
+					
+					<p:selectBooleanCheckbox id="chkShowOtherInfo"
+						value="#{questionsReportController.showOtherInfo}"/>
+					<h:outputLabel value="نمایش درجه سختی و زمان پاسخگویی سؤال" for="chkShowOtherInfo" />
+
+					<br />
+
+					<p:selectBooleanCheckbox id="chkShowEvaluation"
+						value="#{questionsReportController.showEvaluation}"/>
+					<h:outputLabel value="نمایش ارزیابی سؤال" for="chkShowEvaluation" />
+
+					<br />
+
+				</p:fieldset>
+				
+				<p />
+				
+				<p:commandButton value="دریافت فایل Excel" ajax="false" >
+					<p:fileDownload value="#{questionsReportController.createExcel()}"/>
+				</p:commandButton>
+
+				<p:commandButton value="نمایش گزارش" ajax="false" >
+					<p:fileDownload value="#{questionsReportController.showReport()}"/>
+				</p:commandButton>
+				
 			</h:panelGroup>
 			
 		</h:form>
