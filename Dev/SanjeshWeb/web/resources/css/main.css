@@ -132,15 +132,8 @@ root {
 }
 
 .loginContainer{
-    position: absolute;
-    width: 100%;
-    min-width: 750px;
-    min-height: 700px;
     background: url('../images/loginBg.png');
     overflow: hidden;
-    padding: 0;
-    margin: 0;
-    display: block;
     direction: rtl;
     font-family: Tahoma;
     font-size: 11px;
@@ -158,14 +151,13 @@ root {
 }
 
 .loginCenter{
-    margin: 0 auto;
-    width: 515px;
-    padding: 0;
+    width: 510px;
+    margin: auto;
+    margin-top: 15px;
     clear: both;
     position: relative;
     background: url('../images/loginFormBg.jpg');
-    display: block;
-    
+    display: block;    
 }
 
 .myform

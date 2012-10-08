@@ -19,17 +19,24 @@
         <div id="loginContainer">
             <img class="loginTop" src="./resources/images/sanjeshHeader.png"/>
             <div class="loginCenter">
-                <h:form styleClass="myform">
+                <h:form>
                 	<p:focus />
-                    <h:panelGrid columns="1">
+                    <h:panelGrid columns="1" style="clear: both; margin: auto; padding-top: 40px;">
                         <h:outputLabel for="txtUserName" value="نام کاربری:"/>
                         <p:inputText id="txtUserName" value="#{loginController.userName}"/>
                         <h:outputLabel for="txtPassword" value="رمز ورود:"/>
                         <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
+                        <h:outputText value="کد امنیتی:" />
                     </h:panelGrid>
-                    <p:commandButton value="ورود" action="#{loginController.doLogin()}" ajax="false" />
+                    
+                    <div style="direction: ltr; clear: both; margin: auto; padding-left: 40px;">
+                    	<p:captcha theme="clean" requiredMessage="لطفاً کد امنیتی را وارد نمایید." validatorMessage="کد امنیتی وارد شده صحیح نمیباشد."/>
+                    </div>
+                    <br />
+                    <p:commandButton style="margin-left:100px; margin-right: 200px" 
+                    	value="ورود" action="#{loginController.doLogin()}" ajax="false" />
                 </h:form>
-                    <p:messages />
+                <p:messages />
             </div>
         </div>
     </h:body>

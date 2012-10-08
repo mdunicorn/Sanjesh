@@ -59,4 +59,15 @@
     <exception-type>core.NotLoggedInException</exception-type>
     <location>/notloggedin.xhtml</location>
   </error-page>
-</web-app>
+  
+  <context-param>
+    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+    <param-value>6LdCeNcSAAAAAJAu-o9T3fSKhoRT46HPqZNFpKY6</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+    <param-value>6LdCeNcSAAAAAFYeaZmnOlvQwR65hEFXso3yROcT</param-value>
+  </context-param>
+  
+ </web-app>
+ 
