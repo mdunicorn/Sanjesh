@@ -21,22 +21,32 @@
             <div class="loginCenter">
                 <h:form>
                 	<p:focus />
-                    <h:panelGrid columns="1" style="clear: both; margin: auto; padding-top: 40px;">
+                    <h:panelGrid columns="1" style="clear: both; margin: auto; padding-top: 40px; width: 140px;">
                         <h:outputLabel for="txtUserName" value="نام کاربری:"/>
                         <p:inputText id="txtUserName" value="#{loginController.userName}"/>
                         <h:outputLabel for="txtPassword" value="رمز ورود:"/>
                         <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
                         <h:outputText value="کد امنیتی:" />
+                    	<p:inputText value="#{loginController.securityString}" autocomplete="off"
+                    		required="true" requiredMessage="لطفاً کد امنیتی را وارد نمایید." />
+                    	<img src="kaptcha.jpg" id="kaptchaImage"/>
+                    	<script type="text/javascript">
+							$(function(){
+								$('#kaptchaImage').click(function () { 
+									$(this).hide()
+										.attr('src', '/kaptcha.jpg?' + Math.floor(Math.random()*100) )
+										.fadeIn(); 
+									})
+							});
+						</script>
+						<br /><small>در صورت خوانا نبودن تصویر، روی آن کلیک کنید تا تصویر جدیدی نمایش داده شود.</small>
                     </h:panelGrid>
                     
-                    <div style="direction: ltr; clear: both; margin: auto; padding-left: 40px;">
-                    	<p:captcha theme="clean" requiredMessage="لطفاً کد امنیتی را وارد نمایید." validatorMessage="کد امنیتی وارد شده صحیح نمیباشد."/>
-                    </div>
                     <br />
                     <p:commandButton style="margin-left:100px; margin-right: 200px" 
                     	value="ورود" action="#{loginController.doLogin()}" ajax="false" />
                 </h:form>
-                <p:messages />
+				<p:messages />
             </div>
         </div>
     </h:body>

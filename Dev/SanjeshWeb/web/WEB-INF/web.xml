@@ -60,14 +60,19 @@
     <location>/notloggedin.xhtml</location>
   </error-page>
   
-  <context-param>
-    <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-    <param-value>6LdCeNcSAAAAAJAu-o9T3fSKhoRT46HPqZNFpKY6</param-value>
-  </context-param>
-  <context-param>
-    <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-    <param-value>6LdCeNcSAAAAAFYeaZmnOlvQwR65hEFXso3yROcT</param-value>
-  </context-param>
+  <!-- Configurations required by Kaptcha-->
+  <servlet>
+    <servlet-name>Kaptcha</servlet-name>
+    <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    <init-param>
+      <param-name>kaptcha.image.width</param-name>
+      <param-value>130</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Kaptcha</servlet-name>
+    <url-pattern>/kaptcha.jpg</url-pattern>
+  </servlet-mapping>
   
  </web-app>
  

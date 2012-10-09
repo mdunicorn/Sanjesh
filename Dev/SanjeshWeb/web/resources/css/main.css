@@ -152,6 +152,7 @@ root {
 
 .loginCenter{
     width: 510px;
+    height: 430px;
     margin: auto;
     margin-top: 15px;
     clear: both;

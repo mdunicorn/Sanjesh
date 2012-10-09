@@ -3,6 +3,9 @@
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import core.Utils;
 
 /**
  * 
@@ -17,8 +20,9 @@ public class LoginController {
 
 	private String userName;
 	private String password;
-
+	private String securityString;
 	private String returnUrl;
+	
 
 	public void setLoginBean(LoginBean lb) {
 		this.loginBean = lb;
@@ -40,7 +44,15 @@ public class LoginController {
 		this.password = password;
 	}
 
-	public void setReturnUrl(String url) {
+	public String getSecurityString() {
+        return securityString;
+    }
+
+    public void setSecurityString(String securityString) {
+        this.securityString = securityString;
+    }
+
+    public void setReturnUrl(String url) {
 		this.returnUrl = url;
 	}
 	
@@ -49,6 +61,12 @@ public class LoginController {
 	}
 
 	public String doLogin() {
+	    String kaptchaExpected = (String) FacesContext.getCurrentInstance().getExternalContext().
+	        getSessionMap().get(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+	    if (securityString == null || !securityString.equals(kaptchaExpected)) {
+	        Utils.addFacesErrorMessage("کد امنیتی وارد شده صحیح نمیباشد.");
+	        return null;
+	    }
 		return loginBean.doLogin(userName, password, returnUrl);
 	}
 }
