@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -115,6 +116,9 @@ public class Question implements EntityBase, Serializable {
     
     @OneToMany(mappedBy="question", fetch=FetchType.EAGER)
     private List<QuestionEvaluation> evaluations;
+    
+    @Transient
+    private String uniqueIdentifier; 
     
 
     public Question(){
@@ -336,5 +340,15 @@ public class Question implements EntityBase, Serializable {
     @Override
     public String toString(){
         return "";
+    }
+
+
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
+    }
+
+
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
     }
 }

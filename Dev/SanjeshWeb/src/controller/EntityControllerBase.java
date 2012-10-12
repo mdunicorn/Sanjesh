@@ -73,12 +73,16 @@ public abstract class EntityControllerBase<T extends EntityBase> {
 	public void edit(T u) {
 		this.toEdit = u;
         controllerState = ControllerState.AFTER_EDIT;
+        initEdit();
 	}
 
 	public void createNew() {
 		this.toEdit = dao.newEntity();
         controllerState = ControllerState.AFTER_NEW;
+        initEdit();
 	}
+	
+	protected void initEdit() {}
 
 	public void save() {
         controllerState = ControllerState.AFTER_SAVE;

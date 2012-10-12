@@ -1,6 +1,8 @@
 ﻿package controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import dao.ArbiterDao;
 import dao.CourseDao;
@@ -92,6 +94,15 @@ public class QuestionController extends EntityControllerBase<Question> {
         loadDetailLists();
     }
     
+    @Override
+    protected void initEdit() {
+        if (toEdit.getUniqueIdentifier() == null) {
+            toEdit.setUniqueIdentifier(UUID.randomUUID().toString());
+        }
+        Map<String,Object> session = Utils.getSessionMap();
+        session.put(toEdit.getUniqueIdentifier(), toEdit);        
+    }
+    
     public void view(Question q) {
         if (q == null) {
             Utils.addFacesInformationMessage("سؤال مشخص شده یافت نشد.");
@@ -138,6 +149,9 @@ public class QuestionController extends EntityControllerBase<Question> {
     
     @Override
     public void showList() {
+        if (toEdit != null) {
+            Utils.getSessionMap().remove(toEdit.getUniqueIdentifier());
+        }
         super.showList();
         toView = null;
     }

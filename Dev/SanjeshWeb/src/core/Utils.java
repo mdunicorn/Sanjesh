@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Map;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.OptimisticLockException;
@@ -119,6 +121,10 @@ public class Utils {
 	    for (CharacterReplacement cr : replacements)
 	        text = text.replace(cr.source, cr.destination);
 	    return text;
+	}
+	
+	public static Map<String, Object> getSessionMap() {
+	    return FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 	}
 
 }

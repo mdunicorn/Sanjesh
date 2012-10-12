@@ -125,8 +125,10 @@
 						
 					<h:outputText value="تصویر سوال :" />
 					<h:panelGroup>
-						<p:graphicImage value="#{questionImageLoaderBean.questionImageContent}" >
+						<p:graphicImage id="imgQuestion"
+							value="#{questionImageLoaderBean.questionImageContent}" >
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
 						</p:graphicImage>
 						
 						<br/>
@@ -141,8 +143,10 @@
 						
 					<h:outputText value="تصویر جواب صحیح  : " />
 					<h:panelGroup>
-						<p:graphicImage value="#{questionImageLoaderBean.answerImageContent}" >
+						<p:graphicImage id="imgAnswer"
+							value="#{questionImageLoaderBean.answerImageContent}" >
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
 						</p:graphicImage>
 						
 						<br/>
@@ -157,8 +161,10 @@
 
 					<h:outputText value="تصویر جواب نادرست اول : " />
 					<h:panelGroup>
-						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption1ImageContent}" id="imgAnswer">
+						<p:graphicImage id="imgIncorrectOption1"
+							value="#{questionImageLoaderBean.incorrectOption1ImageContent}">
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
 						</p:graphicImage>
 						
 						<br/>
@@ -172,8 +178,10 @@
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست دوم  : " />
 					<h:panelGroup>
-						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
+						<p:graphicImage id="imgIncorrectOption2"
+							value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
 						</p:graphicImage>
 						
 						<br/>
@@ -187,8 +195,10 @@
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست سوم : " />
 					<h:panelGroup>
-						<p:graphicImage value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
+						<p:graphicImage id="imgIncorrectOption3"
+							value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
 							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
 						</p:graphicImage>
 						
 						<br/>
@@ -223,6 +233,7 @@
 				<p:fileUpload fileUploadListener="#{questionController.uploadQuestionPic}"
 					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":#{p:component('imgQuestion')}"
 					oncomplete="dlgUploadQuestionImage.hide()" />
 			</h:form>
 		</p:dialog>
@@ -232,6 +243,7 @@
 				<p:fileUpload fileUploadListener="#{questionController.uploadAnswerPic}"
 					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":#{p:component('imgAnswer')}"
 					oncomplete="dlgUploadAnswerImage.hide()" />
 			</h:form>
 		</p:dialog>
@@ -241,6 +253,7 @@
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption1Pic}"
 					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":#{p:component('imgIncorrectOption1')}"
 					oncomplete="dlgUploadIncorrectOption1Image.hide()" />
 			</h:form>
 		</p:dialog>
@@ -250,6 +263,7 @@
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption2Pic}"
 					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":#{p:component('imgIncorrectOption2')}"
 					oncomplete="dlgUploadIncorrectOption2Image.hide()" />
 			</h:form>
 		</p:dialog>
@@ -259,6 +273,7 @@
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption3Pic}"
 					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":#{p:component('imgIncorrectOption3')}"
 					oncomplete="dlgUploadIncorrectOption3Image.hide()" />
 			</h:form>
 		</p:dialog>
