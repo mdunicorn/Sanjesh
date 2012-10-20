@@ -125,34 +125,40 @@
 						
 					<h:outputText value="تصویر سوال :" />
 					<h:panelGroup>
-						<p:graphicImage id="imgQuestion"
-							value="#{questionImageLoaderBean.questionImageContent}" >
-							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
-							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
-						</p:graphicImage>
-						
-						<br/>
-						<h:outputText value="#{questionController.toEdit.questionImageFilename}"/>
+						<h:panelGroup id="pnlQuestionImage">
+							<p:graphicImage id="imgQuestion"
+								value="#{questionImageLoaderBean.questionImageContent}" >
+								<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+								<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
+							</p:graphicImage>
+							
+							<br/>
+							<h:outputText value="#{questionController.toEdit.questionImageFilename}"/>
+						</h:panelGroup>
 						<br />
 						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadQuestionImage.show()"/>
+						<p:commandButton ajax="true" value="حذف تصویر" onclick="dlgRemoveQuestionImage.show()"/>
 					</h:panelGroup>
-						
+
 					<h:outputText value="متن جواب صحیح  : " />
 					<p:editor value="#{questionController.toEdit.answerText}"
 						width="600" />
 						
 					<h:outputText value="تصویر جواب صحیح  : " />
 					<h:panelGroup>
-						<p:graphicImage id="imgAnswer"
-							value="#{questionImageLoaderBean.answerImageContent}" >
-							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
-							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
-						</p:graphicImage>
-						
-						<br/>
-						<h:outputText value="#{questionController.toEdit.answerImageFilename}"/>
+						<h:panelGroup id="pnlAnswerImage">
+							<p:graphicImage id="imgAnswer"
+								value="#{questionImageLoaderBean.answerImageContent}" >
+								<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+								<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
+							</p:graphicImage>
+							
+							<br/>
+							<h:outputText value="#{questionController.toEdit.answerImageFilename}"/>
+						</h:panelGroup>
 						<br />
 						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadAnswerImage.show()"/>
+						<p:commandButton ajax="true" value="حذف تصویر" onclick="dlgRemoveAnswerImage.show()"/>
 					</h:panelGroup>
 
 					<h:outputText value="متن جواب نادرست اول : " />
@@ -161,16 +167,19 @@
 
 					<h:outputText value="تصویر جواب نادرست اول : " />
 					<h:panelGroup>
-						<p:graphicImage id="imgIncorrectOption1"
-							value="#{questionImageLoaderBean.incorrectOption1ImageContent}">
-							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
-							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
-						</p:graphicImage>
-						
-						<br/>
-						<h:outputText value="#{questionController.toEdit.incorrectOption1ImageFilename}"/>
+						<h:panelGroup id="pnlIncorrectOption1Image">
+							<p:graphicImage id="imgIncorrectOption1"
+								value="#{questionImageLoaderBean.incorrectOption1ImageContent}">
+								<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+								<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
+							</p:graphicImage>
+							
+							<br/>
+							<h:outputText value="#{questionController.toEdit.incorrectOption1ImageFilename}"/>
+						</h:panelGroup>
 						<br />
 						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption1Image.show()"/>
+						<p:commandButton ajax="true" value="حذف تصویر" onclick="dlgRemoveInc1Image.show()"/>
 					</h:panelGroup>
 
 					<h:outputText value="متن جواب نادرست دوم  : " />
@@ -178,16 +187,19 @@
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست دوم  : " />
 					<h:panelGroup>
-						<p:graphicImage id="imgIncorrectOption2"
-							value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
-							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
-							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
-						</p:graphicImage>
-						
-						<br/>
-						<h:outputText value="#{questionController.toEdit.incorrectOption2ImageFilename}"/>
+						<h:panelGroup id="pnlIncorrectOption2Image">
+							<p:graphicImage id="imgIncorrectOption2"
+								value="#{questionImageLoaderBean.incorrectOption2ImageContent}">
+								<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+								<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
+							</p:graphicImage>
+							
+							<br/>
+							<h:outputText value="#{questionController.toEdit.incorrectOption2ImageFilename}"/>
+						</h:panelGroup>
 						<br />
 						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption2Image.show()"/>
+						<p:commandButton ajax="true" value="حذف تصویر" onclick="dlgRemoveInc2Image.show()"/>
 					</h:panelGroup>
 
 					<h:outputText value="متن جواب نادرست سوم : " />
@@ -195,16 +207,19 @@
 						width="600" />
 					<h:outputText value="تصویر جواب نادرست سوم : " />
 					<h:panelGroup>
-						<p:graphicImage id="imgIncorrectOption3"
-							value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
-							<f:param name="questionId" value="#{questionController.toEdit.id}"/>
-							<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
-						</p:graphicImage>
-						
-						<br/>
-						<h:outputText value="#{questionController.toEdit.incorrectOption3ImageFilename}"/>
+						<h:panelGroup id="pnlIncorrectOption3Image">
+							<p:graphicImage id="imgIncorrectOption3"
+								value="#{questionImageLoaderBean.incorrectOption3ImageContent}">
+								<f:param name="questionId" value="#{questionController.toEdit.id}"/>
+								<f:param name="uniqueId" value="#{questionController.toEdit.uniqueIdentifier}"/>
+							</p:graphicImage>
+							
+							<br/>
+							<h:outputText value="#{questionController.toEdit.incorrectOption3ImageFilename}"/>
+						</h:panelGroup>
 						<br />
 						<p:commandButton ajax="true" value="انتخاب تصویر" onclick="dlgUploadIncorrectOption3Image.show()"/>
+						<p:commandButton ajax="true" value="حذف تصویر" onclick="dlgRemoveInc3Image.show()"/>
 					</h:panelGroup>
 						
 					<h:outputText value="درجه سختی سؤال : *" />
@@ -231,9 +246,9 @@
 		<p:dialog header="انتخاب تصویر سؤال" widgetVar="dlgUploadQuestionImage" modal="true" width="800" height="200">
 			<h:form enctype="multipart/form-data">
 				<p:fileUpload fileUploadListener="#{questionController.uploadQuestionPic}"
-					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل" multiple="false"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":#{p:component('imgQuestion')}"
+					update=":#{p:component('pnlQuestionImage')}"
 					oncomplete="dlgUploadQuestionImage.hide()" />
 			</h:form>
 		</p:dialog>
@@ -241,9 +256,9 @@
 		<p:dialog header="انتخاب تصویر جواب" widgetVar="dlgUploadAnswerImage" modal="true"  width="800" height="200">
 			<h:form enctype="multipart/form-data">
 				<p:fileUpload fileUploadListener="#{questionController.uploadAnswerPic}"
-					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل" multiple="false"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":#{p:component('imgAnswer')}"
+					update=":#{p:component('pnlAnswerImage')}"
 					oncomplete="dlgUploadAnswerImage.hide()" />
 			</h:form>
 		</p:dialog>
@@ -251,9 +266,9 @@
 		<p:dialog header="انتخاب تصویر گزینه نادرست 1" widgetVar="dlgUploadIncorrectOption1Image" modal="true" width="800" height="200">
 			<h:form enctype="multipart/form-data">
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption1Pic}"
-					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل" multiple="false"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":#{p:component('imgIncorrectOption1')}"
+					update=":#{p:component('pnlIncorrectOption1Image')}"
 					oncomplete="dlgUploadIncorrectOption1Image.hide()" />
 			</h:form>
 		</p:dialog>
@@ -261,9 +276,9 @@
 		<p:dialog header="انتخاب تصویر گزینه نادرست 2" widgetVar="dlgUploadIncorrectOption2Image" modal="true" width="800" height="200">
 			<h:form enctype="multipart/form-data">
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption2Pic}"
-					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل" multiple="false"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":#{p:component('imgIncorrectOption2')}"
+					update=":#{p:component('pnlIncorrectOption2Image')}"
 					oncomplete="dlgUploadIncorrectOption2Image.hide()" />
 			</h:form>
 		</p:dialog>
@@ -271,13 +286,79 @@
 		<p:dialog header="انتخاب تصویر گزینه نادرست 3" widgetVar="dlgUploadIncorrectOption3Image" modal="true" width="800" height="200">
 			<h:form enctype="multipart/form-data">
 				<p:fileUpload fileUploadListener="#{questionController.uploadIncorrectOption3Pic}"
-					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل"
+					cancelLabel="لغو" uploadLabel="ارسال" label="انتخاب فایل" multiple="false"
 					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":#{p:component('imgIncorrectOption3')}"
+					update=":#{p:component('pnlIncorrectOption3Image')}"
 					oncomplete="dlgUploadIncorrectOption3Image.hide()" />
 			</h:form>
 		</p:dialog>
 		
+		<p:confirmDialog widgetVar="dlgRemoveQuestionImage" severity="alert"
+			header="حذف تصویر سؤال" message="آیا از حذف تصویر سؤال اطمینان دارید؟"
+			position="center" modal="true">
+			<h:form>
+			<p:commandButton value="بله" ajax="true"
+				action="#{questionController.removeQuestionImage()}" icon="okButton"
+				update=":#{p:component('pnlQuestionImage')}" oncomplete="dlgRemoveQuestionImage.hide()"
+				iconPos="right" />
+			<p:commandButton value="خیر" onclick="dlgRemoveQuestionImage.hide()"
+				style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+			</h:form>
+		</p:confirmDialog>
+
+		<p:confirmDialog widgetVar="dlgRemoveAnswerImage" severity="alert"
+			header="حذف تصویر جواب" message="آیا از حذف تصویر جواب اطمینان دارید؟"
+			position="center" modal="true">
+			<h:form>			
+			<p:commandButton value="بله" ajax="true"
+				action="#{questionController.removeAnswerImage()}" icon="okButton"
+				update=":#{p:component('pnlAnswerImage')}" oncomplete="dlgRemoveAnswerImage.hide()"
+				iconPos="right" />
+			<p:commandButton value="خیر" onclick="dlgRemoveAnswerImage.hide()"
+				style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+			</h:form>
+		</p:confirmDialog>
+
+		<p:confirmDialog widgetVar="dlgRemoveInc1Image" severity="alert"
+			header="حذف تصویر گزینه نادرست اول" message="آیا از حذف تصویر گزینه نادرست اول اطمینان دارید؟"
+			position="center" modal="true">
+			<h:form>
+			<p:commandButton value="بله" ajax="true"
+				action="#{questionController.removeIncorrectOption1Image()}" icon="okButton"
+				update=":#{p:component('pnlIncorrectOption1Image')}" oncomplete="dlgRemoveInc1Image.hide()"
+				iconPos="right" />
+			<p:commandButton value="خیر" onclick="dlgRemoveInc1Image.hide()"
+				style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+			</h:form>
+		</p:confirmDialog>
+
+		<p:confirmDialog widgetVar="dlgRemoveInc2Image" severity="alert"
+			header="حذف تصویر گزینه نادرست دوم" message="آیا از حذف تصویر گزینه نادرست دوم اطمینان دارید؟"
+			position="center" modal="true">
+			<h:form>
+			<p:commandButton value="بله" ajax="true"
+				action="#{questionController.removeIncorrectOption2Image()}" icon="okButton"
+				update=":#{p:component('pnlIncorrectOption2Image')}" oncomplete="dlgRemoveInc2Image.hide()"
+				iconPos="right" />
+			<p:commandButton value="خیر" onclick="dlgRemoveInc2Image.hide()"
+				style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+			</h:form>
+		</p:confirmDialog>
+
+		<p:confirmDialog widgetVar="dlgRemoveInc3Image" severity="alert"
+			header="حذف تصویر گزینه نادرست سوم" message="آیا از حذف تصویر گزینه نادرست سوم اطمینان دارید؟"
+			position="center" modal="true">
+			<h:form>
+			<p:commandButton value="بله" ajax="true"
+				action="#{questionController.removeIncorrectOption3Image()}" icon="okButton"
+				update=":#{p:component('pnlIncorrectOption3Image')}" oncomplete="dlgRemoveInc3Image.hide()"
+				iconPos="right" />
+			<p:commandButton value="خیر" onclick="dlgRemoveInc3Image.hide()"
+				style="font-family:Tahoma" icon="cancelButton" iconPos="right" />
+			</h:form>
+		</p:confirmDialog>
+
+
 		<p:accordionPanel rendered="#{not empty questionController.toView}"
 			multiple="true" dynamic="true">
 			<p:tab title="سؤال">

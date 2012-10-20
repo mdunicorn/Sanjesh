@@ -418,4 +418,29 @@ public class QuestionController extends EntityControllerBase<Question> {
     public boolean questionHasEvaluation(Question q) {
         return q.getEvaluation() != null && q.getEvaluation().size() > 0;
     }
+    
+    public void removeQuestionImage() {
+        toEdit.setQuestionImage(null);
+        toEdit.setQuestionImageFilename(null);
+    }
+
+    public void removeAnswerImage() {
+        toEdit.setAnswerImage(null);
+        toEdit.setAnswerImageFilename(null);
+    }
+
+    public void removeIncorrectOption1Image() {
+        toEdit.setIncorrectOption1Image(null);
+        toEdit.setIncorrectOption1ImageFilename(null);        
+    }
+
+    public void removeIncorrectOption2Image() {
+        toEdit.setIncorrectOption2Image(null);
+        toEdit.setIncorrectOption2ImageFilename(null);
+    }
+
+    public void removeIncorrectOption3Image() {
+        toEdit.setIncorrectOption3Image(null);
+        toEdit.setIncorrectOption3ImageFilename(null);
+    }
 }

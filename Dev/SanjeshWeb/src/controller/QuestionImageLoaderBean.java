@@ -81,7 +81,7 @@ public class QuestionImageLoaderBean {
     
     public StreamedContent getQuestionImageContent() {
         Question q = getQuestionFromSession();
-        if (q != null && q.getQuestionImage() != null)
+        if (q != null)
             return getStreamedContent(q.getQuestionImage());
 
         Integer id = getQuestionIdRequestParameter(); 
@@ -94,7 +94,7 @@ public class QuestionImageLoaderBean {
     public StreamedContent getAnswerImageContent() {
         
         Question q = getQuestionFromSession();
-        if (q != null && q.getAnswerImage() != null)
+        if (q != null)
             return getStreamedContent(q.getAnswerImage());
         
         Integer id = getQuestionIdRequestParameter(); 
@@ -106,7 +106,7 @@ public class QuestionImageLoaderBean {
     
     public StreamedContent getIncorrectOption1ImageContent() {
         Question q = getQuestionFromSession();
-        if (q != null && q.getIncorrectOption1Image() != null)
+        if (q != null)
             return getStreamedContent(q.getIncorrectOption1Image());
 
         Integer id = getQuestionIdRequestParameter(); 
@@ -118,7 +118,7 @@ public class QuestionImageLoaderBean {
     
     public StreamedContent getIncorrectOption2ImageContent() {
         Question q = getQuestionFromSession();
-        if (q != null && q.getIncorrectOption2Image() != null)
+        if (q != null)
             return getStreamedContent(q.getIncorrectOption2Image());
 
         Integer id = getQuestionIdRequestParameter(); 
@@ -130,7 +130,7 @@ public class QuestionImageLoaderBean {
     
     public StreamedContent getIncorrectOption3ImageContent() {
         Question q = getQuestionFromSession();
-        if (q != null && q.getIncorrectOption3Image() != null)
+        if (q != null)
             return getStreamedContent(q.getIncorrectOption3Image());
 
         Integer id = getQuestionIdRequestParameter(); 
