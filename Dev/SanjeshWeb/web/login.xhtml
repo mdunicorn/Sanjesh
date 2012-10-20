@@ -21,27 +21,28 @@
             <div class="loginCenter">
                 <h:form>
                 	<p:focus />
-                    <h:panelGrid columns="1" style="clear: both; margin: auto; padding-top: 40px; width: 140px;">
-                        <h:outputLabel for="txtUserName" value="نام کاربری:"/>
-                        <p:inputText id="txtUserName" value="#{loginController.userName}"/>
-                        <h:outputLabel for="txtPassword" value="رمز ورود:"/>
-                        <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
-                        <h:outputText value="کد امنیتی:" />
-                    	<p:inputText value="#{loginController.securityString}" autocomplete="off"
-                    		required="true" requiredMessage="لطفاً کد امنیتی را وارد نمایید." />
-                    	<img src="kaptcha.jpg" id="kaptchaImage"/>
-                    	<script type="text/javascript">
-							$(function(){
-								$('#kaptchaImage').click(function () { 
-									$(this).hide()
-										.attr('src', '/kaptcha.jpg?' + Math.floor(Math.random()*100) )
-										.fadeIn(); 
-									})
-							});
-						</script>
-						<br /><small>در صورت خوانا نبودن تصویر، روی آن کلیک کنید تا تصویر جدیدی نمایش داده شود.</small>
-                    </h:panelGrid>
-                    
+                	<div style="margin: auto; text-align: center">
+	                    <h:panelGrid columns="1" style="margin: auto; padding-top: 40px; width: 140px; text-align: right">
+	                        <h:outputLabel for="txtUserName" value="نام کاربری:"/>
+	                        <p:inputText id="txtUserName" value="#{loginController.userName}"/>
+	                        <h:outputLabel for="txtPassword" value="رمز ورود:"/>
+	                        <p:password id="txtPassword" value="#{loginController.password}" minLength="0" feedback="false"/>
+	                        <h:outputText value="کد امنیتی:" />
+	                    	<p:inputText value="#{loginController.securityString}" autocomplete="off"
+	                    		required="true" requiredMessage="لطفاً کد امنیتی را وارد نمایید." />
+	                    	<img src="kaptcha.jpg" id="kaptchaImage" style="height: 50px"/>
+	                    	<script type="text/javascript">
+								$(function(){
+									$('#kaptchaImage').click(function () { 
+										$(this).hide()
+											.attr('src', '/kaptcha.jpg?' + Math.floor(Math.random()*100) )
+											.fadeIn(); 
+										})
+								});
+							</script>
+	                    </h:panelGrid>
+                    	<small>در صورت خوانا نبودن تصویر، روی آن کلیک کنید تا تصویر جدیدی نمایش داده شود.</small>
+                	</div>
                     <br />
                     <p:commandButton style="margin-left:100px; margin-right: 200px" 
                     	value="ورود" action="#{loginController.doLogin()}" ajax="false" />
