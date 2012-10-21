@@ -78,8 +78,14 @@
 				<p:commandButton value="دریافت فایل Excel" ajax="false" >
 					<p:fileDownload value="#{questionsReportController.createExcel()}"/>
 				</p:commandButton>
+				
+				<p:commandButton value="دریافت عکسهای مرتبط" ajax="false">
+					<p:fileDownload value="#{questionsReportController.getImagesZip()}" />
+				</p:commandButton>
+				
+				<br />
 
-				<p:commandButton value="نمایش گزارش" ajax="false" >
+				<p:commandButton style="font-weight: bold;" value="نمایش گزارش" ajax="false" >
 					<p:fileDownload value="#{questionsReportController.showReport()}"/>
 				</p:commandButton>
 				

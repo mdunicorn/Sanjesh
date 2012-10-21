@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -14,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -260,4 +263,57 @@ public class QuestionsReportController {
         }
         return null;        
     }
+    
+    public StreamedContent getImagesZip() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(out);
+        
+        int i = 1;
+        for( Question q : getQuestions() ) {
+            
+            String number = Integer.toString(i);
+            
+            if (q.getQuestionImage() != null) {
+                zip.putNextEntry(new ZipEntry(number + "-1-Question." +
+                        getImageExtension(q.getQuestionImageFilename())));
+                zip.write(q.getQuestionImage());
+            }
+            
+            if (q.getAnswerImage() != null) {
+                zip.putNextEntry(new ZipEntry(number + "-2-Answer." +
+                        getImageExtension(q.getAnswerImageFilename())));
+                zip.write(q.getAnswerImage());
+            }
+
+            if (q.getIncorrectOption1Image() != null) {
+                zip.putNextEntry(new ZipEntry(number + "-3-Option1." +
+                        getImageExtension(q.getIncorrectOption1ImageFilename())));
+                zip.write(q.getIncorrectOption1Image());
+            }
+
+            if (q.getIncorrectOption2Image() != null) {
+                zip.putNextEntry(new ZipEntry(number + "-4-Option2." +
+                        getImageExtension(q.getIncorrectOption2ImageFilename())));
+                zip.write(q.getIncorrectOption2Image());
+            }
+            
+            if (q.getIncorrectOption3Image() != null) {
+                zip.putNextEntry(new ZipEntry(number + "-5-Option3." +
+                        getImageExtension(q.getIncorrectOption3ImageFilename())));
+                zip.write(q.getIncorrectOption3Image());
+            }
+            
+            i++;
+        }
+        zip.close();
+        return new DefaultStreamedContent( new ByteArrayInputStream(out.toByteArray()), "", "images.zip");
+    }
+    
+    private String getImageExtension(String fileName) {
+        String ext = FilenameUtils.getExtension(fileName);
+        if (ext == null || ext == "")
+            return "jpg";
+        return ext;
+    }
+
 }
