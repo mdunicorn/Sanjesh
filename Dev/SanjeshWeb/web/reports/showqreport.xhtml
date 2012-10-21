@@ -9,12 +9,20 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" type="image/vnd.microsoft.icon" /> 
 		<link rel="icon" href="#{request.contextPath}/favicon.ico" type="image/vnd.microsoft.icon" />
+		<h:outputScript library="primefaces" name="jquery/jquery.js" />
 		<title>نمایش گزارش</title>
 		<style type="text/css">
 			td {
 				border: 1px black solid;
 			}
 		</style>
+		<script>
+			$(window).load(function(){
+				$(".evaluationCell").each(function(idx,td) {
+						$(td).children("table").css("height", td.clientHeight);
+					})
+			});
+		</script>
 	</h:head>
 	<f:metadata>
 		<f:viewParam name="designerId" value="#{questionsReportController.designerId}" />
@@ -130,8 +138,20 @@
 					<td style="border-top-width: 2px;">
 						<h:outputText value="نتیجه ارزیابی" style="font-weight: bold;" />
 					</td>
-					<td style="border-top-width: 2px;">
-						<h:outputText value="#{questionsReportController.getEvaluation(q.id).result.name}" />
+					<td style="border-top-width: 2px; padding: 0px"  class="evaluationCell">
+						<table cellpadding="10" style="border: 0px none; border-collapse: collapse;" class="fillUpTable">
+							<tr>
+								<td style="border: 0px none; border-left: 1px black solid; width: 356px">
+									<h:outputText value="#{questionsReportController.getEvaluation(q.id).result.name}" />
+								</td>
+								<td style="border: 0px none; border-left: 1px black solid; width: 100px">
+									<h:outputText value="زمان پاسخگویی" />
+								</td>
+								<td style="border: 0px none; width: 357px">
+									<h:outputText value="#{questionsReportController.getEvaluation(q.id).answerTime}" />
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
