@@ -79,7 +79,7 @@
 				rendered="#{not empty questionController.toEdit}">
 				
 				<script>
-					$(window).bind("load", function() {
+					$(window).load(function() {
 						$("iframe").each(function(idx, frame)
 							{
 								frame.contentDocument.body.style.fontFamily = 'Tahoma';
